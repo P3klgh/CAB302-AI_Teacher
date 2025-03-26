@@ -25,4 +25,7 @@ replay_pid*
 
 
 # IntelliJ IDEA settings
-.idea/
+.idea/*
+
+# JavaFX compiled output
+target/
