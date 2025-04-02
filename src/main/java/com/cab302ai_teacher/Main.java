@@ -15,9 +15,6 @@ public class Main extends Application {
     /**
      * This method is called when the JavaFX application starts.
      * It initializes the database and sets the initial scene to the login screen.
-     *
-     * @param stage The primary stage for this application
-     * @throws Exception if FXML loading fails
      */
     @Override
     public void start(Stage stage) throws Exception {
