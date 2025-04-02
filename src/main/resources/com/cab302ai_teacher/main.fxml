@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+
+<!--
+  FXML layout for the main screen of the AI Teacher Assistant application.
+  This layout is controlled by MainController.java and uses a VBox
+  to center and vertically space its elements.
+-->
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.cab302ai_teacher.controller.MainController"
+      alignment="CENTER" spacing="20" prefWidth="400" prefHeight="300">
+
+    <!-- Welcome message displayed to the user -->
+    <Label text="Welcome to AI Teacher Assistant!" style="-fx-font-size: 18px;" />
+
+    <!-- Logout button that triggers the onLogoutClick() method in MainController -->
+    <Button text="Logout" onAction="#onLogoutClick" />
+</VBox>
