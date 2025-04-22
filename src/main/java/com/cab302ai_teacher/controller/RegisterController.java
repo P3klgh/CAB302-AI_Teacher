@@ -1,13 +1,18 @@
 package com.cab302ai_teacher.controller;
 
 import com.cab302ai_teacher.db.UserDAO;
+import com.cab302ai_teacher.util.PasswordHasher;
+import com.cab302ai_teacher.util.Validator;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RegisterController {
 
@@ -22,50 +27,49 @@ public class RegisterController {
         String email = emailField.getText();
         String password = passwordField.getText();
 
-
         if (email.isBlank() || password.isBlank()) {
             showAlert(Alert.AlertType.WARNING, "Please fill in both fields.");
             return;
         }
 
-
-        if (!email.contains("@") || !email.contains(".")) {
+        if (!Validator.isValidEmail(email)) {
             showAlert(Alert.AlertType.WARNING, "Invalid email format.");
             return;
         }
 
-
-        if (password.length() < 6) {
-            showAlert(Alert.AlertType.WARNING, "Password must be at least 6 characters.");
+        if (!Validator.isValidPassword(password)) {
+            showAlert(Alert.AlertType.WARNING,
+                    "Password must be at least 8 characters and include an uppercase letter, " +
+                            "a lowercase letter, a digit, and a special character.");
             return;
         }
 
-        // ✅ 정상 입력 시 등록 시도
-        if (UserDAO.registerUser(email, password)) {
+        String hashedPassword = PasswordHasher.hashPassword(password);
+
+        if (UserDAO.registerUser(email, hashedPassword)) {
             showAlert(Alert.AlertType.INFORMATION, "Registration successful!");
-            try {
-                Stage stage = (Stage) emailField.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/login.fxml"));
-                stage.setScene(new Scene(loader.load(), 640, 480));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            navigateToLogin();
         } else {
             showAlert(Alert.AlertType.ERROR, "Registration failed. Email may already exist.");
         }
     }
+
     @FXML
     private void onBackToLoginClick() {
+        navigateToLogin();
+    }
+
+    private void navigateToLogin() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/login.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error navigating to login page. Please try again.");
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Navigation error", e);
         }
     }
-
 
     private void showAlert(Alert.AlertType type, String message) {
         Alert alert = new Alert(type);
