@@ -3,6 +3,7 @@ package com.cab302ai_teacher.controller;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
@@ -18,29 +19,64 @@ public class LoginController {
     private PasswordField passwordField;
 
     /**
-     * This method is called when the login button is clicked.
-     * It retrieves the user input and switches to the main scene.
+     * Called when the login button is clicked.
+     * Checks the inputs and transitions to the main scene.
      */
     @FXML
     public void onLoginClick() {
-        // Get user input from the text fields
         String email = emailField.getText();
         String password = passwordField.getText();
+
         System.out.println("Login attempt: " + email + " / " + password);
 
-        // TODO: Add actual authentication logic here later
-        // Temporarily transition to the main scene without validation
+
+        if (email.isBlank() || password.isBlank()) {
+            showAlert("Please enter both email and password.");
+            return;
+        }
+
+
+        if (!email.contains("@") || !email.contains(".")) {
+            showAlert("Invalid email format.");
+            return;
+        }
+
+
+
         try {
-            // Load the main scene from FXML
+            // Load main.fxml and transition to main scene
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
-
-            // Get the current stage from the email field and set the new scene
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            // Print the error if the scene fails to load
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Called when the register button is clicked.
+     * Navigates to the registration screen.
+     */
+    @FXML
+    public void onRegisterClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/register.fxml"));
+            Scene scene = new Scene(loader.load(), 640, 480);
+            Stage stage = (Stage) emailField.getScene().getWindow();
+            stage.setScene(scene);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Shows a warning alert with the provided message.
+     */
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
