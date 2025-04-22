@@ -74,7 +74,8 @@ public class LoginController {
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to load registration screen", e);
+            showAlert("Failed to load registration screen.");
         }
     }
 
