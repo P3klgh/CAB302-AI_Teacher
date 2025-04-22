@@ -17,4 +17,5 @@
 
     <!-- Logout button that triggers the onLogoutClick() method in MainController -->
     <Button text="Logout" onAction="#onLogoutClick" />
+
 </VBox>

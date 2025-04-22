@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.*?>
 
-<!--
-  FXML layout for the login screen of the AI Teacher Assistant application.
-  This layout uses a VBox to vertically stack the UI components.
-  It is controlled by LoginController.java.
--->
-<VBox xmlns:fx="http://javafx.com/fxml"
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.cab302ai_teacher.controller.LoginController"
-      spacing="10" alignment="CENTER" prefWidth="400" prefHeight="300">
+      spacing="10" alignment="CENTER" prefWidth="400" prefHeight="300"
+      stylesheets="@style.css">
 
     <!-- Page title -->
-    <Label text="AI Teacher Assistant - Login" style="-fx-font-size: 16px;" />
+    <Label text="AI Teacher Assistant - Login" styleClass="label-title" />
 
-    <!-- Text field for entering the user's email -->
-    <TextField fx:id="emailField" promptText="Email" />
+    <!-- Email input -->
+    <TextField fx:id="emailField" promptText="Email" styleClass="input-field"/>
 
-    <!-- Password field for entering the user's password -->
-    <PasswordField fx:id="passwordField" promptText="Password" />
+    <!-- Password input -->
+    <PasswordField fx:id="passwordField" promptText="Password" styleClass="input-field"/>
 
-    <!-- Login button that triggers the onLoginClick() method in LoginController -->
-    <Button text="Login" onAction="#onLoginClick" />
+    <!-- Buttons -->
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Login" onAction="#onLoginClick" styleClass="btn-primary"/>
+        <Button text="Register" onAction="#onRegisterClick" styleClass="btn-secondary"/>
+    </HBox>
 
 </VBox>
