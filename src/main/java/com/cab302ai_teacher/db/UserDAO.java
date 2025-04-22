@@ -15,46 +15,50 @@ public class UserDAO {
      * Checks if a user with the given email and password exists in the database.
      *
      * @param email The user's email address
-     * @param password The user's password
+     * @param hashedPassword The user's hashed password
      * @return true if a matching user is found; false otherwise
      */
-    public static boolean isValidUser(String email, String password)
-    {
-        // SQL query with placeholders to prevent SQL injection
+    public static boolean isValidUser(String email, String hashedPassword) {
         String query = "SELECT * FROM users WHERE email = ? AND password = ?";
-
-        // Try-with-resources ensures the connection and statement are closed automatically
         try (Connection conn = DatabaseManager.connect();
-             PreparedStatement stmt = conn.prepareStatement(query))
-        {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            // Bind the email and password to the placeholders
             stmt.setString(1, email);
-            stmt.setString(2, password);
+            stmt.setString(2, hashedPassword);
 
-            // Execute the query and return true if a matching user is found
             ResultSet rs = stmt.executeQuery();
             return rs.next();
 
         } catch (SQLException e) {
-            // Log error message if query fails
             System.err.println("Login query failed: " + e.getMessage());
             return false;
         }
     }
-    public static boolean registerUser(String email, String password) {
+
+
+    /**
+     * Registers a new user with the given email and hashed password.
+     *
+     * @param email The user's email address
+     * @param hashedPassword The hashed password to store
+     * @return true if registration is successful; false if user already exists or an error occurs
+     */
+    public static boolean registerUser(String email, String hashedPassword) {
         String sql = "INSERT INTO users (email, password) VALUES (?, ?)";
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, email);
-            stmt.setString(2, password);
+            stmt.setString(2, hashedPassword);
+
             stmt.executeUpdate();
             return true;
+
         } catch (SQLException e) {
             System.err.println("Registration failed: " + e.getMessage());
             return false;
         }
     }
 
-    // TODO: Add more user-related features here such as registration, user lookup, etc.
+    // TODO: Add more user-related features such as findByEmail(), updatePassword(), etc.
 }

@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class Validator {
 
-    private static final Pattern EMAIL_PATTERN = Pattern.compile(
+    private static final Pattern EMAIL_REGEX = Pattern.compile(
             "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"
     );
 
@@ -14,7 +14,7 @@ public class Validator {
     private static final Pattern SPECIAL = Pattern.compile("[^a-zA-Z0-9]");
 
     public static boolean isValidEmail(String email) {
-        return email != null && EMAIL_PATTERN.matcher(email).matches();
+        return email != null && EMAIL_REGEX.matcher(email).matches();
     }
 
     public static boolean isValidPassword(String password) {
