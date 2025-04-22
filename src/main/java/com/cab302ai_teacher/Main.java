@@ -25,7 +25,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/login.fxml"));
         Scene scene = new Scene(loader.load(), 640, 480);
 
-        // Set window title and show the login screen
+        // Set the window title and show the login screen
         stage.setTitle("AI Teacher Assistant");
         stage.setScene(scene);
         stage.show();

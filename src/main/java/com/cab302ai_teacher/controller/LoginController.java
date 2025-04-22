@@ -1,5 +1,8 @@
 package com.cab302ai_teacher.controller;
 
+import com.cab302ai_teacher.db.UserDAO;
+import com.cab302ai_teacher.util.PasswordHasher;
+import com.cab302ai_teacher.util.Validator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -7,6 +10,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginController {
 
@@ -27,30 +33,32 @@ public class LoginController {
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        System.out.println("Login attempt: " + email + " / " + password);
-
-
         if (email.isBlank() || password.isBlank()) {
             showAlert("Please enter both email and password.");
             return;
         }
 
-
-        if (!email.contains("@") || !email.contains(".")) {
+        if (!Validator.isValidEmail(email)) {
             showAlert("Invalid email format.");
             return;
         }
 
+        String hashedPassword = PasswordHasher.hashPassword(password);
 
+        if (!UserDAO.isValidUser(email, hashedPassword)) {
+            showAlert("Incorrect email or password.");
+            return;
+        }
 
         try {
-            // Load main.fxml and transition to main scene
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to load main application screen", e);
+            showAlert("Failed to load main application screen.");
+
         }
     }
 
