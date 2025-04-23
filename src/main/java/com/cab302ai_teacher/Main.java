@@ -22,8 +22,12 @@ public class Main extends Application {
         DatabaseManager.initializeDatabase();
 
         // Load the login screen from the FXML file
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
         Scene scene = new Scene(loader.load(), 640, 480);
+
+        // Add css stylesheet to scene
+        String stylesheet = Main.class.getResource("style.css").toExternalForm();
+        scene.getStylesheets().add(stylesheet);
 
         // Set window title and show the login screen
         stage.setTitle("AI Teacher Assistant");
