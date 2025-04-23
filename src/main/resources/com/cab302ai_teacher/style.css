@@ -42,10 +42,17 @@
     -fx-background-color: #4D44B5;
     -fx-text-fill: #F3F4FF;
     -fx-background-radius: 20 0 0 20;
+    -fx-focus-color: #FF0000;
+    -fx-faint-focus-color: #FF0000;
+}
+
+.sidebar_btn:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0;
 }
 
 #sidebar_selected {
     -fx-background-color: #F3F4FF;
     -fx-text-fill: #4D44B5;
 }
-
