@@ -14,16 +14,17 @@
 >
 
     <!-- dashboard sidebar -->
-    <VBox alignment="TOP_LEFT" minHeight="Infinity">
-        <Button minWidth="100">Dashboard</Button>
-        <Button minWidth="100">Students</Button>
-        <Button minWidth="100">Teachers</Button>
-        <Button minWidth="100">Event</Button>
-        <Button minWidth="100">User</Button>
-        <Button minWidth="100">Chat</Button>
-        <Button minWidth="100">Latest Activity</Button>
-        <Button minWidth="100">Grades</Button>
+    <VBox id="sidebar_ctnr" alignment="TOP_RIGHT" minHeight="300" minWidth="120">
+        <Button styleClass="sidebar_btn" id="sidebar_selected" minWidth="100">Dashboard</Button>
+        <Button styleClass="sidebar_btn" minWidth="100" minHeight="30">Students</Button>
+        <Button styleClass="sidebar_btn" minWidth="100" minHeight="30">Teachers</Button>
+        <Button styleClass="sidebar_btn" minWidth="100" minHeight="30">Event</Button>
+        <Button styleClass="sidebar_btn" minWidth="100" minHeight="30">User</Button>
+        <Button styleClass="sidebar_btn" minWidth="100" minHeight="30">Chat</Button>
+        <Button styleClass="sidebar_btn" minWidth="100" minHeight="30">Latest Activity</Button>
+        <Button styleClass="sidebar_btn" minWidth="100" minHeight="30">Grades</Button>
     </VBox>
+
     <!-- Logout button that triggers the onLogoutClick() method in MainController -->
     <Button text="Logout" onAction="#onLogoutClick" />
 
