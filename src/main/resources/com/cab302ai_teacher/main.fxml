@@ -11,7 +11,7 @@
 <?import javafx.geometry.Insets?>
 <HBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.cab302ai_teacher.controller.MainController"
-      prefWidth="400" prefHeight="300" alignment="TOP_LEFT"
+      prefWidth="640" prefHeight="480" alignment="TOP_LEFT"
 >
 
     <!-- dashboard sidebar -->
@@ -25,6 +25,10 @@
     </VBox>
 
     <!-- Logout button that triggers the onLogoutClick() method in MainController -->
-    <Button text="Logout" onAction="#onLogoutClick" />
+    <VBox HBox.hgrow="SOMETIMES" alignment="CENTER">
+        <Label>Hello and welcome to CAB302 AI Teacher </Label>
+        <Button text="Logout" onAction="#onLogoutClick" />
+    </VBox>
+
 
 </HBox>
