@@ -1,5 +1,6 @@
 package com.cab302ai_teacher.controller;
 
+import com.cab302ai_teacher.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -47,6 +48,11 @@ public class LoginController {
             // Load main.fxml and transition to main scene
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
+
+            // Add css stylesheet to scene
+            String stylesheet = Main.class.getResource("style.css").toExternalForm();
+            scene.getStylesheets().add(stylesheet);
+
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
