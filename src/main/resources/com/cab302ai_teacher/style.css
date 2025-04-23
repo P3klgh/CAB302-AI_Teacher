@@ -32,3 +32,20 @@
     -fx-border-radius: 5px;
     -fx-padding: 6px 12px;
 }
+
+
+#sidebar_ctnr {
+    -fx-background-color: #4D44B5;
+}
+
+.sidebar_btn {
+    -fx-background-color: #4D44B5;
+    -fx-text-fill: #F3F4FF;
+    -fx-background-radius: 20 0 0 20;
+}
+
+#sidebar_selected {
+    -fx-background-color: #F3F4FF;
+    -fx-text-fill: #4D44B5;
+}
+
