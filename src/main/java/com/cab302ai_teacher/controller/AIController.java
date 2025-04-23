@@ -6,9 +6,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AIController {
     @FXML
@@ -24,7 +27,15 @@ public class AIController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            e.printStackTrace();
+            // Log the error
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to load scene", e);
+
+            // Show user-friendly error message
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to load the requested page. Please try again.");
+            alert.showAndWait();
         }
     }
 
@@ -41,7 +52,15 @@ public class AIController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            e.printStackTrace();
+            // Log the error
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to load scene", e);
+
+            // Show user-friendly error message
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Failed to load the requested page. Please try again.");
+            alert.showAndWait();
         }
     }
 }
