@@ -54,6 +54,10 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/AI.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
 
+            // Add css stylesheet to scene
+            String stylesheet = Main.class.getResource("style.css").toExternalForm();
+            scene.getStylesheets().add(stylesheet);
+
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
