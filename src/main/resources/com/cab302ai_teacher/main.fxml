@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
 <!--
   FXML layout for the main screen of the AI Teacher Assistant application.
   This layout is controlled by MainController.java and uses a VBox
   to center and vertically space its elements.
 -->
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.cab302ai_teacher.controller.MainController"
-      alignment="CENTER" spacing="20" prefWidth="400" prefHeight="300">
+<HBox xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.cab302ai_teacher.controller.MainController"
+            prefWidth="400" prefHeight="300" alignment="TOP_LEFT"
+>
 
-    <!-- Welcome message displayed to the user -->
-    <Label text="Welcome to AI Teacher Assistant!" style="-fx-font-size: 18px;" />
-
+    <!-- dashboard sidebar -->
+    <VBox alignment="TOP_LEFT" minHeight="Infinity">
+        <Button minWidth="100">Dashboard</Button>
+        <Button minWidth="100">Students</Button>
+        <Button minWidth="100">Teachers</Button>
+        <Button minWidth="100">Event</Button>
+        <Button minWidth="100">User</Button>
+        <Button minWidth="100">Chat</Button>
+        <Button minWidth="100">Latest Activity</Button>
+        <Button minWidth="100">Grades</Button>
+    </VBox>
     <!-- Logout button that triggers the onLogoutClick() method in MainController -->
     <Button text="Logout" onAction="#onLogoutClick" />
 
-</VBox>
+</HBox>
