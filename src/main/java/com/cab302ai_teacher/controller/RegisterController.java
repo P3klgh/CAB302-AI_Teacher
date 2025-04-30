@@ -2,11 +2,9 @@ package com.cab302ai_teacher.controller;
 
 import com.cab302ai_teacher.db.UserDAO;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class RegisterController {
@@ -18,30 +16,39 @@ public class RegisterController {
     private PasswordField passwordField;
 
     @FXML
+    private ComboBox<String> roleComboBox; // Add this in FXML!
+
+    @FXML
+    public void initialize() {
+        // Populate roles in ComboBox
+        roleComboBox.getItems().addAll("admin", "teacher", "student");
+    }
+
+    @FXML
     public void onRegisterClick() {
         String email = emailField.getText();
         String password = passwordField.getText();
+        String role = roleComboBox.getValue();
 
-
-        if (email.isBlank() || password.isBlank()) {
-            showAlert(Alert.AlertType.WARNING, "Please fill in both fields.");
+        if (email.isBlank() || password.isBlank() || role == null) {
+            showAlert(Alert.AlertType.WARNING, "Please fill in all fields including role.");
             return;
         }
-
 
         if (!email.contains("@") || !email.contains(".")) {
             showAlert(Alert.AlertType.WARNING, "Invalid email format.");
             return;
         }
 
-
         if (password.length() < 6) {
             showAlert(Alert.AlertType.WARNING, "Password must be at least 6 characters.");
             return;
         }
 
-        // ✅ 정상 입력 시 등록 시도
-        if (UserDAO.registerUser(email, password)) {
+        // Optional: hash the password
+        // replace with a real hasher if available
+
+        if (UserDAO.registerUser(email, password, role)) {
             showAlert(Alert.AlertType.INFORMATION, "Registration successful!");
             try {
                 Stage stage = (Stage) emailField.getScene().getWindow();
@@ -54,6 +61,7 @@ public class RegisterController {
             showAlert(Alert.AlertType.ERROR, "Registration failed. Email may already exist.");
         }
     }
+
     @FXML
     private void onBackToLoginClick() {
         try {
@@ -65,7 +73,6 @@ public class RegisterController {
             e.printStackTrace();
         }
     }
-
 
     private void showAlert(Alert.AlertType type, String message) {
         Alert alert = new Alert(type);
