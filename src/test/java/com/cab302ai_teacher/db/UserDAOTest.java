@@ -14,7 +14,7 @@ public class UserDAOTest {
 
     @BeforeEach
     public void setup() {
-        // 테스트 시작 전 사용자 제거 (중복 방지)
+    
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement("DELETE FROM users WHERE email = ?")) {
             stmt.setString(1, testEmail);
@@ -32,10 +32,8 @@ public class UserDAOTest {
 
     @Test
     public void testIsValidUserWithCorrectCredentials() {
-        // 등록 먼저
         UserDAO.registerUser(testEmail, testPassword);
 
-        // 확인
         boolean valid = UserDAO.isValidUser(testEmail, testPassword);
         assertTrue(valid, "Valid user should be authenticated successfully");
     }
