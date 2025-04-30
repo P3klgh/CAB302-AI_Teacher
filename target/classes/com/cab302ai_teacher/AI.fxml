@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!--
+  FXML layout for the main screen of the AI Teacher Assistant application.
+  This layout is controlled by MainController.java and uses a VBox
+  to center and vertically space its elements.
+-->
+<?import javafx.geometry.Insets?>
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.cab302ai_teacher.controller.AIController"
+      prefWidth="400" prefHeight="300" alignment="TOP_LEFT"
+>
+
+    <!-- dashboard sidebar -->
+    <VBox id="sidebar_ctnr" alignment="TOP_RIGHT" minHeight="300" minWidth="120" spacing="5">
+        <padding>
+            <Insets top="5" right="0" bottom="0" left="5"/>
+        </padding>
+        <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onDashboardClick">Dashboard</Button>
+        <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onQuizzesClick">Quizzes</Button>
+        <Button styleClass="sidebar_btn" id="sidebar_selected" minWidth="100" minHeight="40">AI Chat Bot</Button>
+    </VBox>
+
+</HBox>
