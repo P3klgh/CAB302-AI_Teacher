@@ -1,4 +1,5 @@
-import com.cab302ai_teacher.util.Validator;
+package com.cab302ai_teacher.util;
+
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 
