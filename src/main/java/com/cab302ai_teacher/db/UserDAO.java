@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.cab302ai_teacher.util.PasswordHasher.hashPassword;
+
 /**
  * Data Access Object (DAO) for interacting with the "users" table in the database.
  * This class contains methods related to user authentication and management.
@@ -15,11 +17,14 @@ public class UserDAO {
      * Checks if a user with the given email and password exists in the database.
      *
      * @param email The user's email address
-     * @param hashedPassword The user's hashed password
+     * @param password The user's password
      * @return true if a matching user is found; false otherwise
      */
-    public static boolean isValidUser(String email, String hashedPassword) {
+    public static boolean isValidUser(String email, String password) {
         String query = "SELECT * FROM users WHERE email = ? AND password = ?";
+
+        String hashedPassword = hashPassword(password);
+
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 

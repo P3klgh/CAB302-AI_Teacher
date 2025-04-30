@@ -8,6 +8,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 
+import static com.cab302ai_teacher.db.UserDAO.isValidUser;
+
 public class LoginController {
 
     // Reference to the email input field in the login form
@@ -41,6 +43,10 @@ public class LoginController {
             return;
         }
 
+        if (!isValidUser(email, password)) {
+            showAlert("Wrong email or password used.");
+            return;
+        }
 
 
         try {
