@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.cab302ai_teacher.controller.RegisterController"
+            prefHeight="400.0" prefWidth="600.0"
+            stylesheets="@style.css">
+
+    <!-- Back Button -->
+    <Button text="← Back to Login"
+            layoutX="20" layoutY="20"
+            onAction="#onBackToLoginClick"
+            styleClass="btn-secondary"/>
+
+    <VBox alignment="CENTER" spacing="15.0" layoutX="150.0" layoutY="100.0" prefWidth="300.0">
+        <Label text="Register" styleClass="label-title" />
+
+        <TextField fx:id="emailField" promptText="Email" styleClass="input-field"/>
+        <PasswordField fx:id="passwordField" promptText="Password" styleClass="input-field"/>
+
+        <Button text="Register" onAction="#onRegisterClick" styleClass="btn-primary" />
+    </VBox>
+
+</AnchorPane>
