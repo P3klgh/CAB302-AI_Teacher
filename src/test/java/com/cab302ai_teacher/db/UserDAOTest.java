@@ -52,4 +52,6 @@ public class UserDAOTest {
         boolean secondAttempt = UserDAO.registerUser(testEmail, testPassword);
         assertFalse(secondAttempt, "Duplicate registration should fail");
     }
+
+
 }

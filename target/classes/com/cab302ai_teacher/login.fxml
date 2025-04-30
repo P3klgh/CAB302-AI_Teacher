@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.*?>
+
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.cab302ai_teacher.controller.LoginController"
+      spacing="10" alignment="CENTER" prefWidth="400" prefHeight="300"
+      stylesheets="@style.css">
+
+    <!-- Page title -->
+    <Label text="AI Teacher Assistant - Login" styleClass="label-title" />
+
+    <!-- Email input -->
+    <TextField fx:id="emailField" promptText="Email" styleClass="input-field"/>
+
+    <!-- Password input -->
+    <PasswordField fx:id="passwordField" promptText="Password" styleClass="input-field"/>
+
+    <!-- Buttons -->
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Login" onAction="#onLoginClick" styleClass="btn-primary"/>
+        <Button text="Register" onAction="#onRegisterClick" styleClass="btn-secondary"/>
+    </HBox>
+
+</VBox>
