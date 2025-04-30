@@ -28,21 +28,19 @@ public class DatabaseManager {
      * In this case, it creates a "users" table with fields for id, email, and password.
      */
     public static void initializeDatabase() {
-        // SQL statement to create the users table if it doesn't already exist
         String createUsersTable = """
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                email TEXT NOT NULL UNIQUE,
-                password TEXT NOT NULL
-            );
-        """;
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL,
+            role TEXT NOT NULL
+        );
+    """;
 
-        // Try to establish a connection and execute the SQL statement
         try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
             stmt.execute(createUsersTable);
-            System.out.println("[DB] ✅ users table initialized.");
+            System.out.println("[DB] ✅ users table initialized with role support.");
         } catch (SQLException e) {
-            // Print an error message if initialization fails
             System.err.println("[DB] ❌ Failed to initialize database: " + e.getMessage());
         }
     }
