@@ -15,9 +15,9 @@ public class UserDAO {
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            String hashedPassword = PasswordHasher.hashPassword(password);  // ✅ 해싱
+            String hashedPassword = PasswordHasher.hashPassword(password);
             stmt.setString(1, email);
-            stmt.setString(2, hashedPassword);  // ✅ 해시된 비번으로 비교
+            stmt.setString(2, hashedPassword);
 
             ResultSet rs = stmt.executeQuery();
             return rs.next();
@@ -27,16 +27,23 @@ public class UserDAO {
             return false;
         }
     }
-
-    public static boolean registerUser(String email, String password) {
-        String sql = "INSERT INTO users (email, password) VALUES (?, ?)";
-
+    /**
+     * Registers a new user with the given email, hashed password, and role.
+     *
+     * @param email The user's email address
+     * @param hashedPassword The hashed password to store
+     * @param role The role of the user (e.g., "student", "teacher", "admin")
+     * @return true if registration is successful; false otherwise
+     */
+    public static boolean registerUser(String email, String hashedPassword, String role) {
+        String sql = "INSERT INTO users (email, password, role) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            String hashedPassword = PasswordHasher.hashPassword(password);  // ✅ 해싱
             stmt.setString(1, email);
-            stmt.setString(2, hashedPassword);  // ✅ 해시된 비번 저장
+            stmt.setString(2, hashedPassword);
+            stmt.setString(3, role);
+
             stmt.executeUpdate();
             return true;
 
@@ -44,5 +51,31 @@ public class UserDAO {
             System.err.println("Registration failed: " + e.getMessage());
             return false;
         }
+    }
+
+    /**
+     * Retrieves a user by their email.
+     *
+     * @param email The user's email address
+     * @return A User object if found; null otherwise
+     */
+    public static String getUserByEmail(String email) {
+        String query = "SELECT * FROM users WHERE email = ?";
+        try (Connection conn = DatabaseManager.connect();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String password = rs.getString("password");
+                String role = rs.getString("role");
+                return (email + password + role);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("User lookup failed: " + e.getMessage());
+        }
+        return null;
     }
 }
