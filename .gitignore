@@ -29,3 +29,5 @@ replay_pid*
 
 # JavaFX compiled output
 target/
+
+ai_teacher.db
