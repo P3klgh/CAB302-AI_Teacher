@@ -29,7 +29,7 @@ public class UserDAO {
     }
 
     public static boolean registerUser(String firstName, String lastName, String occupation, String email, String password) {
-        String sql = "INSERT INTO users (firstName, lastName, occupation, email, password) " + "VALUES (firstName, lastName, occupation, email, password)";
+        String sql = "INSERT INTO users (firstName, lastName, occupation, email, password) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
