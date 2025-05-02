@@ -1,9 +1,11 @@
 package com.cab302ai_teacher.util;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ValidatorTest {
+
+    // Email validation
 
     @Test
     public void testValidEmail() {
@@ -11,50 +13,49 @@ public class ValidatorTest {
     }
 
     @Test
-    public void testInvalidEmailRegexFlaw1() {
+    public void testEmailMissingAtSymbol() {
         assertFalse(Validator.isValidEmail("userexample.com"));
     }
 
     @Test
-    public void testInvalidEmailRegexFlaw2() {
+    public void testEmailMissingDomainName() {
         assertFalse(Validator.isValidEmail("user@.com"));
-
     }
+
     @Test
-    public void testInvalidEmailRegexFlaw3() {
+    public void testEmailEmpty() {
         assertFalse(Validator.isValidEmail(""));
     }
 
+    // Password validation
+
     @Test
-    public void testValidPasswordIsSTRONG() {
+    public void testValidPassword() {
         assertTrue(Validator.isValidPassword("Strong1@"));
     }
 
     @Test
-    public void testInvalidPasswordTooShort() {
-        assertFalse(Validator.isValidPassword("weak"));              // Too short
+    public void testPasswordTooShort() {
+        assertFalse(Validator.isValidPassword("weak"));
     }
 
     @Test
-    public void testInvalidPasswordNoUpperCase() {
-        assertFalse(Validator.isValidPassword("lowercase1!"));       // No uppercase
+    public void testPasswordMissingUppercase() {
+        assertFalse(Validator.isValidPassword("lowercase1!"));
     }
 
     @Test
-    public void testInvalidPasswordNoLowerCase() {
-        assertFalse(Validator.isValidPassword("UPPERCASE1!"));       // No lowercase
+    public void testPasswordMissingLowercase() {
+        assertFalse(Validator.isValidPassword("UPPERCASE1!"));
     }
 
     @Test
-    public void testInvalidPasswordNoDigit() {
-        assertFalse(Validator.isValidPassword("NoNumber!"));         // No digit
+    public void testPasswordMissingDigit() {
+        assertFalse(Validator.isValidPassword("NoNumber!"));
     }
+
     @Test
-    public void testInvalidPasswordNoSpecialChar() {
-        assertFalse(Validator.isValidPassword("NoSpecial123"));      // No special char
-    }
-    @Test
-    public void testInvalidPasswordNotNull() {
-        assertFalse(Validator.isValidPassword(""));                  // Not Null
+    public void testPasswordMissingSpecialCharacter() {
+        assertFalse(Validator.isValidPassword("NoSpecial123"));
     }
 }
