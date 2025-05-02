@@ -9,6 +9,10 @@ import java.sql.SQLException;
 
 public class UserDAO {
 
+    /**
+     * Checks if a user exists with the given email and password.
+     * Password is hashed before checking.
+     */
     public static boolean isValidUser(String email, String password) {
         String query = "SELECT * FROM users WHERE email = ? AND password = ?";
 
@@ -27,16 +31,21 @@ public class UserDAO {
             return false;
         }
     }
+
     /**
-     * Registers a new user with the given email, hashed password, and role.
+     * Registers a new user with the given email, password, and role.
+     * Password is hashed before being stored.
      *
      * @param email The user's email address
-     * @param hashedPassword The hashed password to store
-     * @param role The role of the user (e.g., "student", "teacher", "admin")
-     * @return true if registration is successful; false otherwise
+     * @param rawPassword The raw password to be hashed
+     * @param role The user's role (student, teacher, etc.)
+     * @return true if registration succeeded
      */
-    public static boolean registerUser(String email, String hashedPassword, String role) {
+    public static boolean registerUser(String email, String rawPassword, String role) {
+        String hashedPassword = PasswordHasher.hashPassword(rawPassword);  // 🔐 해시 처리
+
         String sql = "INSERT INTO users (email, password, role) VALUES (?, ?, ?)";
+
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -54,13 +63,11 @@ public class UserDAO {
     }
 
     /**
-     * Retrieves a user by their email.
-     *
-     * @param email The user's email address
-     * @return A User object if found; null otherwise
+     * Looks up a user by email and returns email+password+role for debugging.
      */
     public static String getUserByEmail(String email) {
         String query = "SELECT * FROM users WHERE email = ?";
+
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -76,6 +83,7 @@ public class UserDAO {
         } catch (SQLException e) {
             System.err.println("User lookup failed: " + e.getMessage());
         }
+
         return null;
     }
 }
