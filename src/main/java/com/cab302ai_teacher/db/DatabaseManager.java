@@ -32,8 +32,12 @@ public class DatabaseManager {
         String createUsersTable = """
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                firstName TEXT NOT NULL,
+                lastName TEXT NOT NULL,
+                occupation TEXT NOT NULL,
                 email TEXT NOT NULL UNIQUE,
                 password TEXT NOT NULL
+
             );
         """;
 

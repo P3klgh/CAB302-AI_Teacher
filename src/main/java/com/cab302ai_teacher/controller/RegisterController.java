@@ -12,6 +12,15 @@ import javafx.stage.Stage;
 public class RegisterController {
 
     @FXML
+    private TextField firstNameField;
+
+    @FXML
+    private TextField lastNameField;
+
+    @FXML
+    private TextField occupationField;
+
+    @FXML
     private TextField emailField;
 
     @FXML
@@ -19,6 +28,9 @@ public class RegisterController {
 
     @FXML
     public void onRegisterClick() {
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String occupation = occupationField.getText();
         String email = emailField.getText();
         String password = passwordField.getText();
 
@@ -41,7 +53,7 @@ public class RegisterController {
         }
 
         // ✅ 정상 입력 시 등록 시도
-        if (UserDAO.registerUser(email, password)) {
+        if (UserDAO.registerUser(email, password, firstName, lastName, occupation)) {
             showAlert(Alert.AlertType.INFORMATION, "Registration successful!");
             try {
                 Stage stage = (Stage) emailField.getScene().getWindow();
