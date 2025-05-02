@@ -52,7 +52,7 @@ public class RegisterController {
         }
 
         // ✅ 정상 입력 시 등록 시도
-        if (UserDAO.registerUser(email, password, firstName, lastName, occupation)) {
+        if (UserDAO.registerUser(firstName, lastName, occupation, email, password)) {
             showAlert(Alert.AlertType.INFORMATION, "Registration successful!");
             try {
                 Stage stage = (Stage) emailField.getScene().getWindow();

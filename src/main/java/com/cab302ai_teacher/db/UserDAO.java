@@ -16,8 +16,8 @@ public class UserDAO {
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             String hashedPassword = PasswordHasher.hashPassword(password);  // ✅ 해싱
-            stmt.setString(4, email);
-            stmt.setString(5, hashedPassword);  // ✅ 해시된 비번으로 비교
+            stmt.setString(1, email);
+            stmt.setString(2, hashedPassword);  // ✅ 해시된 비번 저장
 
             ResultSet rs = stmt.executeQuery();
             return rs.next();
@@ -30,7 +30,6 @@ public class UserDAO {
 
     public static boolean registerUser(String firstName, String lastName, String occupation, String email, String password) {
         String sql = "INSERT INTO users (firstName, lastName, occupation, email, password) VALUES (?, ?, ?, ?, ?)";
-
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
