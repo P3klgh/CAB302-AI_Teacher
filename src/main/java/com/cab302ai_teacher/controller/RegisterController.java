@@ -35,11 +35,10 @@ public class RegisterController {
         String password = passwordField.getText();
 
 
-        if (email.isBlank() || password.isBlank()) {
-            showAlert(Alert.AlertType.WARNING, "Please fill in both fields.");
+        if (email.isBlank() || password.isBlank() || firstName.isBlank() || lastName.isBlank() || occupation.isBlank()) {
+            showAlert(Alert.AlertType.WARNING, "Please fill in all fields.");
             return;
         }
-
 
         if (!email.contains("@") || !email.contains(".")) {
             showAlert(Alert.AlertType.WARNING, "Invalid email format.");
