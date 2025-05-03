@@ -19,9 +19,13 @@
     <VBox alignment="CENTER" spacing="15.0" layoutX="150.0" layoutY="100.0" prefWidth="300.0">
         <Label text="Register" styleClass="label-title" />
 
+        <TextField fx:id="firstNameField" promptText="First Name" styleClass="input-field"/>
+        <TextField fx:id="lastNameField" promptText="Last Name" styleClass="input-field"/>
+        <TextField fx:id="occupationField" promptText="Occupation (Student or Teacher)" styleClass="input-field"/>
         <TextField fx:id="emailField" promptText="Email" styleClass="input-field"/>
         <PasswordField fx:id="passwordField" promptText="Password" styleClass="input-field"/>
         <ComboBox fx:id="roleComboBox" promptText="Select role" />
+
 
         <Button text="Register" onAction="#onRegisterClick" styleClass="btn-primary" />
     </VBox>
