@@ -15,6 +15,7 @@ public class UserDAOTest {
     private final String testEmail = "testuser@example.com";
     private final String testPassword = "Test123!";
 
+    private final String testRole = "Admin";
     @BeforeEach
     public void setup() {
     
@@ -29,13 +30,17 @@ public class UserDAOTest {
 
     @Test
     public void testRegisterUserSuccess() {
+
         boolean result = UserDAO.registerUser(testFirstName, testLastName, testOccupation, testEmail, testPassword);
+
         assertTrue(result, "User should be registered successfully");
     }
 
     @Test
     public void testIsValidUserWithCorrectCredentials() {
+
         UserDAO.registerUser(testFirstName, testLastName, testOccupation, testEmail, testPassword);
+
 
         boolean valid = UserDAO.isValidUser(testEmail, testPassword);
         assertTrue(valid, "Valid user should be authenticated successfully");
@@ -43,7 +48,9 @@ public class UserDAOTest {
 
     @Test
     public void testIsValidUserWithIncorrectPassword() {
+
         UserDAO.registerUser(testFirstName, testLastName, testOccupation, testEmail, testPassword);
+
 
         boolean valid = UserDAO.isValidUser(testEmail, "WrongPass123");
         assertFalse(valid, "Invalid password should not authenticate");
@@ -51,8 +58,10 @@ public class UserDAOTest {
 
     @Test
     public void testRegisterDuplicateUserFails() {
+
         UserDAO.registerUser(testFirstName, testLastName, testOccupation, testEmail, testPassword);
         boolean secondAttempt = UserDAO.registerUser(testFirstName, testLastName, testOccupation, testEmail, testPassword);
+
         assertFalse(secondAttempt, "Duplicate registration should fail");
     }
 
