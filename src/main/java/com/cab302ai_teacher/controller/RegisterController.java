@@ -2,11 +2,9 @@ package com.cab302ai_teacher.controller;
 
 import com.cab302ai_teacher.db.UserDAO;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class RegisterController {
@@ -27,16 +25,29 @@ public class RegisterController {
     private PasswordField passwordField;
 
     @FXML
+    private ComboBox<String> roleComboBox; // Add this in FXML!
+
+    @FXML
+    public void initialize() {
+        // Populate roles in ComboBox
+        roleComboBox.getItems().addAll("admin", "teacher", "student");
+    }
+
+    @FXML
     public void onRegisterClick() {
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
         String occupation = occupationField.getText();
         String email = emailField.getText();
         String password = passwordField.getText();
+        String role = roleComboBox.getValue();
+
 
 
         if (email.isBlank() || password.isBlank() || firstName.isBlank() || lastName.isBlank() || occupation.isBlank()) {
             showAlert(Alert.AlertType.WARNING, "Please fill in all fields.");
+
+    
             return;
         }
 
@@ -45,14 +56,14 @@ public class RegisterController {
             return;
         }
 
-
         if (password.length() < 6) {
             showAlert(Alert.AlertType.WARNING, "Password must be at least 6 characters.");
             return;
         }
 
-        // ✅ 정상 입력 시 등록 시도
+ 
         if (UserDAO.registerUser(firstName, lastName, occupation, email, password)) {
+
             showAlert(Alert.AlertType.INFORMATION, "Registration successful!");
             try {
                 Stage stage = (Stage) emailField.getScene().getWindow();
@@ -65,6 +76,7 @@ public class RegisterController {
             showAlert(Alert.AlertType.ERROR, "Registration failed. Email may already exist.");
         }
     }
+
     @FXML
     private void onBackToLoginClick() {
         try {
@@ -76,7 +88,6 @@ public class RegisterController {
             e.printStackTrace();
         }
     }
-
 
     private void showAlert(Alert.AlertType type, String message) {
         Alert alert = new Alert(type);

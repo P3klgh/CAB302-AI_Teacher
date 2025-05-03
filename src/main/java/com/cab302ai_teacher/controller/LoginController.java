@@ -1,6 +1,7 @@
 package com.cab302ai_teacher.controller;
 
 import com.cab302ai_teacher.Main;
+import com.cab302ai_teacher.db.UserDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -28,28 +29,30 @@ public class LoginController {
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        System.out.println("Login attempt: " + email + " / " + password);
-
+        System.out.println("Login attempt: " + email);
 
         if (email.isBlank() || password.isBlank()) {
             showAlert("Please enter both email and password.");
             return;
         }
 
-
         if (!email.contains("@") || !email.contains(".")) {
             showAlert("Invalid email format.");
             return;
         }
 
+        // Optional: hash the password if stored hashed in DB
+        String hashedPassword = password; // Replace with hash if needed
 
+         if (!UserDAO.isValidUser(email, hashedPassword)) {
+            showAlert("Invalid email or password.");
+            return;
+        }
 
+        // ✅ Successful login → go to main.fxml
         try {
-            // Load main.fxml and transition to main scene
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
-
-            // Add css stylesheet to scene
             String stylesheet = Main.class.getResource("style.css").toExternalForm();
             scene.getStylesheets().add(stylesheet);
 
@@ -57,6 +60,7 @@ public class LoginController {
             stage.setScene(scene);
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Failed to load main view.");
         }
     }
 
