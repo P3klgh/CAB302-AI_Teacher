@@ -21,7 +21,9 @@ public class UserDAO {
 
             String hashedPassword = PasswordHasher.hashPassword(password);
             stmt.setString(1, email);
-            stmt.setString(2, hashedPassword);
+
+            stmt.setString(2, hashedPassword);  
+
 
             ResultSet rs = stmt.executeQuery();
             return rs.next();
@@ -32,26 +34,20 @@ public class UserDAO {
         }
     }
 
-    /**
-     * Registers a new user with the given email, password, and role.
-     * Password is hashed before being stored.
-     *
-     * @param email The user's email address
-     * @param rawPassword The raw password to be hashed
-     * @param role The user's role (student, teacher, etc.)
-     * @return true if registration succeeded
-     */
-    public static boolean registerUser(String email, String rawPassword, String role) {
-        String hashedPassword = PasswordHasher.hashPassword(rawPassword);  // 🔐 해시 처리
 
-        String sql = "INSERT INTO users (email, password, role) VALUES (?, ?, ?)";
-
+    public static boolean registerUser(String firstName, String lastName, String occupation, String email, String password) {
+        String sql = "INSERT INTO users (firstName, lastName, occupation, email, password) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, email);
-            stmt.setString(2, hashedPassword);
-            stmt.setString(3, role);
+            String hashedPassword = PasswordHasher.hashPassword(password);  // ✅ 해싱
+            stmt.setString(1, firstName);
+            stmt.setString(2, lastName);
+            stmt.setString(3, occupation);
+            stmt.setString(4, email);
+            stmt.setString(5, hashedPassword);  // ✅ 해시된 비번 저장
+
+
 
             stmt.executeUpdate();
             return true;

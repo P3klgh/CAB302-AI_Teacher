@@ -9,6 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserDAOTest {
 
+    private final String testFirstName = "First";
+    private final String testLastName = "Last";
+    private final String testOccupation = "Student";
     private final String testEmail = "testuser@example.com";
     private final String testPassword = "Test123!";
 
@@ -27,13 +30,17 @@ public class UserDAOTest {
 
     @Test
     public void testRegisterUserSuccess() {
-        boolean result = UserDAO.registerUser(testEmail, testPassword, testRole);
+
+        boolean result = UserDAO.registerUser(testFirstName, testLastName, testOccupation, testEmail, testPassword);
+
         assertTrue(result, "User should be registered successfully");
     }
 
     @Test
     public void testIsValidUserWithCorrectCredentials() {
-        UserDAO.registerUser(testEmail, testPassword,testRole);
+
+        UserDAO.registerUser(testFirstName, testLastName, testOccupation, testEmail, testPassword);
+
 
         boolean valid = UserDAO.isValidUser(testEmail, testPassword);
         assertTrue(valid, "Valid user should be authenticated successfully");
@@ -41,7 +48,9 @@ public class UserDAOTest {
 
     @Test
     public void testIsValidUserWithIncorrectPassword() {
-        UserDAO.registerUser(testEmail, testPassword, testRole);
+
+        UserDAO.registerUser(testFirstName, testLastName, testOccupation, testEmail, testPassword);
+
 
         boolean valid = UserDAO.isValidUser(testEmail, "WrongPass123");
         assertFalse(valid, "Invalid password should not authenticate");
@@ -49,8 +58,10 @@ public class UserDAOTest {
 
     @Test
     public void testRegisterDuplicateUserFails() {
-        UserDAO.registerUser(testEmail, testPassword, testRole);
-        boolean secondAttempt = UserDAO.registerUser(testEmail, testPassword,testRole);
+
+        UserDAO.registerUser(testFirstName, testLastName, testOccupation, testEmail, testPassword);
+        boolean secondAttempt = UserDAO.registerUser(testFirstName, testLastName, testOccupation, testEmail, testPassword);
+
         assertFalse(secondAttempt, "Duplicate registration should fail");
     }
 

@@ -29,13 +29,18 @@ public class DatabaseManager {
      */
     public static void initializeDatabase() {
         String createUsersTable = """
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            email TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL,
-            role TEXT NOT NULL
-        );
-    """;
+
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                firstName TEXT NOT NULL,
+                lastName TEXT NOT NULL,
+                occupation TEXT NOT NULL,
+                email TEXT NOT NULL UNIQUE,
+                password TEXT NOT NULL
+
+            );
+        """;
+
 
         try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
             stmt.execute(createUsersTable);
