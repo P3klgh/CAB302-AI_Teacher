@@ -31,12 +31,13 @@ public class UserDAO {
      * Registers a new user with the given email, hashed password, and role.
      *
      * @param email The user's email address
-     * @param hashedPassword The hashed password to store
+     * @param Password The hashed password to store
      * @param role The role of the user (e.g., "student", "teacher", "admin")
      * @return true if registration is successful; false otherwise
      */
-    public static boolean registerUser(String email, String hashedPassword, String role) {
+    public static boolean registerUser(String email, String Password, String role) {
         String sql = "INSERT INTO users (email, password, role) VALUES (?, ?, ?)";
+        String hashedPassword = PasswordHasher.hashPassword(Password);
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
