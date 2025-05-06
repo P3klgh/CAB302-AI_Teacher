@@ -10,6 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+import java.util.logging.*;
+
 public class LoginController {
 
     // Reference to the email input field in the login form
@@ -41,10 +44,8 @@ public class LoginController {
             return;
         }
 
-        // Optional: hash the password if stored hashed in DB
-        String hashedPassword = password; // Replace with hash if needed
 
-         if (!UserDAO.isValidUser(email, hashedPassword)) {
+        if (!UserDAO.isValidUser(email, password)) {
             showAlert("Invalid email or password.");
             return;
         }
@@ -53,14 +54,16 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
-            String stylesheet = Main.class.getResource("style.css").toExternalForm();
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
 
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            e.printStackTrace();
+            // Log the error with proper context
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Failed to load main view", e);
             showAlert("Failed to load main view.");
+
         }
     }
 
@@ -76,8 +79,11 @@ public class LoginController {
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            e.printStackTrace();
+            // Log the error with proper context
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Failed to load registration view", e);
+            showAlert("Failed to load registration screen. Please try again.");
         }
+
     }
 
     /**
