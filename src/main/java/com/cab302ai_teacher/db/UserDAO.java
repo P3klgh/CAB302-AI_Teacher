@@ -34,18 +34,17 @@ public class UserDAO {
         }
     }
 
-
-    public static boolean registerUser(String firstName, String lastName, String occupation, String email, String password) {
-        String sql = "INSERT INTO users (firstName, lastName, occupation, email, password) VALUES (?, ?, ?, ?, ?)";
+    public static boolean registerUser(String firstName, String lastName, String email, String password, String role) {
+        String sql = "INSERT INTO users (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             String hashedPassword = PasswordHasher.hashPassword(password);  // ✅ 해싱
             stmt.setString(1, firstName);
             stmt.setString(2, lastName);
-            stmt.setString(3, occupation);
-            stmt.setString(4, email);
-            stmt.setString(5, hashedPassword);  // ✅ 해시된 비번 저장
+            stmt.setString(3, email);
+            stmt.setString(4, hashedPassword);  // ✅ 해시된 비번 저장
+            stmt.setString(5, role);
 
 
 
@@ -71,9 +70,11 @@ public class UserDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
                 String password = rs.getString("password");
                 String role = rs.getString("role");
-                return (email + password + role);
+                return (firstName + lastName + email + password + role);
             }
 
         } catch (SQLException e) {

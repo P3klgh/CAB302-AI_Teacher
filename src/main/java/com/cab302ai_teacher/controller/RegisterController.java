@@ -16,9 +16,6 @@ public class RegisterController {
     private TextField lastNameField;
 
     @FXML
-    private TextField occupationField;
-
-    @FXML
     private TextField emailField;
 
     @FXML
@@ -30,24 +27,21 @@ public class RegisterController {
     @FXML
     public void initialize() {
         // Populate roles in ComboBox
-        roleComboBox.getItems().addAll("admin", "teacher", "student");
+        roleComboBox.getItems().addAll("Admin", "Teacher", "Student");
     }
 
     @FXML
     public void onRegisterClick() {
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
-        String occupation = occupationField.getText();
         String email = emailField.getText();
         String password = passwordField.getText();
         String role = roleComboBox.getValue();
 
 
 
-        if (email.isBlank() || password.isBlank() || firstName.isBlank() || lastName.isBlank() || occupation.isBlank()) {
+        if (email.isBlank() || password.isBlank() || firstName.isBlank() || lastName.isBlank() || role.isBlank()) {
             showAlert(Alert.AlertType.WARNING, "Please fill in all fields.");
-
-    
             return;
         }
 
@@ -62,7 +56,7 @@ public class RegisterController {
         }
 
  
-        if (UserDAO.registerUser(firstName, lastName, occupation, email, password)) {
+        if (UserDAO.registerUser(firstName, lastName, email, password, role)) {
 
             showAlert(Alert.AlertType.INFORMATION, "Registration successful!");
             try {
