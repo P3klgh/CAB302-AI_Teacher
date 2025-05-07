@@ -38,6 +38,7 @@ public class UserDAO {
      * @return true if registration is successful; false otherwise
      */
     public static boolean registerUser(String firstName, String lastName, String email, String password, String role) {
+        //do a check for existing user with select statement using email
         String sql = "INSERT INTO users (firstName,lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
         String hashedPassword = PasswordHasher.hashPassword(password);
         try (Connection conn = DatabaseManager.connect();
