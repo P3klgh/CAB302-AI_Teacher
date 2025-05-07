@@ -34,10 +34,9 @@ public class DatabaseManager {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 firstName TEXT NOT NULL,
                 lastName TEXT NOT NULL,
-                occupation TEXT NOT NULL,
                 email TEXT NOT NULL UNIQUE,
-                password TEXT NOT NULL
-
+                password TEXT NOT NULL,
+                role TEXT NOT NULL
             );
         """;
 
