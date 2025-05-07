@@ -13,13 +13,15 @@ public class Validator {
     private static final Pattern DIGIT = Pattern.compile("[0-9]");
     private static final Pattern SPECIAL = Pattern.compile("[^a-zA-Z0-9]");
 
+    // Validates the email format
     public static boolean isValidEmail(String email) {
         return email != null && EMAIL_REGEX.matcher(email).matches();
     }
 
+    // Validates the password (length and complexity)
     public static boolean isValidPassword(String password) {
         return password != null &&
-                password.length() >= 8 &&
+                password.length() >= 6 &&
                 UPPERCASE.matcher(password).find() &&
                 LOWERCASE.matcher(password).find() &&
                 DIGIT.matcher(password).find() &&
