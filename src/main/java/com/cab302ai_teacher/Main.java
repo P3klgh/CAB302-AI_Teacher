@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 /**
  * Entry point of the JavaFX application.
  * This class initializes the database and loads the login screen.
@@ -26,7 +28,7 @@ public class Main extends Application {
         Scene scene = new Scene(loader.load(), 640, 480);
 
         // Add css stylesheet to scene
-        String stylesheet = Main.class.getResource("style.css").toExternalForm();
+        String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
         scene.getStylesheets().add(stylesheet);
 
         // Set window title and show the login screen
