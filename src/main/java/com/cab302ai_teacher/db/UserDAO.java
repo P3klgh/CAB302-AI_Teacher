@@ -38,19 +38,20 @@ public class UserDAO {
      * @return true if registration is successful; false otherwise
      */
     public static boolean registerUser(String firstName, String lastName, String email, String password, String role) {
-        String sql = "INSERT INTO users (firstName,lastName, email, password, role) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO users (firstName,lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
         String hashedPassword = PasswordHasher.hashPassword(password);
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1,firstName);
             stmt.setString(2,lastName);
-            stmt.setString(3, email);
-            stmt.setString(4, hashedPassword);
+            stmt.setString(3,email);
+            stmt.setString(4,hashedPassword);
             stmt.setString(5,role);
 
             stmt.executeUpdate();
-            return true;
+
+           return true;
 
         } catch (SQLException e) {
             System.err.println("Registration failed: " + e.getMessage());
