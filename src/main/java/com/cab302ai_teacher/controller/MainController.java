@@ -4,12 +4,13 @@ import com.cab302ai_teacher.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
+import java.util.Objects;
+import java.util.logging.*;
 
-import java.io.IOException;
-import java.security.spec.ECField;
 
 public class MainController {
 
@@ -27,41 +28,68 @@ public class MainController {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            e.printStackTrace();
+            // Log the error
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, "Failed to load login view", e);
+
+            // Inform the user
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Navigation Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Unable to navigate to login screen. Please try again.");
+            alert.showAndWait();
         }
+
     }
 
     @FXML
-    private void onQuizzesClick(ActionEvent event) throws IOException {
+    private void onQuizzesClick(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/quizzes.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
 
-            // Add css stylesheet to scene
-            String stylesheet = Main.class.getResource("style.css").toExternalForm();
+            // Add CSS stylesheet to Scene
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            e.printStackTrace();
+            // Log the error
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, "Failed to load quizzes view", e);
+
+            // Inform the user
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Navigation Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Unable to navigate to quizzes screen. Please try again.");
+            alert.showAndWait();
         }
+
     }
 
     @FXML
-    private void onAIClick(ActionEvent event) throws IOException {
+    private void onAIClick(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/AI.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
 
-            // Add css stylesheet to scene
-            String stylesheet = Main.class.getResource("style.css").toExternalForm();
+            // Add CSS stylesheet to Scene
+            String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            e.printStackTrace();
+            // Log the error
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, "Failed to load AI view", e);
+
+            // Inform the user
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Navigation Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Unable to navigate to AI screen. Please try again.");
+            alert.showAndWait();
         }
+
     }
 }

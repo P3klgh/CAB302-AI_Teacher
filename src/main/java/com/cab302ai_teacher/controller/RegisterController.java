@@ -7,6 +7,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static com.cab302ai_teacher.db.ErrorHandler.showAlert;
+
 public class RegisterController {
 
     @FXML
@@ -64,7 +69,9 @@ public class RegisterController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/login.fxml"));
                 stage.setScene(new Scene(loader.load(), 640, 480));
             } catch (Exception e) {
-                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "An error occurred while switching screens: " + e.getMessage());
+                // Optional: Log the full stack trace to a file
+                Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Navigation error", e);
             }
         } else {
             showAlert(Alert.AlertType.ERROR, "Registration failed. Email may already exist.");
@@ -79,14 +86,11 @@ public class RegisterController {
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "An error occurred while switching screens: " + e.getMessage());
+            // Optional: Log the full stack trace to a file
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Navigation error", e);
         }
     }
 
-    private void showAlert(Alert.AlertType type, String message) {
-        Alert alert = new Alert(type);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+
 }

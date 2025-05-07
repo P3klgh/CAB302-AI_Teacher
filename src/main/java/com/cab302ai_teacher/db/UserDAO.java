@@ -21,9 +21,7 @@ public class UserDAO {
 
             String hashedPassword = PasswordHasher.hashPassword(password);
             stmt.setString(1, email);
-
-            stmt.setString(2, hashedPassword);  
-
+            stmt.setString(2, hashedPassword);
 
             ResultSet rs = stmt.executeQuery();
             return rs.next();
@@ -62,7 +60,6 @@ public class UserDAO {
      */
     public static String getUserByEmail(String email) {
         String query = "SELECT * FROM users WHERE email = ?";
-
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -80,7 +77,6 @@ public class UserDAO {
         } catch (SQLException e) {
             System.err.println("User lookup failed: " + e.getMessage());
         }
-
         return null;
     }
 }
