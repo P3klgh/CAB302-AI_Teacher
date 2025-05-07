@@ -30,20 +30,24 @@ public class UserDAO {
     /**
      * Registers a new user with the given email, hashed password, and role.
      *
+     * @param firstName The user's first name
+     * @param lastName The user's last name
      * @param email The user's email address
-     * @param Password The hashed password to store
+     * @param password The hashed password to store
      * @param role The role of the user (e.g., "student", "teacher", "admin")
      * @return true if registration is successful; false otherwise
      */
-    public static boolean registerUser(String email, String Password, String role) {
-        String sql = "INSERT INTO users (email, password, role) VALUES (?, ?, ?)";
-        String hashedPassword = PasswordHasher.hashPassword(Password);
+    public static boolean registerUser(String firstName, String lastName, String email, String password, String role) {
+        String sql = "INSERT INTO users (firstName,lastName, email, password, role) VALUES (?, ?, ?)";
+        String hashedPassword = PasswordHasher.hashPassword(password);
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, email);
-            stmt.setString(2, hashedPassword);
-            stmt.setString(3, role);
+            stmt.setString(1,firstName);
+            stmt.setString(2,lastName);
+            stmt.setString(3, email);
+            stmt.setString(4, hashedPassword);
+            stmt.setString(5,role);
 
             stmt.executeUpdate();
             return true;
