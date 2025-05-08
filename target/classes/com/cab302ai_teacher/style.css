@@ -56,3 +56,25 @@
     -fx-background-color: #F3F4FF;
     -fx-text-fill: #4D44B5;
 }
+#chatArea {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #333;
+    -fx-padding: 10;
+}
+
+#userInput {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #333;
+    -fx-padding: 10;
+}
+
+.sendButton {
+    -fx-font-size: 14px;
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+}

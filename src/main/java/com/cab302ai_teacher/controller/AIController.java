@@ -1,19 +1,77 @@
 package com.cab302ai_teacher.controller;
 
 import com.cab302ai_teacher.Main;
+import com.cab302ai_teacher.db.ErrorHandler;
+import com.cab302ai_teacher.util.APIHandler;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
+
 import java.util.Objects;
 import java.util.logging.*;
 
 public class AIController {
+    private static final String OPENAI_API_KEY = "YOUR_OPENAI_API_KEY";  // Replace with your OpenAI API Key
+    private static final String OPENAI_API_URL = "https://api.openai.com/v1/completions";
+
     @FXML
-    private void onDashboardClick(ActionEvent event){
+    private TextArea chatArea;
+
+    @FXML
+    private TextField userInput;
+
+    @FXML
+    private Button sendButton;
+
+    // Handles the click event of the send button
+    @FXML
+    private ProgressIndicator progressIndicator;  // Add this in your FXML file
+
+    @FXML
+    public void onSendMessageClick() {
+        String userMessage = userInput.getText().trim();
+
+        if (userMessage.isEmpty()) {
+            ErrorHandler.showAlert(Alert.AlertType.WARNING, "Please enter a message.");
+            return;
+        }
+
+        // Disable the input field and button during the API call
+        userInput.setDisable(true);
+        sendButton.setDisable(true);
+        progressIndicator.setVisible(true);  // Show loading indicator
+
+        // Display the user's message in the chat area
+        chatArea.appendText("You: " + userMessage + "\n");
+
+        // Make the API call asynchronously
+        APIHandler.getBotResponse(userMessage).thenAccept(botResponse -> {
+            Platform.runLater(() -> {
+                chatArea.appendText("Bot: " + botResponse + "\n");
+                chatArea.setScrollTop(Double.MAX_VALUE);  // Scroll to the bottom
+                userInput.clear();  // Clear the input field
+                progressIndicator.setVisible(false);  // Hide loading indicator
+                userInput.setDisable(false);
+                sendButton.setDisable(false);
+            });
+        });
+    }
+
+    // Show alert messages
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void onDashboardClick(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
@@ -35,11 +93,10 @@ public class AIController {
             alert.setContentText("Unable to navigate to dashboard screen. Please try again.");
             alert.showAndWait();
         }
-
     }
 
     @FXML
-    private void onQuizzesClick(ActionEvent event){
+    private void onQuizzesClick(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/quizzes.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
@@ -61,6 +118,5 @@ public class AIController {
             alert.setContentText("Unable to navigate to quizzes screen. Please try again.");
             alert.showAndWait();
         }
-
     }
 }
