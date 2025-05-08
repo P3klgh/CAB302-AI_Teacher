@@ -24,7 +24,6 @@ public class ErrorHandler {
             logger.log(Level.SEVERE, message);
         }
     }
-
     /**
      * Shows an alert dialog with the specified type, title, and message.
      *
