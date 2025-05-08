@@ -1,4 +1,4 @@
 # Default ignored files
 /shelf/
 /workspace.xml
-config.properties
+src/main/resources/com/cab302ai_teacher/config.properties
