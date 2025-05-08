@@ -38,27 +38,46 @@ public class UserDAO {
      * @return true if registration is successful; false otherwise
      */
     public static boolean registerUser(String firstName, String lastName, String email, String password, String role) {
-        //do a check for existing user with select statement using email
-        String sql = "INSERT INTO users (firstName,lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
+        // Step 1: Check if a user already exists with the given email
+        String checkEmailQuery = "SELECT COUNT(*) FROM users WHERE email = ?";
+        try (Connection conn = DatabaseManager.connect();
+             PreparedStatement checkStmt = conn.prepareStatement(checkEmailQuery)) {
+
+            checkStmt.setString(1, email);
+
+            var rs = checkStmt.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                // If the email already exists in the database, registration should fail
+                System.err.println("Registration failed: Email already exists.");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error checking email: " + e.getMessage());
+            return false;
+        }
+
+        // Step 2: Proceed with user registration if email does not exist
+        String sql = "INSERT INTO users (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
         String hashedPassword = PasswordHasher.hashPassword(password);
+
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1,firstName);
-            stmt.setString(2,lastName);
-            stmt.setString(3,email);
-            stmt.setString(4,hashedPassword);
-            stmt.setString(5,role);
+            stmt.setString(1, firstName);
+            stmt.setString(2, lastName);
+            stmt.setString(3, email);
+            stmt.setString(4, hashedPassword);
+            stmt.setString(5, role);
 
             stmt.executeUpdate();
-
-           return true;
+            return true;
 
         } catch (SQLException e) {
             System.err.println("Registration failed: " + e.getMessage());
             return false;
         }
     }
+
 
     /**
      * Retrieves a user by their email.

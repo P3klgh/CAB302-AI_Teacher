@@ -90,6 +90,5 @@ public class MainController {
             alert.setContentText("Unable to navigate to AI screen. Please try again.");
             alert.showAndWait();
         }
-
     }
 }

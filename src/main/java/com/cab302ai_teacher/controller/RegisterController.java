@@ -1,6 +1,7 @@
 package com.cab302ai_teacher.controller;
 
 import com.cab302ai_teacher.db.UserDAO;
+import com.cab302ai_teacher.util.Validator;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -43,26 +44,26 @@ public class RegisterController {
         String password = passwordField.getText();
         String role = roleComboBox.getValue();
 
-
-
-        if (email.isBlank() || password.isBlank() || firstName.isBlank() || lastName.isBlank() || role.isBlank()) {
+        // Ensure all fields are filled in
+        if (email.isBlank() || password.isBlank() || firstName.isBlank() || lastName.isBlank() || role == null || role.isBlank()) {
             showAlert(Alert.AlertType.WARNING, "Please fill in all fields.");
             return;
         }
 
-        if (!email.contains("@") || !email.contains(".")) {
+        // Validate email format using a regex pattern
+        if (!Validator.isValidEmail(email)) {
             showAlert(Alert.AlertType.WARNING, "Invalid email format.");
             return;
         }
 
-        if (password.length() < 6) {
-            showAlert(Alert.AlertType.WARNING, "Password must be at least 6 characters.");
+        // Validate password strength
+        if (!Validator.isValidPassword(password)) {
+            showAlert(Alert.AlertType.WARNING, "Password must be at least 6 characters long, contain a mix of letters, digits, and special characters.");
             return;
         }
 
- 
+        // Proceed with user registration
         if (UserDAO.registerUser(firstName, lastName, email, password, role)) {
-
             showAlert(Alert.AlertType.INFORMATION, "Registration successful!");
             try {
                 Stage stage = (Stage) emailField.getScene().getWindow();
@@ -70,13 +71,13 @@ public class RegisterController {
                 stage.setScene(new Scene(loader.load(), 640, 480));
             } catch (Exception e) {
                 showAlert(Alert.AlertType.ERROR, "An error occurred while switching screens: " + e.getMessage());
-                // Optional: Log the full stack trace to a file
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Navigation error", e);
             }
         } else {
             showAlert(Alert.AlertType.ERROR, "Registration failed. Email may already exist.");
         }
     }
+
 
     @FXML
     private void onBackToLoginClick() {

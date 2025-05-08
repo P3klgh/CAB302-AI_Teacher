@@ -46,6 +46,25 @@
         <artifactId>sqlite-jdbc</artifactId>
         <version>3.42.0.0</version>
       </dependency>
+      <!-- Apache HttpClient for making API requests -->
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>4.5.13</version>
+      </dependency>
+
+      <!-- JSON parsing library (optional, for easier JSON handling) -->
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.13.4.2</version>
+      </dependency>
+      <!--Openai library -->
+      <dependency>
+        <groupId>com.openai</groupId>
+        <artifactId>openai-java</artifactId>
+        <version>1.6.0</version>
+      </dependency>
     </dependencies>
 
   <build>
