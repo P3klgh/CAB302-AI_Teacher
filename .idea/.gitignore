@@ -2,3 +2,4 @@
 /shelf/
 /workspace.xml
 src/main/resources/com/cab302ai_teacher/config.properties
+ai_teacher.db
