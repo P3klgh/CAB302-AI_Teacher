@@ -8,18 +8,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.Objects;
 import java.util.logging.*;
 
-public class AIController {
+public class QuestionController {
+
+    @FXML
+    private User currentUser;
 
     @FXML
     private Label userInfoLabel;
 
-    @FXML
-    private User currentUser;
 
     @FXML
     private void onDashboardClick(ActionEvent event){
@@ -52,26 +57,14 @@ public class AIController {
     }
 
     @FXML
-    private void onQuizzesClick(ActionEvent event){
+    private void onAIClick(ActionEvent event) throws IOException {
         try {
-            FXMLLoader loader;
-            Scene scene;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/AI.fxml"));
+            Scene scene = new Scene(loader.load(), 640, 480);
 
-            if (Objects.equals(currentUser.getRole(), "Student")) {
-                loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/quizzes.fxml"));
-                scene = new Scene(loader.load(), 640, 480);
-
-                // Get the correct controller and pass the user
-                QuizzesController controller = loader.getController();
-                controller.setUser(currentUser);
-            } else {
-                loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/question.fxml"));
-                scene = new Scene(loader.load(), 640, 480);
-
-                // Get the correct controller and pass the user
-                QuestionController controller = loader.getController();
-                controller.setUser(currentUser);
-            }
+            // Pass user to other controllers
+            AIController aiController = loader.getController();
+            aiController.setUser(currentUser);
 
             // Add CSS stylesheet to Scene
             String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
@@ -79,18 +72,29 @@ public class AIController {
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
-        } catch (Exception e) {
+        } catch (IOException e) {
             // Log the error
-            Logger.getLogger(AIController.class.getName()).log(Level.SEVERE, "Failed to load quizzes view", e);
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to load AI view", e);
 
-            // Inform the user
+            // Show user-friendly error message
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Navigation Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Unable to navigate to quizzes screen. Please try again.");
+            alert.setHeaderText("Could not open AI page");
+            alert.setContentText("There was a problem loading the requested page. Please try again later.");
+            alert.showAndWait();
+
+            // Rethrow if needed (or handle it here completely)
+            throw e;
+        } catch (Exception e) {
+            // Handle other unexpected exceptions
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Unexpected error", e);
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Application Error");
+            alert.setHeaderText("An unexpected error occurred");
+            alert.setContentText("Sorry for the inconvenience. The application encountered an unexpected error.");
             alert.showAndWait();
         }
-
     }
 
     @FXML

@@ -3,11 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<!--
-  FXML layout for the main screen of the AI Teacher Assistant application.
-  This layout is controlled by MainController.java and uses a VBox
-  to center and vertically space its elements.
--->
+
 <?import javafx.geometry.Insets?>
 <HBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.cab302ai_teacher.controller.QuizzesController"
@@ -23,5 +19,35 @@
         <Button styleClass="sidebar_btn" id="sidebar_selected" minWidth="100" minHeight="40">Quizzes</Button>
         <Button styleClass="sidebar_btn"  minWidth="100" minHeight="40" onAction="#onAIClick">AI Chat Bot</Button>
     </VBox>
-
+    <VBox HBox.hgrow="SOMETIMES" spacing="10" alignment="TOP_LEFT">
+        <VBox HBox.hgrow="SOMETIMES" spacing="10" id="topbar-ctnr" alignment="TOP_RIGHT" minHeight="30" minWidth="520">
+            <padding>
+                <Insets top="5" right="10" bottom="0" left="0"/>
+            </padding>
+            <Label fx:id="userInfoLabel" text="Username"/>
+            <!-- Logout button that triggers the onLogoutClick() method in MainController -->
+        </VBox>
+        <VBox id="quiz-ctnr" alignment="TOP_LEFT">
+            <Label text="Quizzes" />
+            <VBox id="quizName-ctnr">
+                <Label text="Australian Quiz"/>
+                <VBox id="question-ctnr">
+                    <Label text="Question 1"/>
+                    <Label text="What is the capital city of Australia"/>
+                    <CheckBox fx:id="checkbox1"
+                              text="Melbourne"/>
+                    <CheckBox fx:id="checkbox2"
+                              text="Sydney"/>
+                    <CheckBox fx:id="checkbox3"
+                              text="Canberra"/>
+                    <CheckBox fx:id="checkbox4"
+                              text="Perth"/>
+                </VBox>
+                <HBox alignment="BOTTOM_CENTER" spacing="10">
+                    <Button text="back" onAction="#onCancelButtonClick"/>
+                    <Button fx:id="nextButton" text="Next" onAction="#onNextButtonClick" disable="true"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </VBox>
 </HBox>

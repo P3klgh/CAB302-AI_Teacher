@@ -23,5 +23,11 @@
         <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onQuizzesClick">Quizzes</Button>
         <Button styleClass="sidebar_btn" id="sidebar_selected" minWidth="100" minHeight="40">AI Chat Bot</Button>
     </VBox>
-
+    <VBox HBox.hgrow="SOMETIMES" spacing="10" id="topbar-ctnr" alignment="TOP_RIGHT" minHeight="30" minWidth="520">
+        <padding>
+            <Insets top="5" right="10" bottom="0" left="0"/>
+        </padding>
+        <Label fx:id="userInfoLabel" text="Username"/>
+        <!-- Logout button that triggers the onLogoutClick() method in MainController -->
+    </VBox>
 </HBox>

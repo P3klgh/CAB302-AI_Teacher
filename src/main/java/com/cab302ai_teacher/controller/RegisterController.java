@@ -32,7 +32,7 @@ public class RegisterController {
     @FXML
     public void initialize() {
         // Populate roles in ComboBox
-        roleComboBox.getItems().addAll("Admin", "Teacher", "Student");
+        roleComboBox.getItems().addAll("Teacher", "Student");
     }
 
     @FXML

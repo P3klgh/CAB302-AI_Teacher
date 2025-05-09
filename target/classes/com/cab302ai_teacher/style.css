@@ -1,5 +1,5 @@
 .root {
-    -fx-background-color: #f9f9f9;
+    -fx-background-color: #F3F4FF;
 }
 
 .label-title {
@@ -36,6 +36,14 @@
 
 #sidebar_ctnr {
     -fx-background-color: #4D44B5;
+}
+
+#quizName-ctnr {
+    -fx-background-color: #FFFFFF;
+}
+
+#topbar-ctnr {
+    -fx-background-color: #F0F0F0;
 }
 
 .sidebar_btn {

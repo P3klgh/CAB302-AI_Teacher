@@ -1,12 +1,16 @@
 package com.cab302ai_teacher.controller;
 
 import com.cab302ai_teacher.Main;
+import com.cab302ai_teacher.model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -14,11 +18,42 @@ import java.util.Objects;
 import java.util.logging.*;
 
 public class QuizzesController {
+
+    @FXML
+    private Button nextButton;
+
+    @FXML
+    private Button backButton;
+
+    @FXML
+    private Label userInfoLabel;
+
+    @FXML
+    private User currentUser;
+
+    @FXML
+    protected void onNextButtonClick() throws IOException {
+        Stage stage = (Stage) nextButton.getScene().getWindow();
+//        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main-view.fxml"));
+//        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+//        stage.setScene(scene);
+    }
+
+    @FXML
+    protected void onCancelButtonClick() {
+        Stage stage = (Stage) nextButton.getScene().getWindow();
+        stage.close();
+    }
+
     @FXML
     private void onDashboardClick(ActionEvent event) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
+
+            // Pass user to other controllers
+            MainController mainController = loader.getController();
+            mainController.setUser(currentUser);
 
             // Add CSS stylesheet to Scene
             String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
@@ -58,6 +93,10 @@ public class QuizzesController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/AI.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
 
+            // Pass user to other controllers
+            AIController aiController = loader.getController();
+            aiController.setUser(currentUser);
+
             // Add CSS stylesheet to Scene
             String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
@@ -86,6 +125,14 @@ public class QuizzesController {
             alert.setHeaderText("An unexpected error occurred");
             alert.setContentText("Sorry for the inconvenience. The application encountered an unexpected error.");
             alert.showAndWait();
+        }
+    }
+
+    @FXML
+    public void setUser(User user) {
+        this.currentUser = user;
+        if (userInfoLabel != null && user != null) {
+            userInfoLabel.setText(user.getFirstName() + " " + user.getLastName() + " (" + user.getRole() + ")");
         }
     }
 }
