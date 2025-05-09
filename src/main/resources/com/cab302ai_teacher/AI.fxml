@@ -5,34 +5,33 @@
 <?import javafx.geometry.Insets?>
 
 <HBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.cab302ai_teacher.controller.AIController" prefWidth="600" prefHeight="400">
-    <ProgressIndicator fx:id="progressIndicator" visible="false" />
-    <!-- Chat Box Area -->
-    <VBox id="chatBoxContainer" spacing="10">
-        <!-- Correct padding with proper Insets definition -->
+    <!-- Dashboard Sidebar on the left -->
+    <VBox id="sidebar_ctnr" alignment="TOP_LEFT" minHeight="300" minWidth="120" spacing="5">
         <padding>
-            <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
-        </padding>
-        <TextArea fx:id="chatArea" prefWidth="580" prefHeight="300" editable="false" wrapText="true"/>
-    </VBox>
-
-    <!-- User Input and Send Button -->
-    <HBox spacing="10">
-        <!-- Correct padding with proper Insets definition -->
-        <padding>
-            <Insets top="10.0" right="10.0" bottom="10.0" left="10.0"/>
-        </padding>
-        <TextField fx:id="userInput" promptText="Type your message..." prefWidth="450"/>
-        <Button fx:id="sendButton" text="Send" onAction="#onSendMessageClick" prefWidth="100"/>
-    </HBox>
-
-    <!-- Dashboard Sidebar -->
-    <VBox id="sidebar_ctnr" alignment="TOP_RIGHT" minHeight="300" minWidth="120" spacing="5">
-        <padding>
-            <Insets top="5" left="5"/>
+            <Insets top="5" right="0" bottom="0" left="5"/>
         </padding>
         <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onDashboardClick">Dashboard</Button>
         <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onQuizzesClick">Quizzes</Button>
         <Button styleClass="sidebar_btn" id="sidebar_selected" minWidth="100" minHeight="40">AI Chat Bot</Button>
     </VBox>
 
+    <!-- Main content area to the right -->
+    <VBox id="mainContent" spacing="10" prefWidth="480">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
+
+        <ProgressIndicator fx:id="progressIndicator" visible="false" />
+
+        <!-- Chat Box Area -->
+        <VBox id="chatBoxContainer" spacing="10">
+            <TextArea fx:id="chatArea" prefWidth="480" prefHeight="300" editable="false" wrapText="true"/>
+        </VBox>
+
+        <!-- User Input and Send Button (underneath the chatbox) -->
+        <HBox spacing="10">
+            <TextField fx:id="userInput" promptText="Type your message..." prefWidth="350"/>
+            <Button fx:id="sendButton" text="Send" onAction="#onSendMessageClick" prefWidth="100"/>
+        </HBox>
+    </VBox>
 </HBox>
