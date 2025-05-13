@@ -5,6 +5,7 @@
 
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
 <HBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.cab302ai_teacher.controller.QuestionController"
       prefWidth="400" prefHeight="300" alignment="TOP_LEFT"
@@ -28,7 +29,32 @@
             <!-- Logout button that triggers the onLogoutClick() method in MainController -->
         </VBox>
         <VBox id="question-ctnr" alignment="TOP_LEFT">
-            <Label text="Editing Quiz" />
+            <Label text="1. Question" />
+            <TextField fx:id="question"/>
+            <Label text="Option 1" />
+            <HBox spacing="10" >
+                <CheckBox fx:id="answer1"/>
+                <TextField fx:id="option1"/>
+            </HBox>
+            <Label text="Option 2" />
+            <HBox spacing="10" >
+                <CheckBox fx:id="answer2"/>
+                <TextField fx:id="option2"/>
+            </HBox>
+            <Label text="Option 3" />
+            <HBox spacing="10" >
+                <CheckBox fx:id="answer3"/>
+                <TextField fx:id="option3"/>
+            </HBox>
+            <Label text="Option 4" />
+            <HBox spacing="10" >
+                <CheckBox fx:id="answer4"/>
+                <TextField fx:id="option4"/>
+            </HBox>
         </VBox>
+        <HBox alignment="BOTTOM_CENTER" spacing="10">
+            <Button text="back" onAction="#onCancelButtonClick"/>
+            <Button fx:id="nextButton" text="Next" onAction="#onNextButtonClick" disable="true"/>
+        </HBox>
     </VBox>
 </HBox>

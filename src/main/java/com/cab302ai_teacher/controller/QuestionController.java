@@ -1,7 +1,7 @@
 package com.cab302ai_teacher.controller;
 
 import com.cab302ai_teacher.Main;
-import com.cab302ai_teacher.model.User;
+import com.cab302ai_teacher.model.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +18,12 @@ import java.util.Objects;
 import java.util.logging.*;
 
 public class QuestionController {
+
+    @FXML
+    private Button nextButton;
+
+    @FXML
+    private Button backButton;
 
     @FXML
     private User currentUser;
@@ -103,5 +109,19 @@ public class QuestionController {
         if (userInfoLabel != null && user != null) {
             userInfoLabel.setText(user.getFirstName() + " " + user.getLastName() + " (" + user.getRole() + ")");
         }
+    }
+
+    @FXML
+    protected void onNextButtonClick() throws IOException {
+        Stage stage = (Stage) nextButton.getScene().getWindow();
+//        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main-view.fxml"));
+//        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
+//        stage.setScene(scene);
+    }
+
+    @FXML
+    protected void onCancelButtonClick() {
+        Stage stage = (Stage) nextButton.getScene().getWindow();
+        stage.close();
     }
 }
