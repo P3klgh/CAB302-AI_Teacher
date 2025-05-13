@@ -5,12 +5,12 @@ import java.util.List;
 public class Question {
     private String question;
     private List<String> options;
-    private int correctAnswerIndex;
+    private List<Integer> correctIndexes;
 
-    public Question(String question, List<String> options, int correctAnswerIndex) {
+    public Question(String question, List<String> options, List<Integer> correctIndexes) {
         this.question = question;
         this.options = options;
-        this.correctAnswerIndex = correctAnswerIndex;
+        this.correctIndexes = correctIndexes;
     }
 
     public void setQuestion(String question) {
@@ -21,19 +21,19 @@ public class Question {
         this.options = options;
     }
 
-    public void setCorrectAnswerIndex(int correctAnswerIndex) {
-        this.correctAnswerIndex = correctAnswerIndex;
+    public void setCorrectIndexes(List<Integer> correctAnswerIndex) {
+        this.correctIndexes = correctIndexes;
     }
 
-    public String getQuestion(String question) {
+    public String getQuestion() {
         return question;
     }
 
-    public List<String> getOptions(List<String> options) {
+    public List<String> getOptions() {
         return options;
     }
 
-    public int getCorrectAnswerIndex(int correctAnswerIndex) {
-        return correctAnswerIndex;
+    public List<Integer> getCorrectIndexes() {
+        return correctIndexes;
     }
 }

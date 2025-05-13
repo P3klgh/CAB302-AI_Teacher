@@ -32,20 +32,21 @@
             <VBox id="quizName-ctnr">
                 <Label text="Australian Quiz"/>
                 <VBox id="question-ctnr">
-                    <Label text="Question 1"/>
-                    <Label text="What is the capital city of Australia"/>
-                    <CheckBox fx:id="checkbox1"
+                    <Label fx:id="questionIndex" text="Question 1"/>
+                    <Label fx:id="question" text="What is the capital city of Australia"/>
+                    <Label fx:id="hintLabel" text=""/>
+                    <RadioButton fx:id="button1"
                               text="Melbourne"/>
-                    <CheckBox fx:id="checkbox2"
+                    <RadioButton fx:id="button2"
                               text="Sydney"/>
-                    <CheckBox fx:id="checkbox3"
+                    <RadioButton fx:id="button3"
                               text="Canberra"/>
-                    <CheckBox fx:id="checkbox4"
+                    <RadioButton fx:id="button4"
                               text="Perth"/>
                 </VBox>
                 <HBox alignment="BOTTOM_CENTER" spacing="10">
                     <Button text="back" onAction="#onCancelButtonClick"/>
-                    <Button fx:id="nextButton" text="Next" onAction="#onNextButtonClick" disable="true"/>
+                    <Button fx:id="nextButton" text="Next" onAction="#onNextButtonClick"/>
                 </HBox>
             </VBox>
         </VBox>

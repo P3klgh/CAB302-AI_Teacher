@@ -1,23 +1,36 @@
 package com.cab302ai_teacher.controller;
 
 import com.cab302ai_teacher.Main;
-import com.cab302ai_teacher.model.User;
+import com.cab302ai_teacher.model.*;
+import com.cab302ai_teacher.util.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.logging.*;
 
 public class QuizzesController {
+
+    private List<Question> questions;
+    private int score = 0;
+    private int currentIndex = 0;
+    private final ToggleGroup singleChoiceGroup = new ToggleGroup();
+    private List<RadioButton> radioButtons;
+
+    @FXML private Label question;
+    @FXML private Label questionIndex;
+    @FXML private RadioButton button1, button2, button3, button4;
+    @FXML private ToggleGroup optionsGroup;
 
     @FXML
     private Button nextButton;
@@ -32,11 +45,94 @@ public class QuizzesController {
     private User currentUser;
 
     @FXML
+    private Label hintLabel;
+
+    public void initialize() {
+        // Load quiz
+        radioButtons = List.of(button1, button2, button3, button4);
+        this.questions = loadQuiz();
+        showQuestion();
+    }
+
+    private void showQuestion() {
+        if (currentIndex < questions.size()) {
+            Question q = questions.get(currentIndex);
+            questionIndex.setText("Question " + (currentIndex + 1));
+            question.setText(q.getQuestion());
+
+            boolean isMultipleAnswer = q.getCorrectIndexes().size() > 1;
+
+            hintLabel.setText(isMultipleAnswer ? "Select all that apply:" : "Select one answer:");
+
+            for (int i = 0; i < radioButtons.size(); i++) {
+                RadioButton rb = radioButtons.get(i);
+                rb.setText(q.getOptions().get(i));
+                rb.setSelected(false);
+
+                // Clear existing group
+                rb.setToggleGroup(null);
+
+                // Reassign if single-answer
+                if (!isMultipleAnswer) {
+                    rb.setToggleGroup(singleChoiceGroup);
+                }
+
+                rb.setVisible(true);
+            }
+        }
+    }
+
+    private List<Question> loadQuiz() {
+        // Load questions
+        return MockQuizData.getQuiz().getQuestions();
+    }
+
+    @FXML
     protected void onNextButtonClick() throws IOException {
-        Stage stage = (Stage) nextButton.getScene().getWindow();
-//        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main-view.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load(), HelloApplication.WIDTH, HelloApplication.HEIGHT);
-//        stage.setScene(scene);
+        checkAnswer();
+        if (currentIndex < questions.size() - 1) {
+            currentIndex++;
+            showQuestion();
+            nextButton.setDisable(false);
+        } else {
+            showScore();
+            nextButton.setDisable(true);
+            question.setText("Quiz finished!");
+            button1.setDisable(true);
+            button2.setDisable(true);
+            button3.setDisable(true);
+            button4.setDisable(true);
+            // Optionally: show a score or disable other inputs
+        }
+    }
+
+    private void showScore() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Quiz Complete");
+        alert.setHeaderText("Your Score");
+        alert.setContentText("You scored " + score + " out of " + questions.size());
+        alert.showAndWait();
+    }
+
+    private void checkAnswer() {
+        Question q = questions.get(currentIndex);
+        List<Integer> correct = q.getCorrectIndexes();
+        List<Integer> selected = new ArrayList<>();
+
+        if (button1.isSelected()) selected.add(0);
+        if (button2.isSelected()) selected.add(1);
+        if (button3.isSelected()) selected.add(2);
+        if (button4.isSelected()) selected.add(3);
+
+
+        // Sort lists
+        Collections.sort(selected);
+        List<Integer> sortedCorrect = new ArrayList<>(correct);
+        Collections.sort(sortedCorrect);
+
+        if (selected.equals(sortedCorrect)) {
+            score++;
+        }
     }
 
     @FXML
