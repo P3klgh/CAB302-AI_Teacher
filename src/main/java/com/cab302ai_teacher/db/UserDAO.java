@@ -33,6 +33,8 @@ public class UserDAO {
         }
     }
 
+//    public  static  boolean addQuiz
+
     public static boolean registerUser(String firstName, String lastName, String email, String password, String role) {
         String sql = "INSERT INTO users (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseManager.connect();

@@ -27,10 +27,11 @@
             <Label fx:id="userInfoLabel" text="Username"/>
             <!-- Logout button that triggers the onLogoutClick() method in MainController -->
         </VBox>
-        <VBox id="quiz-ctnr" alignment="TOP_LEFT">
-            <Label text="Quizzes" />
+        <VBox id="quiz-ctnr" alignment="TOP_LEFT" spacing="10">
+            <Label text="Select a Quiz" />
+            <ListView fx:id="quizListView" onMouseClicked="#onQuizSelected" prefHeight="100"/>
             <VBox id="quizName-ctnr">
-                <Label text="Australian Quiz"/>
+                <Label fx:id="quiz" text="Australian Quiz"/>
                 <VBox id="question-ctnr">
                     <Label fx:id="questionIndex" text="Question 1"/>
                     <Label fx:id="question" text="What is the capital city of Australia"/>
@@ -44,10 +45,7 @@
                     <RadioButton fx:id="button4"
                               text="Perth"/>
                 </VBox>
-                <HBox alignment="BOTTOM_CENTER" spacing="10">
-                    <Button text="back" onAction="#onCancelButtonClick"/>
-                    <Button fx:id="nextButton" text="Next" onAction="#onNextButtonClick"/>
-                </HBox>
+                <Button fx:id="nextButton" text="Next" alignment="CENTER" onAction="#onNextButtonClick"/>
             </VBox>
         </VBox>
     </VBox>

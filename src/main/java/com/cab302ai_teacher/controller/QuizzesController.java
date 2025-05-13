@@ -2,13 +2,16 @@ package com.cab302ai_teacher.controller;
 
 import com.cab302ai_teacher.Main;
 import com.cab302ai_teacher.model.*;
+import com.cab302ai_teacher.db.QuizDAO;
 import com.cab302ai_teacher.util.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 
@@ -29,8 +32,11 @@ public class QuizzesController {
 
     @FXML private Label question;
     @FXML private Label questionIndex;
+    @FXML private Label quiz;
     @FXML private RadioButton button1, button2, button3, button4;
-    @FXML private ToggleGroup optionsGroup;
+    @FXML private ListView<String> quizListView;
+    private List<Quiz> quizzes;
+    private Quiz currentQuiz;
 
     @FXML
     private Button nextButton;
@@ -48,43 +54,50 @@ public class QuizzesController {
     private Label hintLabel;
 
     public void initialize() {
-        // Load quiz
+        quizzes = QuizDAO.getAllQuizzes();
+        for (Quiz quiz : quizzes) {
+            quizListView.getItems().add(quiz.getName());
+        }
         radioButtons = List.of(button1, button2, button3, button4);
-        this.questions = loadQuiz();
-        showQuestion();
+        if (!quizzes.isEmpty()) {
+            quizListView.getSelectionModel().selectFirst();
+            Platform.runLater(() -> quizListView.requestFocus());
+            onQuizSelected(null);
+        }
     }
 
     private void showQuestion() {
         if (currentIndex < questions.size()) {
             Question q = questions.get(currentIndex);
+            quiz.setText(currentQuiz.getName());
             questionIndex.setText("Question " + (currentIndex + 1));
             question.setText(q.getQuestion());
 
             boolean isMultipleAnswer = q.getCorrectIndexes().size() > 1;
-
             hintLabel.setText(isMultipleAnswer ? "Select all that apply:" : "Select one answer:");
+
+            List<String> options = q.getOptions();
 
             for (int i = 0; i < radioButtons.size(); i++) {
                 RadioButton rb = radioButtons.get(i);
-                rb.setText(q.getOptions().get(i));
-                rb.setSelected(false);
 
-                // Clear existing group
-                rb.setToggleGroup(null);
+                if (i < options.size()) {
+                    rb.setText(options.get(i));
+                    rb.setVisible(true);
+                    rb.setSelected(false);
 
-                // Reassign if single-answer
-                if (!isMultipleAnswer) {
-                    rb.setToggleGroup(singleChoiceGroup);
+                    rb.setToggleGroup(null);
+                    if (!isMultipleAnswer) {
+                        rb.setToggleGroup(singleChoiceGroup);
+                    }
+                } else {
+                    rb.setVisible(false);
+                    rb.setText("");
+                    rb.setSelected(false);
+                    rb.setToggleGroup(null);
                 }
-
-                rb.setVisible(true);
             }
         }
-    }
-
-    private List<Question> loadQuiz() {
-        // Load questions
-        return MockQuizData.getQuiz().getQuestions();
     }
 
     @FXML
@@ -98,12 +111,18 @@ public class QuizzesController {
             showScore();
             nextButton.setDisable(true);
             question.setText("Quiz finished!");
-            button1.setDisable(true);
-            button2.setDisable(true);
-            button3.setDisable(true);
-            button4.setDisable(true);
-            // Optionally: show a score or disable other inputs
         }
+    }
+
+    @FXML
+    private void onQuizSelected(MouseEvent event) {
+        int index = quizListView.getSelectionModel().getSelectedIndex();
+        nextButton.setDisable(false);
+        currentQuiz = quizzes.get(index);
+        this.questions = currentQuiz.getQuestions();
+        this.score = 0;
+        this.currentIndex = 0;
+        showQuestion();
     }
 
     private void showScore() {
@@ -133,12 +152,6 @@ public class QuizzesController {
         if (selected.equals(sortedCorrect)) {
             score++;
         }
-    }
-
-    @FXML
-    protected void onCancelButtonClick() {
-        Stage stage = (Stage) nextButton.getScene().getWindow();
-        stage.close();
     }
 
     @FXML

@@ -1,60 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Text?>
-<HBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.cab302ai_teacher.controller.QuestionController"
-      prefWidth="400" prefHeight="300" alignment="TOP_LEFT"
->
+<HBox alignment="TOP_LEFT" prefHeight="300" prefWidth="400" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cab302ai_teacher.controller.QuestionController">
 
     <!-- dashboard sidebar -->
     <VBox id="sidebar_ctnr" alignment="TOP_RIGHT" minHeight="300" minWidth="120" spacing="5">
         <padding>
-            <Insets top="5" right="0" bottom="0" left="5"/>
+            <Insets bottom="0" left="5" right="0" top="5" />
         </padding>
-        <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onDashboardClick">Dashboard</Button>
-        <Button styleClass="sidebar_btn" id="sidebar_selected" minWidth="100" minHeight="40">Quizzes</Button>
-        <Button styleClass="sidebar_btn"  minWidth="100" minHeight="40" onAction="#onAIClick">AI Chat Bot</Button>
+        <Button minHeight="40" minWidth="100" onAction="#onDashboardClick" styleClass="sidebar_btn">Dashboard</Button>
+        <Button id="sidebar_selected" minHeight="40" minWidth="100" styleClass="sidebar_btn">Quizzes</Button>
+        <Button minHeight="40" minWidth="100" onAction="#onAIClick" styleClass="sidebar_btn">AI Chat Bot</Button>
     </VBox>
-    <VBox HBox.hgrow="SOMETIMES" spacing="10" alignment="TOP_LEFT">
+    <VBox alignment="TOP_LEFT" spacing="10" HBox.hgrow="SOMETIMES">
         <VBox id="topbar-ctnr" alignment="TOP_RIGHT" minHeight="30" minWidth="520">
             <padding>
-                <Insets top="5" right="10" bottom="0" left="0"/>
+                <Insets bottom="0" left="0" right="10" top="5" />
             </padding>
-            <Label fx:id="userInfoLabel" text="Username"/>
+            <Label fx:id="userInfoLabel" text="Username" />
             <!-- Logout button that triggers the onLogoutClick() method in MainController -->
         </VBox>
-        <VBox id="question-ctnr" alignment="TOP_LEFT">
-            <Label text="1. Question" />
-            <TextField fx:id="question"/>
-            <Label text="Option 1" />
-            <HBox spacing="10" >
-                <CheckBox fx:id="answer1"/>
-                <TextField fx:id="option1"/>
-            </HBox>
-            <Label text="Option 2" />
-            <HBox spacing="10" >
-                <CheckBox fx:id="answer2"/>
-                <TextField fx:id="option2"/>
-            </HBox>
-            <Label text="Option 3" />
-            <HBox spacing="10" >
-                <CheckBox fx:id="answer3"/>
-                <TextField fx:id="option3"/>
-            </HBox>
-            <Label text="Option 4" />
-            <HBox spacing="10" >
-                <CheckBox fx:id="answer4"/>
-                <TextField fx:id="option4"/>
+        <VBox id="quiz-ctnr" alignment="TOP_LEFT" spacing="10">
+            <Button text="New Quiz" onAction="#onAddQuiz" maxWidth="Infinity"/>
+            <Label text="Select a Quiz" />
+            <ListView fx:id="quizListView" onMouseClicked="#onQuizSelected" maxHeight="100" />
+             <ScrollPane prefHeight="250" prefWidth="520.0">
+                 <content>
+                     <VBox fx:id="questionCtnr" alignment="TOP_LEFT" spacing="10" />
+                 </content>
+             </ScrollPane>
+            <HBox alignment="BOTTOM_CENTER" spacing="10">
+                <Button onAction="#onEditConfirm" text="Confirm" />
+                <Button onAction="#onCancel" text="Cancel" />
+                <Button onAction="#onDelete" text="Delete" />
             </HBox>
         </VBox>
-        <HBox alignment="BOTTOM_CENTER" spacing="10">
-            <Button text="back" onAction="#onCancelButtonClick"/>
-            <Button fx:id="nextButton" text="Next" onAction="#onNextButtonClick" disable="true"/>
-        </HBox>
     </VBox>
 </HBox>

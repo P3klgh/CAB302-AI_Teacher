@@ -28,8 +28,8 @@ public class DatabaseManager {
      * In this case, it creates a "users" table with fields for id, email, and password.
      */
     public static void initializeDatabase() {
-        String createUsersTable = """
-
+        String[] tableStatements = {
+            """
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 firstName TEXT NOT NULL,
@@ -38,12 +38,38 @@ public class DatabaseManager {
                 password TEXT NOT NULL,
                 role TEXT NOT NULL
             );
-        """;
+            """,
+            """
+            CREATE TABLE IF NOT EXISTS quizzes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL
+            );
+            """,
+            """
+            CREATE TABLE IF NOT EXISTS questions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                quiz_id INTEGER NOT NULL,
+                question_text TEXT NOT NULL,
+                FOREIGN KEY (quiz_id) REFERENCES quizzes(id)
+            );
+            """,
+            """
+            CREATE TABLE IF NOT EXISTS options (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                question_id INTEGER NOT NULL,
+                option_text TEXT NOT NULL,
+                is_correct BOOLEAN NOT NULL,
+                FOREIGN KEY (question_id) REFERENCES questions(id)
+            );
+            """
+        };
 
 
         try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
-            stmt.execute(createUsersTable);
-            System.out.println("[DB] ✅ users table initialized with role support.");
+            for (String sql : tableStatements) {
+                stmt.execute(sql);
+            }
+            System.out.println("[DB] ✅ tables initialized.");
         } catch (SQLException e) {
             System.err.println("[DB] ❌ Failed to initialize database: " + e.getMessage());
         }
