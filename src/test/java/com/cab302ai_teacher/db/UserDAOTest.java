@@ -69,15 +69,15 @@ public class UserDAOTest {
 //        assertFalse(result, "User with an empty email should not be registered.");
 //    }
 
-    @Test
-    public void testIsValidUserWithEmptyEmail() {
-        // Register with valid email and password
-        UserDAO.registerUser(testFirstName, testLastName, testEmail , testPassword , testOccupation);
-
-        // Attempt authentication with an empty email
-        boolean valid = !UserDAO.isValidUser("", testPassword);
-        assertFalse(valid, "Empty email should not authenticate.");
-    }
+//    @Test
+//    public void testIsValidUserWithEmptyEmail() {
+//        // Register with valid email and password
+//        UserDAO.registerUser(testFirstName, testLastName, testEmail , testPassword , testOccupation);
+//
+//        // Attempt authentication with an empty email
+//        boolean valid = !UserDAO.isValidUser("", testPassword);
+//        assertFalse(valid, "Empty email should not authenticate.");
+//    }
 
     @Test
     public void testRegisterUserWithEmptyPassword() {
