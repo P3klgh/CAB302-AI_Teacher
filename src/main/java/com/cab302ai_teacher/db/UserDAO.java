@@ -1,5 +1,6 @@
 package com.cab302ai_teacher.db;
 
+import com.cab302ai_teacher.model.User;
 import com.cab302ai_teacher.util.PasswordHasher;
 
 import java.sql.Connection;
@@ -78,14 +79,13 @@ public class UserDAO {
         }
     }
 
-
     /**
      * Retrieves a user by their email.
      *
      * @param email The user's email address
      * @return A User object if found; null otherwise
      */
-    public static String getUserByEmail(String email) {
+    public static User getUserByEmail(String email) {
         String query = "SELECT * FROM users WHERE email = ?";
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -94,9 +94,11 @@ public class UserDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
                 String password = rs.getString("password");
                 String role = rs.getString("role");
-                return (email + password + role);
+                return new User(firstName, lastName, email, password, role);
             }
 
         } catch (SQLException e) {

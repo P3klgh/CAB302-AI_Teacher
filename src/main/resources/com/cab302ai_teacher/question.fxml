@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox alignment="TOP_LEFT" prefHeight="300" prefWidth="400" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cab302ai_teacher.controller.QuestionController">
+
+    <!-- dashboard sidebar -->
+    <VBox id="sidebar_ctnr" alignment="TOP_RIGHT" minHeight="300" minWidth="120" spacing="5">
+        <padding>
+            <Insets bottom="0" left="5" right="0" top="5" />
+        </padding>
+        <Button minHeight="40" minWidth="100" onAction="#onDashboardClick" styleClass="sidebar_btn">Dashboard</Button>
+        <Button id="sidebar_selected" minHeight="40" minWidth="100" styleClass="sidebar_btn">Quizzes</Button>
+        <Button minHeight="40" minWidth="100" onAction="#onAIClick" styleClass="sidebar_btn">AI Chat Bot</Button>
+    </VBox>
+    <VBox alignment="TOP_LEFT" spacing="10" HBox.hgrow="SOMETIMES">
+        <VBox id="topbar-ctnr" alignment="TOP_RIGHT" minHeight="30" minWidth="520">
+            <padding>
+                <Insets bottom="0" left="0" right="10" top="5" />
+            </padding>
+            <Label fx:id="userInfoLabel" text="Username" />
+            <!-- Logout button that triggers the onLogoutClick() method in MainController -->
+        </VBox>
+        <VBox id="quiz-ctnr" alignment="TOP_LEFT" spacing="10">
+            <Button text="New Quiz" onAction="#onAddQuiz" maxWidth="Infinity"/>
+            <Label text="Select a Quiz" />
+            <ListView fx:id="quizListView" onMouseClicked="#onQuizSelected" maxHeight="100" />
+             <ScrollPane prefHeight="250" prefWidth="520.0">
+                 <content>
+                     <VBox fx:id="questionCtnr" alignment="TOP_LEFT" spacing="10" />
+                 </content>
+             </ScrollPane>
+            <HBox alignment="BOTTOM_CENTER" spacing="10">
+                <Button text="Add Question" onAction="#onAddQuestion" />
+                <Button onAction="#onEditConfirm" text="Confirm" />
+                <Button onAction="#onCancel" text="Cancel" />
+            </HBox>
+        </VBox>
+    </VBox>
+</HBox>

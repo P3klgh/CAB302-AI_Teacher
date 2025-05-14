@@ -33,7 +33,7 @@ public class RegisterController {
     @FXML
     public void initialize() {
         // Populate roles in ComboBox
-        roleComboBox.getItems().addAll("Admin", "Teacher", "Student");
+        roleComboBox.getItems().addAll("Teacher", "Student");
     }
 
     @FXML
@@ -77,7 +77,6 @@ public class RegisterController {
             showAlert(Alert.AlertType.ERROR, "Registration failed. Email may already exist.");
         }
     }
-
 
     @FXML
     private void onBackToLoginClick() {

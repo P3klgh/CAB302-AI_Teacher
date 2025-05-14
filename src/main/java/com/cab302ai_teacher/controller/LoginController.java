@@ -2,6 +2,7 @@ package com.cab302ai_teacher.controller;
 
 import com.cab302ai_teacher.Main;
 import com.cab302ai_teacher.db.UserDAO;
+import com.cab302ai_teacher.model.User;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -54,6 +55,12 @@ public class LoginController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
+
+            // Pass login info to main
+            MainController mainController = loader.getController();
+            User loggedInUser = UserDAO.getUserByEmail(email);
+            mainController.setUser(loggedInUser);
+
             String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
 
