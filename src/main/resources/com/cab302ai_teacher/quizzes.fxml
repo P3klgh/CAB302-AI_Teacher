@@ -32,24 +32,28 @@
             <!-- Logout button that triggers the onLogoutClick() method in MainController -->
         </VBox>
         <VBox id="quiz-ctnr" alignment="TOP_LEFT" spacing="10">
-            <Label text="Select a Quiz" />
+            <Label fx:id="selectQuizLabel" text="Select a Quiz" />
             <ListView fx:id="quizListView" onMouseClicked="#onQuizSelected" prefHeight="100"/>
-            <VBox id="quizName-ctnr">
-                <Label fx:id="quiz" text="Australian Quiz"/>
+            <Label fx:id="noQuizLabel" text="There are no quizzes available." visible="false" managed="false" />
+            <VBox fx:id="quizDisplayBox" visible="false" managed="false" id="quizName-ctnr">
+                <Label fx:id="quiz" text="Quiz"/>
                 <VBox id="question-ctnr">
                     <Label fx:id="questionIndex" text="Question 1"/>
-                    <Label fx:id="question" text="What is the capital city of Australia"/>
+                    <Label fx:id="question" text="Question"/>
                     <Label fx:id="hintLabel" text=""/>
                     <RadioButton fx:id="button1"
-                              text="Melbourne"/>
+                              text="Option 1"/>
                     <RadioButton fx:id="button2"
-                              text="Sydney"/>
+                              text="Option 2"/>
                     <RadioButton fx:id="button3"
-                              text="Canberra"/>
+                              text="Option 3"/>
                     <RadioButton fx:id="button4"
-                              text="Perth"/>
+                              text="Option 4"/>
                 </VBox>
-                <Button fx:id="nextButton" text="Next" alignment="CENTER" onAction="#onNextButtonClick"/>
+                <HBox spacing="10" alignment="CENTER">
+                    <Button fx:id="nextButton" text="Next" alignment="CENTER" onAction="#onNextButtonClick"/>
+                    <Button fx:id="restartButton" text="Restart Quiz" visible="false" managed="false" onAction="#onRestartQuizClick"/>
+                </HBox>
             </VBox>
         </VBox>
     </VBox>

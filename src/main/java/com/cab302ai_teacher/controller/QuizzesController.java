@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -39,7 +40,16 @@ public class QuizzesController {
     private Quiz currentQuiz;
 
     @FXML
+    private Label noQuizLabel;
+
+    @FXML
+    private VBox quizDisplayBox;
+
+    @FXML
     private Button nextButton;
+
+    @FXML
+    private Button restartButton;
 
     @FXML
     private Button backButton;
@@ -53,18 +63,30 @@ public class QuizzesController {
     @FXML
     private Label hintLabel;
 
+    @FXML
+    private Label selectQuizLabel;
+
     public void initialize() {
         quizzes = QuizDAO.getAllQuizzes();
-        for (Quiz quiz : quizzes) {
-            quizListView.getItems().add(quiz.getName().toString());
-        }
         radioButtons = List.of(button1, button2, button3, button4);
-        if (!quizzes.isEmpty()) {
+        boolean hasQuizzes = !quizzes.isEmpty();
+        noQuizLabel.setVisible(!hasQuizzes);
+        noQuizLabel.setManaged(!hasQuizzes);
+        quizListView.setVisible(hasQuizzes);
+        quizListView.setManaged(hasQuizzes);
+        selectQuizLabel.setVisible(hasQuizzes);
+        selectQuizLabel.setManaged(hasQuizzes);
+        if (hasQuizzes) {
+            for (Quiz quiz : quizzes) {
+                quizListView.getItems().add(quiz.getName());
+            }
             quizListView.getSelectionModel().selectFirst();
             Platform.runLater(() -> quizListView.requestFocus());
             onQuizSelected(null);
         }
     }
+
+
 
     private void showQuestion() {
         if (currentIndex < questions.size()) {
@@ -103,27 +125,51 @@ public class QuizzesController {
     @FXML
     protected void onNextButtonClick() throws IOException {
         checkAnswer();
+
         if (currentIndex < questions.size() - 1) {
             currentIndex++;
-            showQuestion();
+            showQuestion();  // Show the next question
             nextButton.setDisable(false);
         } else {
             showScore();
             nextButton.setDisable(true);
             question.setText("Quiz finished!");
+
+            restartButton.setVisible(true);
+            restartButton.setManaged(true);
         }
     }
 
     @FXML
     private void onQuizSelected(MouseEvent event) {
         int index = quizListView.getSelectionModel().getSelectedIndex();
-        nextButton.setDisable(false);
-        currentQuiz = quizzes.get(index);
-        this.questions = currentQuiz.getQuestions();
-        this.score = 0;
-        this.currentIndex = 0;
-        showQuestion();
+
+        if (index >= 0 && index < quizzes.size()) {
+            currentQuiz = quizzes.get(index);
+            this.questions = currentQuiz.getQuestions();
+            this.score = 0;
+            this.currentIndex = 0;
+
+            restartButton.setVisible(false);
+            restartButton.setManaged(false);
+
+            if (questions != null && !questions.isEmpty()) {
+                quizDisplayBox.setVisible(true);
+                quizDisplayBox.setManaged(true);
+                nextButton.setDisable(false);
+                showQuestion();
+            } else {
+                quizDisplayBox.setVisible(false);
+                quizDisplayBox.setManaged(false);
+                nextButton.setDisable(true);
+            }
+        } else {
+            quizDisplayBox.setVisible(false);
+            quizDisplayBox.setManaged(false);
+            nextButton.setDisable(true);
+        }
     }
+
 
     private void showScore() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -243,5 +289,14 @@ public class QuizzesController {
         if (userInfoLabel != null && user != null) {
             userInfoLabel.setText(user.getFirstName() + " " + user.getLastName() + " (" + user.getRole() + ")");
         }
+    }
+
+    public void onRestartQuizClick(ActionEvent actionEvent) {
+        currentIndex = 0;
+        score = 0;
+        showQuestion();
+        restartButton.setVisible(false);
+        restartButton.setManaged(false);
+        nextButton.setDisable(false);
     }
 }

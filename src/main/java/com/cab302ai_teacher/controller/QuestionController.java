@@ -262,7 +262,6 @@ public class QuestionController {
         int index = quizListView.getSelectionModel().getSelectedIndex();
 
         if (index >= 0 && index < quizzes.size()) {
-            currentQuiz = quizzes.get(index);
 
             if (questionCtnr.getChildren().isEmpty()) {
                 showAlert("No Quiz Loaded", "Please select a quiz before confirming edits.");
@@ -319,6 +318,7 @@ public class QuestionController {
 
             QuizDAO.updateQuiz(currentQuiz, deletedQuestions);
             quizListView.getItems().set(index, currentQuiz);
+            quizListView.getSelectionModel().select(currentQuiz);
 
 
         }
