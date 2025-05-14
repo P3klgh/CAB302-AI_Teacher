@@ -1,6 +1,5 @@
 package com.cab302ai_teacher.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Quiz {
@@ -12,6 +11,11 @@ public class Quiz {
         this.name = name;
         this.questions = questions;
         this.id = id;
+    }
+
+    public Quiz(String name, List<Question> questions) {
+        this.name = name;
+        this.questions = questions;
     }
 
     public String getName() {

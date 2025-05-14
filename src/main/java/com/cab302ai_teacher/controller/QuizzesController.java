@@ -56,7 +56,7 @@ public class QuizzesController {
     public void initialize() {
         quizzes = QuizDAO.getAllQuizzes();
         for (Quiz quiz : quizzes) {
-            quizListView.getItems().add(quiz.getName());
+            quizListView.getItems().add(quiz.getName().toString());
         }
         radioButtons = List.of(button1, button2, button3, button4);
         if (!quizzes.isEmpty()) {
@@ -69,7 +69,7 @@ public class QuizzesController {
     private void showQuestion() {
         if (currentIndex < questions.size()) {
             Question q = questions.get(currentIndex);
-            quiz.setText(currentQuiz.getName());
+            quiz.setText(currentQuiz.getName().toString());
             questionIndex.setText("Question " + (currentIndex + 1));
             question.setText(q.getQuestion());
 

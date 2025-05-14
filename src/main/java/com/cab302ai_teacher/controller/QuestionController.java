@@ -4,31 +4,31 @@ import com.cab302ai_teacher.Main;
 import com.cab302ai_teacher.db.QuizDAO;
 import com.cab302ai_teacher.model.*;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.*;
 
 public class QuestionController {
-
-    @FXML
-    private Button nextButton;
-
-    @FXML
-    private Button backButton;
 
     @FXML
     private User currentUser;
@@ -40,30 +40,90 @@ public class QuestionController {
     private VBox questionCtnr;
 
     @FXML
-    private ListView<String> quizListView;
+    private ListView<Quiz> quizListView;
+    private ObservableList<Quiz> quizObservableList = FXCollections.observableArrayList();
     private List<Question> questions;
     private Quiz currentQuiz;
     private List<Quiz> quizzes;
     private TextField quizNameField;
+    private final List<Question> deletedQuestions = new ArrayList<>();
 
     public void initialize() {
         quizzes = QuizDAO.getAllQuizzes();
-        for (Quiz quiz : quizzes) {
-            quizListView.getItems().add(quiz.getName());
-        }
+        quizObservableList.setAll(quizzes);
+        quizListView.setItems(quizObservableList);
+
+        quizListView.setCellFactory(listView -> new ListCell<Quiz>() {
+            private final HBox cellContainer = new HBox(10); // spacing between elements
+            private final Label nameLabel = new Label();
+            private final Region spacer = new Region(); // this pushes the delete button to the right
+            private final Button deleteButton = new Button("Delete Quiz");
+
+            {
+                HBox.setHgrow(spacer, Priority.ALWAYS); // this allows the spacer to take up all available space
+
+                deleteButton.getStyleClass().add("deleteButton"); // optional: CSS styling
+
+                deleteButton.setOnAction(e -> {
+                    Quiz quiz = getItem();
+                    if (quiz != null) {
+                        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+                        confirm.setTitle("Confirm Deletion");
+                        confirm.setHeaderText("Delete Quiz");
+                        confirm.setContentText("Are you sure you want to delete \"" + quiz.getName() + "\"?");
+
+                        confirm.showAndWait().ifPresent(response -> {
+                            if (response == ButtonType.OK) {
+                                try {
+                                    QuizDAO.deleteQuiz(quiz.getId());
+                                    quizzes.remove(quiz);
+                                    quizObservableList.remove(quiz);
+
+                                    if (quiz.equals(currentQuiz)) {
+                                        currentQuiz = null;
+                                        questionCtnr.getChildren().clear();
+                                    }
+                                } catch (SQLException ex) {
+                                    ex.printStackTrace();
+                                    showAlert("Database Error", "Could not delete quiz from database.");
+                                }
+                            }
+                        });
+                    }
+                });
+
+                cellContainer.getChildren().addAll(nameLabel, spacer, deleteButton);
+            }
+
+            @Override
+            protected void updateItem(Quiz quiz, boolean empty) {
+                super.updateItem(quiz, empty);
+                if (empty || quiz == null) {
+                    setGraphic(null);
+                } else {
+                    nameLabel.setText(quiz.getName());
+                    setGraphic(cellContainer);
+                }
+            }
+        });
+
+
         if (!quizzes.isEmpty()) {
             quizListView.getSelectionModel().selectFirst();
-            Platform.runLater(() -> quizListView.requestFocus());
             onQuizSelected(null);
         }
     }
 
 
+
     public void onQuizSelected(MouseEvent mouseEvent) {
-        int index = quizListView.getSelectionModel().getSelectedIndex();
-        currentQuiz = quizzes.get(index);
-        this.questions = currentQuiz.getQuestions();
-        loadQuiz(currentQuiz);
+        Quiz selectedQuiz = quizListView.getSelectionModel().getSelectedItem();
+        if (selectedQuiz != null) {
+            currentQuiz = selectedQuiz;
+            loadQuiz(selectedQuiz);
+        }else {
+            System.out.println("⚠️ No quiz selected.");
+        }
     }
 
     public void loadQuiz(Quiz currentQuiz) {
@@ -87,11 +147,12 @@ public class QuestionController {
             List<String> options = question.getOptions();
             List<Integer> correctIndexes = question.getCorrectIndexes();
 
+
             for (int j = 0; j < options.size(); j++) {
                 HBox optionBox = new HBox(10);
 
-
                 RadioButton radioButton = new RadioButton();
+
                 TextField optionField = new TextField(options.get(j));
                 optionField.setPromptText("Option " + (j + 1));
 
@@ -103,6 +164,10 @@ public class QuestionController {
                 questionBox.getChildren().add(optionBox);
             }
 
+            Button deleteBtn = new Button("Delete Question");
+            deleteBtn.setOnAction(event -> handleDeleteQuestion(question, questionBox));
+
+            questionBox.getChildren().add(deleteBtn);
             questionCtnr.getChildren().add(questionBox);
         }
     }
@@ -199,7 +264,11 @@ public class QuestionController {
         if (index >= 0 && index < quizzes.size()) {
             currentQuiz = quizzes.get(index);
 
-            // 1. Update quiz name
+            if (questionCtnr.getChildren().isEmpty()) {
+                showAlert("No Quiz Loaded", "Please select a quiz before confirming edits.");
+                return;
+            }
+
             Node quizBox = questionCtnr.getChildren().get(0);
             if (quizBox instanceof VBox) {
                 VBox quizNameBox = (VBox) quizBox;
@@ -211,21 +280,21 @@ public class QuestionController {
                 }
             }
 
-            // 2. Update each question's text, options, and correct answers
             List<Question> quizQuestions = currentQuiz.getQuestions();
             for (int i = 1; i < questionCtnr.getChildren().size(); i++) {
                 Node node = questionCtnr.getChildren().get(i);
                 if (!(node instanceof VBox)) continue;
 
                 VBox questionBox = (VBox) node;
-                if (i - 1 >= quizQuestions.size()) continue;
+                if (i - 1 >= quizQuestions.size()) {
+                    Question newQ = new Question("", new ArrayList<>(), new ArrayList<>(), -1);
+                    quizQuestions.add(newQ);
+                }
                 Question question = quizQuestions.get(i - 1);
 
-                // Update the question text
                 TextField questionField = (TextField) questionBox.getChildren().get(1);
                 question.setQuestion(questionField.getText());
 
-                // Update options and correct answers
                 List<String> updatedOptions = new ArrayList<>();
                 List<Integer> correctIndexes = new ArrayList<>();
 
@@ -239,24 +308,21 @@ public class QuestionController {
 
                     updatedOptions.add(optionField.getText());
 
-                    // Check if the radio button is selected to determine the correct answer
                     if (radioButton.isSelected()) {
                         correctIndexes.add(j - 2);
                     }
                 }
 
-                // Update the question object with the new options and correct answer(s)
                 question.setOptions(updatedOptions);
                 question.setCorrectIndexes(correctIndexes);
             }
 
-            // 3. Save all changes
-            QuizDAO.updateQuiz(currentQuiz);
-            quizListView.getItems().set(index, currentQuiz.getName());
+            QuizDAO.updateQuiz(currentQuiz, deletedQuestions);
+            quizListView.getItems().set(index, currentQuiz);
 
 
-        } else {
-            // Show a warning if no quiz is selected
+        }
+        else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("No Selection");
             alert.setHeaderText("Quiz Selection Error");
@@ -265,12 +331,79 @@ public class QuestionController {
         }
     }
 
+    private void handleDeleteQuestion(Question question, VBox questionBox) {
+        currentQuiz.getQuestions().remove(question);
+        if (question.getId() != -1) {
+            deletedQuestions.add(question);
+        }
 
-
-    public void onDelete(ActionEvent actionEvent) {
+        questionCtnr.getChildren().remove(questionBox);
     }
 
+    @FXML
     public void onAddQuiz(ActionEvent actionEvent) {
+        Quiz newQuiz = new Quiz("New Quiz", new ArrayList<>());
+        try {
+            // Save quiz to DB and get generated ID
+            int newId = QuizDAO.insertQuiz(newQuiz);
+            newQuiz.setId(newId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert("Database Error", "Could not save new quiz to the database.");
+            return;
+        }
 
+        quizzes.add(newQuiz);
+        quizObservableList.add(newQuiz);
+        quizListView.getSelectionModel().select(newQuiz);
+        currentQuiz = newQuiz;
+        loadQuiz(currentQuiz);
     }
+
+    @FXML
+    public void onAddQuestion(ActionEvent event) {
+        if (currentQuiz == null) {
+            System.err.println("No quiz selected.");
+            return;
+        }
+
+        VBox questionBox = new VBox();
+        questionBox.setSpacing(10);
+
+        Label label = new Label("New Question");
+
+        TextField questionField = new TextField();
+        questionField.setPromptText("Enter question text");
+        questionBox.getChildren().addAll(label, questionField);
+
+        for (int i = 0; i < 4; i++) {
+            HBox optionBox = new HBox(10);
+
+            RadioButton rb = new RadioButton();
+            TextField optField = new TextField();
+            optField.setPromptText("Option " + (i + 1));
+
+            optionBox.getChildren().addAll(rb, optField);
+            questionBox.getChildren().add(optionBox);
+        }
+
+        Button deleteBtn = new Button("Delete Question");
+        deleteBtn.setOnAction(e -> handleDeleteQuestion(new Question("", Arrays.asList("", "", "", ""), new ArrayList<>(), -1), questionBox));
+
+        questionBox.getChildren().add(deleteBtn);
+
+        questionCtnr.getChildren().add(questionBox);
+
+        Question newQuestion = new Question("", Arrays.asList("", "", "", ""), new ArrayList<>(), -1);  // id = -1 for new question
+        currentQuiz.getQuestions().add(newQuestion);
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 }

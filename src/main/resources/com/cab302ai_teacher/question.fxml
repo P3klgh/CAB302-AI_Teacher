@@ -33,9 +33,9 @@
                  </content>
              </ScrollPane>
             <HBox alignment="BOTTOM_CENTER" spacing="10">
+                <Button text="Add Question" onAction="#onAddQuestion" />
                 <Button onAction="#onEditConfirm" text="Confirm" />
                 <Button onAction="#onCancel" text="Cancel" />
-                <Button onAction="#onDelete" text="Delete" />
             </HBox>
         </VBox>
     </VBox>
