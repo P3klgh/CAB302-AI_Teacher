@@ -124,8 +124,19 @@ public class QuizzesController {
 
     @FXML
     protected void onNextButtonClick() throws IOException {
-        checkAnswer();
+        // Check if at least one answer is selected
+        boolean answerSelected = radioButtons.stream()
+                .anyMatch(RadioButton::isSelected);
 
+        if (!answerSelected) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Answer Required");
+            alert.setHeaderText("Please select at least one answer before proceeding.");
+            alert.setContentText("You must choose an answer to continue to the next question.");
+            alert.showAndWait();
+            return;
+        }
+        checkAnswer();
         if (currentIndex < questions.size() - 1) {
             currentIndex++;
             showQuestion();  // Show the next question
@@ -134,7 +145,6 @@ public class QuizzesController {
             showScore();
             nextButton.setDisable(true);
             question.setText("Quiz finished!");
-
             restartButton.setVisible(true);
             restartButton.setManaged(true);
         }

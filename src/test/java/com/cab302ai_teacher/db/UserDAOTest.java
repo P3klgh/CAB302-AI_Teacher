@@ -1,6 +1,5 @@
 package com.cab302ai_teacher.db;
 
-import com.cab302ai_teacher.util.Validator;
 import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
