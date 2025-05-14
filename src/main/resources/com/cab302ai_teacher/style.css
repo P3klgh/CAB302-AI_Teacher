@@ -17,7 +17,7 @@
 }
 
 .btn-primary {
-    -fx-background-color: #303972;
+    -fx-background-color: #4D44B5;
     -fx-text-fill: white;
     -fx-background-radius: 5px;
     -fx-padding: 6px 12px;
@@ -25,7 +25,7 @@
 }
 
 .btn-secondary {
-    -fx-background-color: #303972;
+    -fx-background-color: #4D44B5;
     -fx-text-fill: white;
     -fx-background-radius: 5px;
     -fx-border-radius: 5px;
