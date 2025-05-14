@@ -7,7 +7,6 @@
 <?import javafx.scene.image.Image?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.cab302ai_teacher.controller.LoginController"
@@ -24,11 +23,7 @@
                     <Image url="@images/logo.png" />
                 </image>
             </ImageView>
-            <Label text="AI Teacher Assistant" styleClass="label-title">
-                <font>
-                    <Font name="Lucida Console" size="30"/>
-                </font>
-            </Label>
+            <Label text="AI Teacher Assistant" styleClass="label-title"/>
         </HBox>
 
 
