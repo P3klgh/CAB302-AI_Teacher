@@ -42,7 +42,9 @@
         <padding>
             <Insets top="5" right="0" bottom="0" left="5"/>
         </padding>
-
+        <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onDashboardClick">Dashboard</Button>
+        <Button styleClass="sidebar_btn" id="sidebar_selected" minWidth="100" minHeight="40">Quizzes</Button>
+        <Button styleClass="sidebar_btn"  minWidth="100" minHeight="40" onAction="#onAIClick">AI Chat Bot</Button>
     </VBox>
     <VBox HBox.hgrow="SOMETIMES" spacing="10" alignment="TOP_LEFT">
         <VBox HBox.hgrow="SOMETIMES" spacing="10" id="topbar-ctnr" alignment="TOP_RIGHT" minHeight="30" minWidth="520">

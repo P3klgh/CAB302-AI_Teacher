@@ -15,7 +15,6 @@
 
     <VBox styleClass="content_container" alignment="CENTER" prefHeight="450" prefWidth="500" fillWidth="false" spacing="25">
 
-
         <!-- Page title -->
         <HBox spacing="10" alignment="CENTER">
             <ImageView id="logo_container" fitWidth="100" fitHeight="100">

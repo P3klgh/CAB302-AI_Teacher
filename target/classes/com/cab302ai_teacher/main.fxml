@@ -14,6 +14,7 @@
   to center and vertically space its elements.
 -->
 
+<?import javafx.scene.shape.Circle?>
 <HBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.cab302ai_teacher.controller.MainController"
       prefWidth="640" prefHeight="480" alignment="TOP_LEFT">
@@ -52,16 +53,24 @@
         <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onAIClick">AI Chat Bot</Button>
     </VBox>
 
-    <VBox HBox.hgrow="SOMETIMES" spacing="10" alignment="TOP_LEFT">
-        <VBox id="topbar-ctnr" alignment="TOP_RIGHT" minHeight="30" minWidth="520">
+    <VBox HBox.hgrow="SOMETIMES" spacing="5" alignment="TOP_LEFT">
+        <HBox alignment="CENTER_RIGHT" minHeight="30" minWidth="520" spacing="5">
             <padding>
-                <Insets top="5" right="10" bottom="0" left="0"/>
+                <Insets right="15" top="5"/>
             </padding>
-            <Label fx:id="userInfoLabel" text="Username"/>
-            <!-- Logout button that triggers the onLogoutClick() method in MainController -->
-        </VBox>
-        <VBox alignment="CENTER">
-            <Label>Hello and welcome to CAB302 AI Teacher </Label>
+            <Label fx:id="userInfoLabel" text="Username" wrapText="true"/>
+            <ImageView id="logo_container" fitWidth="30" fitHeight="30">
+                <clip>
+                    <Rectangle arcWidth="30" arcHeight="30" width="30" height="30"/>
+                </clip>
+                <image>
+                    <Image url="@images/rsz_177cff36fc902a47d3f4d7b8351575696fb0e565.png" />
+                </image>
+            </ImageView>
+
+        </HBox>
+        <VBox alignment="CENTER" styleClass="content_container">
+            <Label>Hello and welcome to CAB302 AI Teacher</Label>
             <Button text="Logout" onAction="#onLogoutClick" />
         </VBox>
     </VBox>
