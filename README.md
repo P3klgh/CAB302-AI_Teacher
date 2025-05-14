@@ -56,3 +56,19 @@ We used Agile (2-week sprints), worked in a team, and wrote most of it in Java u
 - Passwords are securely hashed using SHA-256 when stored.
 - Make sure to delete `ai_teacher.db` if you want to start fresh — it'll regenerate with the correct schema.
 - We also used **Trello** for sprint planning and GitHub for version control throughout the project.
+
+
+## Continuous Integration (CI)
+
+This project uses **GitHub Actions** for Continuous Integration.
+
+Whenever someone pushes to the `main` branch or opens a pull request against it, GitHub Actions automatically runs the following steps:
+
+- Builds the project using Maven (`mvn package`)
+- Runs all JUnit tests (`mvn test`)
+- Generates Javadoc
+- Publishes test reports using `dorny/test-reporter`
+
+You can view recent builds in the [Actions tab](../../actions).
+
+This ensures the code stays reliable as new changes are added.
