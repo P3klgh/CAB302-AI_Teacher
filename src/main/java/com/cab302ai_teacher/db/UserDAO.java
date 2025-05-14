@@ -2,6 +2,7 @@ package com.cab302ai_teacher.db;
 
 import com.cab302ai_teacher.model.User;
 import com.cab302ai_teacher.util.PasswordHasher;
+import com.cab302ai_teacher.util.Validator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +12,9 @@ import java.sql.SQLException;
 public class UserDAO {
 
     public static boolean isValidUser(String email, String password) {
+        if (!Validator.isValidEmail(email) || !Validator.isValidPassword(password)) {
+            return false;
+        }
         String query = "SELECT * FROM users WHERE email = ? AND password = ?";
 
         try (Connection conn = DatabaseManager.connect();
@@ -39,7 +43,9 @@ public class UserDAO {
      * @return true if registration is successful; false otherwise
      */
     public static boolean registerUser(String firstName, String lastName, String email, String password, String role) {
-        // Step 1: Check if a user already exists with the given email
+        if (!Validator.isValidEmail(email) || !Validator.isValidPassword(password)) {
+            return false;
+        }
         String checkEmailQuery = "SELECT COUNT(*) FROM users WHERE email = ?";
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement checkStmt = conn.prepareStatement(checkEmailQuery)) {
