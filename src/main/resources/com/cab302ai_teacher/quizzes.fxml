@@ -49,11 +49,11 @@
     <VBox HBox.hgrow="SOMETIMES" spacing="10" alignment="TOP_LEFT">
         <VBox HBox.hgrow="SOMETIMES" spacing="10" id="topbar-ctnr" alignment="TOP_RIGHT" minHeight="30" minWidth="520">
             <padding>
-                <Insets top="5" right="10" bottom="0" left="0"/>
+                <Insets top="5" right="10" bottom="0" left="10"/>
             </padding>
             <Label fx:id="userInfoLabel" text="Username"/>
-            <!-- Logout button that triggers the onLogoutClick() method in MainController -->
         </VBox>
+
         <VBox id="quiz-ctnr" alignment="TOP_LEFT" spacing="10">
             <Label text="Select a Quiz" />
             <ListView fx:id="quizListView" onMouseClicked="#onQuizSelected" prefHeight="100"/>
