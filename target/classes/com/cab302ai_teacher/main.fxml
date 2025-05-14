@@ -11,8 +11,7 @@
 <?import javafx.geometry.Insets?>
 <HBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.cab302ai_teacher.controller.MainController"
-      prefWidth="640" prefHeight="480" alignment="TOP_LEFT"
->
+      prefWidth="640" prefHeight="480" alignment="TOP_LEFT">
 
     <!-- dashboard sidebar -->
     <VBox id="sidebar_ctnr" alignment="TOP_RIGHT" minHeight="300" minWidth="120" spacing="5">
@@ -23,12 +22,17 @@
         <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onQuizzesClick">Quizzes</Button>
         <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onAIClick">AI Chat Bot</Button>
     </VBox>
-
-    <!-- Logout button that triggers the onLogoutClick() method in MainController -->
-    <VBox HBox.hgrow="SOMETIMES" alignment="CENTER">
-        <Label>Hello and welcome to CAB302 AI Teacher </Label>
-        <Button text="Logout" onAction="#onLogoutClick" />
+    <VBox HBox.hgrow="SOMETIMES" spacing="10" alignment="TOP_LEFT">
+        <VBox id="topbar-ctnr" alignment="TOP_RIGHT" minHeight="30" minWidth="520">
+            <padding>
+                <Insets top="5" right="10" bottom="0" left="0"/>
+            </padding>
+            <Label fx:id="userInfoLabel" text="Username"/>
+            <!-- Logout button that triggers the onLogoutClick() method in MainController -->
+        </VBox>
+        <VBox alignment="CENTER">
+            <Label>Hello and welcome to CAB302 AI Teacher </Label>
+            <Button text="Logout" onAction="#onLogoutClick" />
+        </VBox>
     </VBox>
-
-
 </HBox>

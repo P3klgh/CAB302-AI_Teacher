@@ -15,12 +15,12 @@ public class Validator {
 
     // Validates the email format
     public static boolean isValidEmail(String email) {
-        return email != null && EMAIL_REGEX.matcher(email).matches();
+        return email != null && !email.isEmpty() && EMAIL_REGEX.matcher(email).matches();
     }
 
     // Validates the password (length and complexity)
     public static boolean isValidPassword(String password) {
-        return password != null &&
+        return password != null && !password.isEmpty() &&
                 password.length() >= 6 &&
                 UPPERCASE.matcher(password).find() &&
                 LOWERCASE.matcher(password).find() &&

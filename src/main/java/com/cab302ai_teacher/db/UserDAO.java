@@ -12,7 +12,12 @@ import java.sql.SQLException;
 public class UserDAO {
 
     public static boolean isValidUser(String email, String password) {
-        if (!Validator.isValidEmail(email) || !Validator.isValidPassword(password)) {
+        if (email == null || email.isEmpty() || !Validator.isValidEmail(email)) {
+            System.out.println("Invalid email: " + email);
+            return false;
+        }
+        if (password == null || password.isEmpty() || !Validator.isValidPassword(password)) {
+            System.out.println("Invalid password: " + password);
             return false;
         }
         String query = "SELECT * FROM users WHERE email = ? AND password = ?";
@@ -43,7 +48,12 @@ public class UserDAO {
      * @return true if registration is successful; false otherwise
      */
     public static boolean registerUser(String firstName, String lastName, String email, String password, String role) {
-        if (!Validator.isValidEmail(email) || !Validator.isValidPassword(password)) {
+        if (email == null || email.isEmpty() || !Validator.isValidEmail(email)) {
+//            System.out.println("Invalid email: " + email); // for debugging
+            return false;
+        }
+        if (password == null || password.isEmpty() || !Validator.isValidPassword(password)) {
+//            System.out.println("Invalid password: " + password); // for debugging
             return false;
         }
         String checkEmailQuery = "SELECT COUNT(*) FROM users WHERE email = ?";
