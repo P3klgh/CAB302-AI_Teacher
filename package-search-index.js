@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"com.cab302ai_teacher.ai_teacher","l":"com.cab302ai_teacher"},{"m":"com.cab302ai_teacher.ai_teacher","l":"com.cab302ai_teacher.controller"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"m":"com.cab302ai_teacher.ai_teacher","l":"com.cab302ai_teacher"},{"m":"com.cab302ai_teacher.ai_teacher","l":"com.cab302ai_teacher.controller"},{"m":"com.cab302ai_teacher.ai_teacher","l":"com.cab302ai_teacher.model"}];updateSearchResults();
