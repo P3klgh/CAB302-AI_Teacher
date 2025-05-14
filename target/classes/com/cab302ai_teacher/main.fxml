@@ -21,12 +21,12 @@
     <!-- dashboard sidebar -->
     <VBox id="sidebar_ctnr" alignment="TOP_RIGHT" minHeight="300" minWidth="120" spacing="5">
 
+        <!-- Logo and logo text -->
         <HBox alignment="TOP_CENTER" spacing="5" HBox.hgrow="SOMETIMES">
             <VBox.margin>
                 <Insets top="10" bottom="10"/>
             </VBox.margin>
 
-            <!-- Logo -->
             <ImageView id="logo_container" fitWidth="40" fitHeight="40">
                 <clip>
                     <Rectangle arcWidth="16" arcHeight="16" width="40" height="40"/>
@@ -45,10 +45,13 @@
         <padding>
             <Insets top="5" right="0" bottom="0" left="5"/>
         </padding>
+
+        <!-- Sidebar buttons -->
         <Button styleClass="sidebar_btn" id="sidebar_selected" minWidth="100" minHeight="40">Dashboard</Button>
         <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onQuizzesClick">Quizzes</Button>
         <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onAIClick">AI Chat Bot</Button>
     </VBox>
+
     <VBox HBox.hgrow="SOMETIMES" spacing="10" alignment="TOP_LEFT">
         <VBox id="topbar-ctnr" alignment="TOP_RIGHT" minHeight="30" minWidth="520">
             <padding>

@@ -2,13 +2,18 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Font?>
 
 <!--
   FXML layout for the main screen of the AI Teacher Assistant application.
   This layout is controlled by MainController.java and uses a VBox
   to center and vertically space its elements.
 -->
-<?import javafx.geometry.Insets?>
+
 <HBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.cab302ai_teacher.controller.AIController"
       prefWidth="400" prefHeight="300" alignment="TOP_LEFT"
@@ -16,6 +21,28 @@
 
     <!-- dashboard sidebar -->
     <VBox id="sidebar_ctnr" alignment="TOP_RIGHT" minHeight="300" minWidth="120" spacing="5">
+
+        <!-- Logo and logo text -->
+        <HBox alignment="TOP_CENTER" spacing="5" HBox.hgrow="SOMETIMES">
+            <VBox.margin>
+                <Insets top="10" bottom="10"/>
+            </VBox.margin>
+
+            <ImageView id="logo_container" fitWidth="40" fitHeight="40">
+                <clip>
+                    <Rectangle arcWidth="16" arcHeight="16" width="40" height="40"/>
+                </clip>
+                <image>
+                    <Image url="@logo.png" />
+                </image>
+            </ImageView>
+            <Label maxWidth="100" alignment="CENTER_RIGHT" wrapText="true" text="AI Teacher Assistant" textFill="white">
+                <font>
+                    <Font name="Poppins Bold" size="14"/>
+                </font>
+            </Label>
+        </HBox>
+
         <padding>
             <Insets top="5" right="0" bottom="0" left="5"/>
         </padding>
