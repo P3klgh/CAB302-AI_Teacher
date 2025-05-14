@@ -50,13 +50,22 @@
         <Button styleClass="sidebar_btn" id="sidebar_selected" minWidth="100" minHeight="40">Quizzes</Button>
         <Button styleClass="sidebar_btn"  minWidth="100" minHeight="40" onAction="#onAIClick">AI Chat Bot</Button>
     </VBox>
-    <VBox HBox.hgrow="SOMETIMES" spacing="10" alignment="TOP_LEFT">
-        <VBox HBox.hgrow="SOMETIMES" spacing="10" id="topbar-ctnr" alignment="TOP_RIGHT" minHeight="30" minWidth="520">
+
+    <VBox HBox.hgrow="SOMETIMES" spacing="5" alignment="TOP_LEFT">
+        <HBox alignment="CENTER_RIGHT" minHeight="30" minWidth="520" spacing="5">
             <padding>
-                <Insets top="5" right="10" bottom="0" left="10"/>
+                <Insets right="15" top="5"/>
             </padding>
-            <Label fx:id="userInfoLabel" text="Username"/>
-        </VBox>
+            <Label fx:id="userInfoLabel" text="Username" wrapText="true"/>
+            <ImageView id="logo_container" fitWidth="30" fitHeight="30">
+                <clip>
+                    <Rectangle arcWidth="30" arcHeight="30" width="30" height="30"/>
+                </clip>
+                <image>
+                    <Image url="@images/current_user.png" />
+                </image>
+            </ImageView>
+        </HBox>
 
         <VBox id="quiz-ctnr" alignment="TOP_LEFT" spacing="10">
             <Label fx:id="selectQuizLabel" text="Select a Quiz" />

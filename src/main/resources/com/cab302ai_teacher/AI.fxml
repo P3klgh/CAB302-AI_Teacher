@@ -12,7 +12,7 @@
 
 <HBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.cab302ai_teacher.controller.AIController"
-      prefWidth="640" prefHeight="480" alignment="TOP_LEFT" spacing="10">
+      prefWidth="640" prefHeight="480" alignment="TOP_LEFT">
 
     <!-- Sidebar -->
     <VBox id="sidebar_ctnr" alignment="TOP_RIGHT" minHeight="300" minWidth="120" spacing="5">
@@ -39,7 +39,7 @@
         </HBox>
 
         <padding>
-            <Insets top="5" left="5"/>
+            <Insets top="5" right="0" bottom="0" left="5"/>
         </padding>
         <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onDashboardClick">Dashboard</Button>
         <Button styleClass="sidebar_btn" minWidth="100" minHeight="40" onAction="#onQuizzesClick">Quizzes</Button>
@@ -47,15 +47,23 @@
     </VBox>
 
     <!-- Main content area -->
-    <VBox HBox.hgrow="ALWAYS" spacing="10" alignment="TOP_LEFT" prefWidth="520">
+    <VBox HBox.hgrow="SOMETIMES" spacing="5" alignment="TOP_LEFT">
 
         <!-- Topbar with user info -->
-        <VBox id="topbar-ctnr" alignment="TOP_RIGHT" minHeight="30">
+        <HBox alignment="CENTER_RIGHT" minHeight="30" minWidth="520" spacing="5">
             <padding>
-                <Insets top="5" right="10"/>
+                <Insets right="15" top="5"/>
             </padding>
-            <Label fx:id="userInfoLabel" text="Username"/>
-        </VBox>
+            <Label fx:id="userInfoLabel" text="Username" wrapText="true"/>
+            <ImageView id="logo_container" fitWidth="30" fitHeight="30">
+                <clip>
+                    <Rectangle arcWidth="30" arcHeight="30" width="30" height="30"/>
+                </clip>
+                <image>
+                    <Image url="@images/current_user.png" />
+                </image>
+            </ImageView>
+        </HBox>
 
         <!-- Chat area -->
         <TextArea fx:id="chatArea"

@@ -64,7 +64,7 @@
                     <Rectangle arcWidth="30" arcHeight="30" width="30" height="30"/>
                 </clip>
                 <image>
-                    <Image url="@images/rsz_177cff36fc902a47d3f4d7b8351575696fb0e565.png" />
+                    <Image url="@images/current_user.png" />
                 </image>
             </ImageView>
 
