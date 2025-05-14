@@ -4,18 +4,28 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.image.Image?>
 
+<?import javafx.geometry.Insets?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.cab302ai_teacher.controller.LoginController"
-      spacing="10" alignment="CENTER" prefWidth="400" prefHeight="300"
+      alignment="CENTER" prefWidth="450" prefHeight="500"
       stylesheets="@style.css" fillWidth="false">
 
     <VBox styleClass="content_container" alignment="CENTER" prefHeight="450" prefWidth="500" fillWidth="false" spacing="25">
+
+
         <!-- Page title -->
-        <Label text="AI Teacher Assistant - Login" styleClass="label-title" />
+        <HBox spacing="10" alignment="CENTER">
+            <ImageView id="logo_container" fitWidth="100" fitHeight="100">
+                <image>
+                    <Image url="@images/logo.png" />
+                </image>
+            </ImageView>
+            <Label text="AI Teacher Assistant" styleClass="label-title"/>
+        </HBox>
+
 
         <!-- Email input -->
         <VBox spacing="5">
@@ -32,7 +42,7 @@
 
 
         <!-- Password input -->
-        <VBox spacing="5">
+        <VBox spacing="5" fillWidth="false">
             <HBox spacing="3">
                 <ImageView id="logo_container" fitWidth="16" fitHeight="16">
                     <image>
@@ -46,9 +56,9 @@
 
 
         <!-- Buttons -->
-        <HBox spacing="10" alignment="CENTER">
-            <Button text="Login" onAction="#onLoginClick" styleClass="btn-primary" prefWidth="80"/>
-            <Button text="Register" onAction="#onRegisterClick" styleClass="btn-secondary" prefWidth="80"/>
+        <HBox spacing="7" alignment="CENTER">
+            <Button text="Login" onAction="#onLoginClick" styleClass="btn-primary" prefWidth="120"/>
+            <Button text="Register" onAction="#onRegisterClick" styleClass="btn-secondary" prefWidth="120"/>
         </HBox>
     </VBox>
 
