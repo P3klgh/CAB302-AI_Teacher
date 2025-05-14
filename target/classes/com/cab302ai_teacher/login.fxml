@@ -3,27 +3,54 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.*?>
-
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.image.Image?>
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.cab302ai_teacher.controller.LoginController"
       spacing="10" alignment="CENTER" prefWidth="400" prefHeight="300"
-      stylesheets="@style.css">
+      stylesheets="@style.css" fillWidth="false">
 
-    <!-- Page title -->
-    <Label text="AI Teacher Assistant - Login" styleClass="label-title" />
+    <VBox styleClass="content_container" alignment="CENTER" prefHeight="450" prefWidth="500" fillWidth="false" spacing="25">
+        <!-- Page title -->
+        <Label text="AI Teacher Assistant - Login" styleClass="label-title" />
 
-    <!-- Email input -->
-    <TextField fx:id="emailField" promptText="Email" styleClass="input-field"/>
+        <!-- Email input -->
+        <VBox spacing="5">
+            <HBox spacing="3">
+                <ImageView id="logo_container" fitWidth="16" fitHeight="16">
+                    <image>
+                        <Image url="@images/user.png" />
+                    </image>
+                </ImageView>
+                <Label alignment="BOTTOM_LEFT" text="Username"></Label>
+            </HBox>
+            <TextField fx:id="emailField" promptText="Email" styleClass="input-field" prefWidth="115"/>
+        </VBox>
 
-    <!-- Password input -->
-    <PasswordField fx:id="passwordField" promptText="Password" styleClass="input-field"/>
 
-    <!-- Buttons -->
-    <HBox spacing="10" alignment="CENTER">
-        <Button text="Login" onAction="#onLoginClick" styleClass="btn-primary"/>
-        <Button text="Register" onAction="#onRegisterClick" styleClass="btn-secondary"/>
-    </HBox>
+        <!-- Password input -->
+        <VBox spacing="5">
+            <HBox spacing="3">
+                <ImageView id="logo_container" fitWidth="16" fitHeight="16">
+                    <image>
+                        <Image url="@images/password.png" />
+                    </image>
+                </ImageView>
+                <Label alignment="BOTTOM_LEFT" text="Password"></Label>
+            </HBox>
+            <PasswordField fx:id="passwordField" promptText="Password" styleClass="input-field" prefWidth="115"/>
+        </VBox>
+
+
+        <!-- Buttons -->
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="Login" onAction="#onLoginClick" styleClass="btn-primary" prefWidth="80"/>
+            <Button text="Register" onAction="#onRegisterClick" styleClass="btn-secondary" prefWidth="80"/>
+        </HBox>
+    </VBox>
+
 
 </VBox>

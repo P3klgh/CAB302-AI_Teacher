@@ -33,7 +33,7 @@
                     <Rectangle arcWidth="16" arcHeight="16" width="40" height="40"/>
                 </clip>
                 <image>
-                    <Image url="@logo.png" />
+                    <Image url="@images/logo.png" />
                 </image>
             </ImageView>
             <Label maxWidth="100" alignment="CENTER_RIGHT" wrapText="true" text="AI Teacher Assistant" textFill="white">

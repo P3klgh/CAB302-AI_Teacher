@@ -63,3 +63,8 @@
     -fx-background-color: #F3F4FF;
     -fx-text-fill: #4D44B5;
 }
+
+.content_container {
+    -fx-background-color: white;
+    -fx-background-radius: 10 10 10 10;
+}
