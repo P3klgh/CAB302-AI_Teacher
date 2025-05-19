@@ -50,9 +50,9 @@
     <VBox HBox.hgrow="SOMETIMES" spacing="5" alignment="TOP_LEFT">
 
         <!-- Topbar with user info -->
-        <HBox alignment="CENTER_RIGHT" minHeight="30" minWidth="520" spacing="5">
+        <HBox alignment="CENTER_RIGHT" minHeight="30" prefWidth="520" spacing="5">
             <padding>
-                <Insets right="15" top="5"/>
+                <Insets right="10" top="5"/>
             </padding>
             <Label fx:id="userInfoLabel" text="Username" wrapText="true"/>
             <ImageView id="logo_container" fitWidth="30" fitHeight="30">
@@ -65,26 +65,41 @@
             </ImageView>
         </HBox>
 
-        <!-- Chat area -->
-        <TextArea fx:id="chatArea"
-                  prefHeight="350"
-                  wrapText="true"
-                  editable="false"
-                  VBox.vgrow="ALWAYS"/>
+        <padding>
+            <Insets left="10" right="10"/>
+        </padding>
 
-        <!-- Input area -->
-        <HBox spacing="10">
-            <TextField fx:id="userInput"
-                       promptText="Type your message..."
-                       HBox.hgrow="ALWAYS"/>
-            <Button fx:id="sendButton"
-                    text="Send"
-                    onAction="#onSendMessageClick"
-                    minWidth="80"/>
-            <ProgressIndicator fx:id="progressIndicator"
-                               visible="false"
-                               maxWidth="20"
-                               maxHeight="20"/>
-        </HBox>
+        <VBox alignment="CENTER" styleClass="content_container" spacing="5">
+
+            <!-- Chat area -->
+            <TextArea fx:id="chatArea"
+                      wrapText="true"
+                      editable="false"
+                      id="chatArea"
+                      prefWidth="200"
+                      prefHeight="360"
+                      HBox.hgrow="SOMETIMES"/>
+
+            <padding>
+                <Insets left="10" right="10"/>
+            </padding>
+            <!-- Input area -->
+            <HBox spacing="10" alignment="CENTER">
+                <TextField fx:id="userInput"
+                           promptText="Type your message..."
+                           styleClass="input-field"
+                           HBox.hgrow="SOMETIMES"/>
+                <Button fx:id="sendButton"
+                        text="Send"
+                        onAction="#onSendMessageClick"
+                        styleClass="btn-primary"
+                        minWidth="80"/>
+                <ProgressIndicator fx:id="progressIndicator"
+                                   visible="false"
+                                   managed="false"
+                                   maxWidth="20"
+                                   maxHeight="20"/>
+            </HBox>
+        </VBox>
     </VBox>
 </HBox>

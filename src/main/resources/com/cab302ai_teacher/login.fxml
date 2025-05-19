@@ -57,7 +57,7 @@
         <!-- Buttons -->
         <HBox spacing="7" alignment="CENTER">
             <Button text="Login" onAction="#onLoginClick" styleClass="btn-primary" prefWidth="120"/>
-            <Button text="Register" onAction="#onRegisterClick" styleClass="btn-secondary" prefWidth="120"/>
+            <Button text="Register" onAction="#onRegisterClick" styleClass="btn-primary" prefWidth="120"/>
         </HBox>
     </VBox>
 

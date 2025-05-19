@@ -54,7 +54,7 @@
     </VBox>
 
     <VBox HBox.hgrow="SOMETIMES" spacing="5" alignment="TOP_LEFT">
-        <HBox alignment="CENTER_RIGHT" minHeight="30" spacing="5">
+        <HBox alignment="CENTER_RIGHT" minHeight="30" prefWidth="520" spacing="5">
             <padding>
                 <Insets right="10" top="5"/>
             </padding>
