@@ -13,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
@@ -47,6 +48,9 @@ public class MainController {
 
     @FXML
     private Button confirmBtn;
+
+    @FXML
+    private VBox userEditBox;
 
 
     /**
@@ -164,12 +168,10 @@ public class MainController {
     public void onDetailsEditClick(ActionEvent event) {
 
         // Checks if one textfield is disabled and uses it as a basis for the remaining textfields
-        boolean toggled = userFirstName.isDisable();
+        boolean toggled = userEditBox.isDisable();
 
-        // Reverses the state of the textfields (enables/disables on appropriate click)
-        userFirstName.setDisable(!toggled);
-        userLastName.setDisable(!toggled);
-        userEmail.setDisable(!toggled);
+        // Reverses the state of the textfields/labels (enables/disables on appropriate click)
+        userEditBox.setDisable(!toggled);
 
         // Makes confirm button visible/invisible and allows it to take up space
         confirmBtn.setVisible(toggled);

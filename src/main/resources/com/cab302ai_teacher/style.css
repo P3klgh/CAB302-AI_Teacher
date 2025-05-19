@@ -92,3 +92,8 @@
     -fx-border-radius: 10px;
     -fx-border-width: 1.5px;
 }
+
+#hello_label {
+    -fx-font-size: 16;
+
+}
