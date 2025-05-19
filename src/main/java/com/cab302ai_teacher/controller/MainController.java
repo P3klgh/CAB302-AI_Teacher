@@ -199,22 +199,28 @@ public class MainController {
 
         if (!editLastName.equals(currentUser.getLastName()) && editLastName != null && !editLastName.trim().isEmpty()) {
             System.out.println(editLastName);
+            dbDetailsUpdate("lastName", editLastName);
         }
 
         if (!editEmail.equals(currentUser.getEmail())) {
             if (Validator.isValidEmail(editEmail)) {
                 System.out.println(editEmail);
+                dbDetailsUpdate("email", editEmail);
             }
         }
+
+        // Updates session info to match updated user details
+        User updatedUser = UserDAO.getUserByEmail(editEmail);
+        this.currentUser = updatedUser;
+        userInfoLabel.setText(currentUser.getFirstName() + " " + currentUser.getLastName() + " (" + currentUser.getRole() + ")");
+
     }
 
     public void dbDetailsUpdate(String column, String detail) {
         String query = "UPDATE users SET " + column + " = ? WHERE email = ?";
-        System.out.println(query);
 
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-
 
             stmt.setString(1, detail);
             stmt.setString(2, currentUser.getEmail());
