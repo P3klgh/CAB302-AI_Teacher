@@ -302,6 +302,8 @@ public class QuestionController {
                     if (!(optionNode instanceof HBox)) continue;
 
                     HBox optionBox = (HBox) optionNode;
+                    if (optionBox.getChildren().size() < 2) continue;
+
                     RadioButton radioButton = (RadioButton) optionBox.getChildren().get(0);
                     TextField optionField = (TextField) optionBox.getChildren().get(1);
 
@@ -312,6 +314,11 @@ public class QuestionController {
                     }
                 }
 
+                if (correctIndexes.isEmpty()) {
+                    showAlert("Validation Error", "Each question must have at least one correct answer selected.\n\nMissing in: Question " + i);
+                    return;
+                }
+
                 question.setOptions(updatedOptions);
                 question.setCorrectIndexes(correctIndexes);
             }
@@ -320,9 +327,7 @@ public class QuestionController {
             quizListView.getItems().set(index, currentQuiz);
             quizListView.getSelectionModel().select(currentQuiz);
 
-
-        }
-        else {
+        } else {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("No Selection");
             alert.setHeaderText("Quiz Selection Error");
@@ -330,6 +335,7 @@ public class QuestionController {
             alert.showAndWait();
         }
     }
+
 
     private void handleDeleteQuestion(Question question, VBox questionBox) {
         currentQuiz.getQuestions().remove(question);
