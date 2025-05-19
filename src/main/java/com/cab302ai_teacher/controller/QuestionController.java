@@ -62,7 +62,7 @@ public class QuestionController {
             {
                 HBox.setHgrow(spacer, Priority.ALWAYS); // this allows the spacer to take up all available space
 
-                deleteButton.getStyleClass().add("deleteButton"); // optional: CSS styling
+                deleteButton.getStyleClass().add("btn-primary"); // optional: CSS styling
 
                 deleteButton.setOnAction(e -> {
                     Quiz quiz = getItem();
@@ -165,6 +165,8 @@ public class QuestionController {
             }
 
             Button deleteBtn = new Button("Delete Question");
+            deleteBtn.getStyleClass().add("btn-primary"); // optional: CSS styling
+
             deleteBtn.setOnAction(event -> handleDeleteQuestion(question, questionBox));
 
             questionBox.getChildren().add(deleteBtn);
