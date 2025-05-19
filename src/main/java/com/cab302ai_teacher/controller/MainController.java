@@ -1,6 +1,9 @@
 package com.cab302ai_teacher.controller;
 
 import com.cab302ai_teacher.Main;
+import com.cab302ai_teacher.db.DatabaseManager;
+import com.cab302ai_teacher.util.PasswordHasher;
+import com.cab302ai_teacher.util.Validator;
 import com.cab302ai_teacher.db.UserDAO;
 import com.cab302ai_teacher.model.User;
 import javafx.fxml.FXML;
@@ -13,8 +16,14 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Objects;
-import java.util.logging.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class MainController {
@@ -152,20 +161,21 @@ public class MainController {
     }
 
     @FXML
-    public void displayUser() {
-    }
+    public void onDetailsEditClick(ActionEvent event) {
 
-    @FXML
-    public void onDetailsEdit(ActionEvent event) {
-
+        // Checks if one textfield is disabled and uses it as a basis for the remaining textfields
         boolean toggled = userFirstName.isDisable();
+
+        // Reverses the state of the textfields (enables/disables on appropriate click)
         userFirstName.setDisable(!toggled);
         userLastName.setDisable(!toggled);
         userEmail.setDisable(!toggled);
 
+        // Makes confirm button visible/invisible and allows it to take up space
         confirmBtn.setVisible(toggled);
         confirmBtn.setManaged(toggled);
 
+        // Adjusts the edit button's text based on state
         if (toggled) {
             editBtn.setText("Cancel");
 
@@ -174,7 +184,46 @@ public class MainController {
     }
 
     @FXML
-    public void onDetailsConfirm(ActionEvent event) {
+    public void onDetailsConfirmClick(ActionEvent event) {
 
+        // shorthand for textfield values
+        String editFirstName = userFirstName.getText();
+        String editLastName = userLastName.getText();
+        String editEmail = userEmail.getText();
+
+        // each statement checks relative validity of the textfield input (and if it's been changed)
+        if (!editFirstName.equals(currentUser.getFirstName()) && editFirstName != null && !editFirstName.trim().isEmpty()) {
+            System.out.println(editFirstName);
+            dbDetailsUpdate("firstName", editFirstName);
+        }
+
+        if (!editLastName.equals(currentUser.getLastName()) && editLastName != null && !editLastName.trim().isEmpty()) {
+            System.out.println(editLastName);
+        }
+
+        if (!editEmail.equals(currentUser.getEmail())) {
+            if (Validator.isValidEmail(editEmail)) {
+                System.out.println(editEmail);
+            }
+        }
+    }
+
+    public void dbDetailsUpdate(String column, String detail) {
+        String query = "UPDATE users SET " + column + " = ? WHERE email = ?";
+        System.out.println(query);
+
+        try (Connection conn = DatabaseManager.connect();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+
+            stmt.setString(1, detail);
+            stmt.setString(2, currentUser.getEmail());
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Login query failed: " + e.getMessage());
+        }
     }
 }
+

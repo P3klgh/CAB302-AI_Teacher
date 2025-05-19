@@ -89,8 +89,8 @@
                 </HBox>
             </VBox>
             <HBox alignment="CENTER">
-                <Button text="Edit" fx:id="editBtn" onAction="#onDetailsEdit"/>
-                <Button text="Confirm" fx:id="confirmBtn" visible="false" managed="false" onAction="#onDetailsConfirm"/>
+                <Button text="Edit" fx:id="editBtn" onAction="#onDetailsEditClick"/>
+                <Button text="Confirm" fx:id="confirmBtn" visible="false" managed="false" onAction="#onDetailsConfirmClick"/>
             </HBox>
             <Button text="Logout" onAction="#onLogoutClick" />
         </VBox>
