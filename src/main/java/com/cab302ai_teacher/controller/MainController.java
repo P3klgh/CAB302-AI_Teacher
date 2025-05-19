@@ -7,7 +7,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.event.ActionEvent;
@@ -21,6 +23,22 @@ public class MainController {
 
     @FXML
     private Label userInfoLabel;
+
+    @FXML
+    private TextField userFirstName;
+
+    @FXML
+    private TextField userLastName;
+
+    @FXML
+    private TextField userEmail;
+
+    @FXML
+    private Button editBtn;
+
+    @FXML
+    private Button confirmBtn;
+
 
     /**
      * Called when the logout button is clicked.
@@ -128,5 +146,35 @@ public class MainController {
         if (userInfoLabel != null && user != null) {
             userInfoLabel.setText(user.getFirstName() + " " + user.getLastName() + " (" + user.getRole() + ")");
         }
+        userFirstName.setText(currentUser.getFirstName());
+        userLastName.setText(currentUser.getLastName());
+        userEmail.setText(currentUser.getEmail());
+    }
+
+    @FXML
+    public void displayUser() {
+    }
+
+    @FXML
+    public void onDetailsEdit(ActionEvent event) {
+
+        boolean toggled = userFirstName.isDisable();
+        userFirstName.setDisable(!toggled);
+        userLastName.setDisable(!toggled);
+        userEmail.setDisable(!toggled);
+
+        confirmBtn.setVisible(toggled);
+        confirmBtn.setManaged(toggled);
+
+        if (toggled) {
+            editBtn.setText("Cancel");
+
+        } else { editBtn.setText("Edit"); }
+
+    }
+
+    @FXML
+    public void onDetailsConfirm(ActionEvent event) {
+
     }
 }

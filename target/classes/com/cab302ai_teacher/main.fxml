@@ -54,9 +54,9 @@
     </VBox>
 
     <VBox HBox.hgrow="SOMETIMES" spacing="5" alignment="TOP_LEFT">
-        <HBox alignment="CENTER_RIGHT" minHeight="30" minWidth="520" spacing="5">
+        <HBox alignment="CENTER_RIGHT" minHeight="30" spacing="5">
             <padding>
-                <Insets right="15" top="5"/>
+                <Insets right="10" top="5"/>
             </padding>
             <Label fx:id="userInfoLabel" text="Username" wrapText="true"/>
             <ImageView id="logo_container" fitWidth="30" fitHeight="30">
@@ -67,10 +67,31 @@
                     <Image url="@images/current_user.png" />
                 </image>
             </ImageView>
-
         </HBox>
-        <VBox alignment="CENTER" styleClass="content_container">
+
+        <padding>
+            <Insets left="10" right="10"/>
+        </padding>
+        <VBox alignment="CENTER" styleClass="content_container" spacing="5">
             <Label>Hello and welcome to CAB302 AI Teacher</Label>
+            <VBox alignment="CENTER" prefWidth="100" maxWidth="200">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="First Name:" minWidth="80"/>
+                    <TextField fx:id="userFirstName" disable="true" prefWidth="100"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Last Name:" minWidth="80"/>
+                    <TextField fx:id="userLastName" disable="true" prefWidth="100"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Email" minWidth="80"/>
+                    <TextField fx:id="userEmail" disable="true" prefWidth="100"/>
+                </HBox>
+            </VBox>
+            <HBox alignment="CENTER">
+                <Button text="Edit" fx:id="editBtn" onAction="#onDetailsEdit"/>
+                <Button text="Confirm" fx:id="confirmBtn" visible="false" managed="false" onAction="#onDetailsConfirm"/>
+            </HBox>
             <Button text="Logout" onAction="#onLogoutClick" />
         </VBox>
     </VBox>
