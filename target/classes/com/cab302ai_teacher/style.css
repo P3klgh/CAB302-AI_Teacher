@@ -3,21 +3,22 @@
 }
 
 .label-title {
-    -fx-font-size: 20px;
+    -fx-font-size: 30px;
     -fx-font-weight: bold;
-    -fx-text-fill: #333;
+    -fx-text-fill: black;
 }
 
 .input-field {
     -fx-pref-width: 250px;
     -fx-padding: 8px;
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
-    -fx-border-color: #ccc;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1.5px;
+    -fx-border-color: #4D44B5;
 }
 
 .btn-primary {
-    -fx-background-color: #1e90ff;
+    -fx-background-color: #4D44B5;
     -fx-text-fill: white;
     -fx-background-radius: 5px;
     -fx-padding: 6px 12px;
@@ -25,12 +26,12 @@
 }
 
 .btn-secondary {
-    -fx-background-color: transparent;
-    -fx-border-color: #1e90ff;
-    -fx-text-fill: #1e90ff;
+    -fx-background-color: #4D44B5;
+    -fx-text-fill: white;
     -fx-background-radius: 5px;
     -fx-border-radius: 5px;
     -fx-padding: 6px 12px;
+    -fx-font-weight: bold;
 }
 
 #sidebar_ctnr {
@@ -84,4 +85,9 @@
     -fx-background-color: #4CAF50;
     -fx-text-fill: white;
     -fx-padding: 10px 20px;
+}
+
+.content_container {
+    -fx-background-color: white;
+    -fx-background-radius: 10 10 10 10;
 }
