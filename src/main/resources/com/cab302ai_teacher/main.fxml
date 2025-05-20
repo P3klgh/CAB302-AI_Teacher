@@ -54,9 +54,9 @@
     </VBox>
 
     <VBox HBox.hgrow="SOMETIMES" spacing="5" alignment="TOP_LEFT">
-        <HBox alignment="CENTER_RIGHT" minHeight="30" minWidth="520" spacing="5">
+        <HBox alignment="CENTER_RIGHT" minHeight="30" prefWidth="520" spacing="5">
             <padding>
-                <Insets right="15" top="5"/>
+                <Insets right="10" top="5"/>
             </padding>
             <Label fx:id="userInfoLabel" text="Username" wrapText="true"/>
             <ImageView id="logo_container" fitWidth="30" fitHeight="30">
@@ -67,11 +67,43 @@
                     <Image url="@images/current_user.png" />
                 </image>
             </ImageView>
-
         </HBox>
-        <VBox alignment="CENTER" styleClass="content_container">
-            <Label>Hello and welcome to CAB302 AI Teacher</Label>
-            <Button text="Logout" onAction="#onLogoutClick" />
+
+        <padding>
+            <Insets left="10" right="10"/>
+        </padding>
+        <VBox alignment="CENTER" styleClass="content_container" spacing="5" prefHeight="360">
+
+            <Label text="Hello and welcome to CAB203 AI Teacher Assistant!" id="hello_label">
+                <padding>
+                    <Insets top="20" bottom="20"/>
+                </padding>
+            </Label>
+            <Label text="Here are your details, click edit to update them"/>
+            <VBox fx:id="userEditBox" alignment="CENTER" prefWidth="100" maxWidth="250" spacing="5" disable="true">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="First Name:" minWidth="80"/>
+                    <TextField fx:id="userFirstName" prefWidth="200" styleClass="input-field"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Last Name:" minWidth="80"/>
+                    <TextField fx:id="userLastName" prefWidth="200" styleClass="input-field"/>
+                </HBox>
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Email" minWidth="80"/>
+                    <TextField fx:id="userEmail" prefWidth="200" styleClass="input-field"/>
+                </HBox>
+            </VBox>
+            <HBox alignment="CENTER" spacing="7" disable="false">
+                <Button text="Edit" fx:id="editBtn" onAction="#onDetailsEditClick" styleClass="btn-primary"/>
+                <Button text="Confirm" fx:id="confirmBtn" visible="false" managed="false" onAction="#onDetailsConfirmClick" styleClass="btn-primary"/>
+            </HBox>
+
+            <HBox alignment="CENTER">
+                <padding><Insets top="30"/></padding>
+                <Button text="Logout" onAction="#onLogoutClick" styleClass="btn-primary"/>
+            </HBox>
+
         </VBox>
     </VBox>
 </HBox>

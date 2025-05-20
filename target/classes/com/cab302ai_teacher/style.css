@@ -25,15 +25,6 @@
     -fx-font-weight: bold;
 }
 
-.btn-secondary {
-    -fx-background-color: #4D44B5;
-    -fx-text-fill: white;
-    -fx-background-radius: 5px;
-    -fx-border-radius: 5px;
-    -fx-padding: 6px 12px;
-    -fx-font-weight: bold;
-}
-
 #sidebar_ctnr {
     -fx-background-color: #4D44B5;
 }
@@ -90,4 +81,19 @@
 .content_container {
     -fx-background-color: white;
     -fx-background-radius: 10 10 10 10;
+}
+
+#chatArea {
+    -fx-background-color: transparent;
+}
+
+#chatArea .content {
+    -fx-border-color: #4D44B5;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1.5px;
+}
+
+#hello_label {
+    -fx-font-size: 16;
+
 }

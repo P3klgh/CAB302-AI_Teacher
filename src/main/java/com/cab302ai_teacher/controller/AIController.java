@@ -50,6 +50,7 @@ public class AIController {
         userInput.setDisable(true);
         sendButton.setDisable(true);
         progressIndicator.setVisible(true);  // Show loading indicator
+        progressIndicator.setManaged(true);  // Show loading indicator
 
         // Display the user's message in the chat area
         chatArea.appendText("You: " + userMessage + "\n");
@@ -61,6 +62,7 @@ public class AIController {
                 chatArea.setScrollTop(Double.MAX_VALUE);  // Scroll to the bottom
                 userInput.clear();  // Clear the input field
                 progressIndicator.setVisible(false);  // Hide loading indicator
+                progressIndicator.setManaged(false);  // Hide loading indicator
                 userInput.setDisable(false);
                 sendButton.setDisable(false);
             });
