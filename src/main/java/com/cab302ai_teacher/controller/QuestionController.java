@@ -276,7 +276,7 @@ public class QuestionController {
                 for (Node node : quizNameBox.getChildren()) {
                     if (node instanceof TextField) {
                         String updatedName = ((TextField) node).getText();
-                        currentQuiz.setName(updatedName);
+                        currentQuiz.setQuizName(updatedName);
                     }
                 }
             }
