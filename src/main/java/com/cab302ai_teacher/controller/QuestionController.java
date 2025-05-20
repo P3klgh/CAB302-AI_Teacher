@@ -276,7 +276,7 @@ public class QuestionController {
                 for (Node node : quizNameBox.getChildren()) {
                     if (node instanceof TextField) {
                         String updatedName = ((TextField) node).getText();
-                        currentQuiz.setName(updatedName);
+                        currentQuiz.setQuizName(updatedName);
                     }
                 }
             }
@@ -340,7 +340,7 @@ public class QuestionController {
 
 
     private void handleDeleteQuestion(Question question, VBox questionBox) {
-        currentQuiz.getQuestions().remove(question);
+        currentQuiz.removeQuestion(question);
         if (question.getId() != -1) {
             deletedQuestions.add(question);
         }
@@ -403,7 +403,7 @@ public class QuestionController {
         questionCtnr.getChildren().add(questionBox);
 
         Question newQuestion = new Question("", Arrays.asList("", "", "", ""), new ArrayList<>(), -1);  // id = -1 for new question
-        currentQuiz.getQuestions().add(newQuestion);
+        currentQuiz.addQuestion(newQuestion);
     }
 
     private void showAlert(String title, String message) {
