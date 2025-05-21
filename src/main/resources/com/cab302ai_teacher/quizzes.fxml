@@ -52,9 +52,9 @@
     </VBox>
 
     <VBox HBox.hgrow="SOMETIMES" spacing="5" alignment="TOP_LEFT">
-        <HBox alignment="CENTER_RIGHT" minHeight="30" minWidth="520" spacing="5">
+        <HBox alignment="CENTER_RIGHT" minHeight="30" prefWidth="520" spacing="5">
             <padding>
-                <Insets right="15" top="5"/>
+                <Insets right="10" top="5"/>
             </padding>
             <Label fx:id="userInfoLabel" text="Username" wrapText="true"/>
             <ImageView id="logo_container" fitWidth="30" fitHeight="30">
@@ -67,13 +67,19 @@
             </ImageView>
         </HBox>
 
-        <VBox id="quiz-ctnr" alignment="TOP_LEFT" spacing="10">
+        <padding>
+            <Insets left="10" right="10"/>
+        </padding>
+        <VBox styleClass="content_container" alignment="TOP_LEFT" spacing="10" prefHeight="330" prefWidth="520">
+            <padding>
+                <Insets top="10" bottom="10" left="10" right="10"/>
+            </padding>
             <Label fx:id="selectQuizLabel" text="Select a Quiz" />
             <ListView fx:id="quizListView" onMouseClicked="#onQuizSelected" prefHeight="100"/>
             <Label fx:id="noQuizLabel" text="There are no quizzes available." visible="false" managed="false" />
             <VBox fx:id="quizDisplayBox" visible="false" managed="false" id="quizName-ctnr">
                 <Label fx:id="quiz" text="Quiz"/>
-                <VBox id="question-ctnr">
+                <VBox id="question-ctnr" spacing="5">
                     <Label fx:id="questionIndex" text="Question 1"/>
                     <Label fx:id="question" text="Question"/>
                     <Label fx:id="hintLabel" text=""/>
@@ -87,7 +93,7 @@
                               text="Option 4"/>
                 </VBox>
                 <HBox spacing="10" alignment="CENTER">
-                    <Button fx:id="nextButton" text="Next" alignment="CENTER" onAction="#onNextButtonClick"/>
+                    <Button fx:id="nextButton" text="Next" alignment="CENTER" onAction="#onNextButtonClick" styleClass="btn-primary"/>
                     <Button fx:id="restartButton" text="Restart Quiz" visible="false" managed="false" onAction="#onRestartQuizClick"/>
                 </HBox>
             </VBox>

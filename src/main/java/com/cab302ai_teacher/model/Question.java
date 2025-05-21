@@ -15,18 +15,6 @@ public class Question {
         this.id = id;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public void setOptions(List<String> options) {
-        this.options = options;
-    }
-
-    public void setCorrectIndexes(List<Integer> correctAnswerIndex) {
-        this.correctIndexes = correctAnswerIndex;
-    }
-
     public String getQuestion() {
         return question;
     }
@@ -39,11 +27,23 @@ public class Question {
         return correctIndexes;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getId() {
         return id;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public void setOptions(List<String> options) {
+        this.options = options;
+    }
+
+    public void setCorrectIndexes(List<Integer> correctIndexes) {
+        this.correctIndexes = correctIndexes;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

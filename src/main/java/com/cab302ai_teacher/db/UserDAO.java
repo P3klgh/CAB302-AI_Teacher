@@ -12,22 +12,18 @@ import java.sql.SQLException;
 public class UserDAO {
 
     public static boolean isValidUser(String email, String password) {
-        if (email == null || email.isEmpty() || !Validator.isValidEmail(email)) {
-            System.out.println("Invalid email: " + email);
+        if (isInvalidCredentials(email, password)) {
+            System.out.println("Invalid email or password format.");
             return false;
         }
-        if (password == null || password.isEmpty() || !Validator.isValidPassword(password)) {
-            System.out.println("Invalid password: " + password);
-            return false;
-        }
+
         String query = "SELECT * FROM users WHERE email = ? AND password = ?";
 
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
-            String hashedPassword = PasswordHasher.hashPassword(password);
             stmt.setString(1, email);
-            stmt.setString(2, hashedPassword);
+            stmt.setString(2, PasswordHasher.hashPassword(password));
 
             ResultSet rs = stmt.executeQuery();
             return rs.next();
@@ -37,57 +33,28 @@ public class UserDAO {
             return false;
         }
     }
-    /**
-     * Registers a new user with the given email, hashed password, and role.
-     *
-     * @param firstName The user's first name
-     * @param lastName The user's last name
-     * @param email The user's email address
-     * @param password The hashed password to store
-     * @param role The role of the user (e.g., "student", "teacher", "admin")
-     * @return true if registration is successful; false otherwise
-     */
+
     public static boolean registerUser(String firstName, String lastName, String email, String password, String role) {
-        if (email == null || email.isEmpty() || !Validator.isValidEmail(email)) {
-//            System.out.println("Invalid email: " + email); // for debugging
-            return false;
-        }
-        if (password == null || password.isEmpty() || !Validator.isValidPassword(password)) {
-//            System.out.println("Invalid password: " + password); // for debugging
-            return false;
-        }
-        String checkEmailQuery = "SELECT COUNT(*) FROM users WHERE email = ?";
-        try (Connection conn = DatabaseManager.connect();
-             PreparedStatement checkStmt = conn.prepareStatement(checkEmailQuery)) {
+        if (isInvalidCredentials(email, password)) return false;
 
-            checkStmt.setString(1, email);
-
-            var rs = checkStmt.executeQuery();
-            if (rs.next() && rs.getInt(1) > 0) {
-                // If the email already exists in the database, registration should fail
+        try (Connection conn = DatabaseManager.connect()) {
+            if (emailExists(conn, email)) {
                 System.err.println("Registration failed: Email already exists.");
                 return false;
             }
-        } catch (SQLException e) {
-            System.err.println("Error checking email: " + e.getMessage());
-            return false;
-        }
 
-        // Step 2: Proceed with user registration if email does not exist
-        String sql = "INSERT INTO users (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
-        String hashedPassword = PasswordHasher.hashPassword(password);
+            String insertQuery = "INSERT INTO users (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DatabaseManager.connect();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            try (PreparedStatement stmt = conn.prepareStatement(insertQuery)) {
+                stmt.setString(1, firstName);
+                stmt.setString(2, lastName);
+                stmt.setString(3, email);
+                stmt.setString(4, PasswordHasher.hashPassword(password));
+                stmt.setString(5, role);
 
-            stmt.setString(1, firstName);
-            stmt.setString(2, lastName);
-            stmt.setString(3, email);
-            stmt.setString(4, hashedPassword);
-            stmt.setString(5, role);
-
-            stmt.executeUpdate();
-            return true;
+                stmt.executeUpdate();
+                return true;
+            }
 
         } catch (SQLException e) {
             System.err.println("Registration failed: " + e.getMessage());
@@ -95,14 +62,9 @@ public class UserDAO {
         }
     }
 
-    /**
-     * Retrieves a user by their email.
-     *
-     * @param email The user's email address
-     * @return A User object if found; null otherwise
-     */
     public static User getUserByEmail(String email) {
         String query = "SELECT * FROM users WHERE email = ?";
+
         try (Connection conn = DatabaseManager.connect();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -110,16 +72,34 @@ public class UserDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                String firstName = rs.getString("firstName");
-                String lastName = rs.getString("lastName");
-                String password = rs.getString("password");
-                String role = rs.getString("role");
-                return new User(firstName, lastName, email, password, role);
+                return new User(
+                        rs.getString("firstName"),
+                        rs.getString("lastName"),
+                        email,
+                        rs.getString("password"),
+                        rs.getString("role")
+                );
             }
 
         } catch (SQLException e) {
             System.err.println("User lookup failed: " + e.getMessage());
         }
         return null;
+    }
+
+    // === Private helpers ===
+
+    private static boolean isInvalidCredentials(String email, String password) {
+        return email == null || email.isEmpty() || !Validator.isValidEmail(email)
+                || password == null || password.isEmpty() || !Validator.isValidPassword(password);
+    }
+
+    private static boolean emailExists(Connection conn, String email) throws SQLException {
+        String query = "SELECT COUNT(*) FROM users WHERE email = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        }
     }
 }
