@@ -112,7 +112,7 @@ public class AIController {
             FXMLLoader loader;
             Scene scene;
 
-            if (Objects.equals(currentUser.getRole(), "Student")) {
+            if (Objects.equals(currentUser.getRole(), "student")) {
                 loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/quizzes.fxml"));
                 scene = new Scene(loader.load(), 640, 480);
 
