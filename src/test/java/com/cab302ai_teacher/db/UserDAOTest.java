@@ -19,7 +19,7 @@ public class UserDAOTest {
     @BeforeEach
     public void setup() {
 
-        try (Connection conn = DatabaseManager.connect();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement("DELETE FROM users WHERE email = ?")) {
             stmt.setString(1, testEmail);
             stmt.executeUpdate();
@@ -127,7 +127,7 @@ public class UserDAOTest {
         String query = "SELECT role FROM users WHERE email = ?";
         String roleFromDb = null;
 
-        try (Connection conn = DatabaseManager.connect();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, testEmail);
             var rs = stmt.executeQuery();

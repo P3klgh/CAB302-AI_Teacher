@@ -20,7 +20,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         // Initialize the database (create tables if they don't exist)
-        DatabaseManager.initializeDatabase();
+        DatabaseManager.getInstance().initializeDatabase();
 
         // Load the login screen from the FXML file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/login.fxml"));

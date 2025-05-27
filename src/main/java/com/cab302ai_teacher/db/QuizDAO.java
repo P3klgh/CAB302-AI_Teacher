@@ -12,7 +12,7 @@ public class QuizDAO {
         List<Quiz> quizzes = new ArrayList<>();
         String quizQuery = "SELECT * FROM quizzes";
 
-        try (Connection conn = DatabaseManager.connect();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement quizStmt = conn.prepareStatement(quizQuery);
              ResultSet quizRs = quizStmt.executeQuery()) {
 
@@ -102,7 +102,7 @@ public class QuizDAO {
         PreparedStatement optionStmt = null;
 
         try {
-            conn = DatabaseManager.connect();
+            conn = DatabaseManager.getInstance().getConnection();
             conn.setAutoCommit(false);  // Start transaction
 
             // 1. Update quiz name
@@ -205,7 +205,7 @@ public class QuizDAO {
     public static int insertQuiz(Quiz quiz) throws SQLException {
         String insertQuizSQL = "INSERT INTO quizzes (name) VALUES (?)";
 
-        try (Connection conn = DatabaseManager.connect();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(insertQuizSQL, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, quiz.getName());
@@ -232,7 +232,7 @@ public class QuizDAO {
         String deleteQuestionsSQL = "DELETE FROM questions WHERE quiz_id = ?";
         String deleteQuizSQL = "DELETE FROM quizzes WHERE id = ?";
 
-        try (Connection conn = DatabaseManager.connect()) {
+        try (Connection conn = DatabaseManager.getInstance().getConnection()) {
             conn.setAutoCommit(false);
 
             try (PreparedStatement deleteOptionsStmt = conn.prepareStatement(deleteOptionsSQL);

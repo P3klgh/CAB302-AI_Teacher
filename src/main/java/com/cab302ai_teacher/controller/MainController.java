@@ -221,7 +221,7 @@ public class MainController {
     public void dbDetailsUpdate(String column, String detail) {
         String query = "UPDATE users SET " + column + " = ? WHERE email = ?";
 
-        try (Connection conn = DatabaseManager.connect();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, detail);

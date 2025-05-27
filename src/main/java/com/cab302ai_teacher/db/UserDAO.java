@@ -3,7 +3,7 @@ package com.cab302ai_teacher.db;
 import com.cab302ai_teacher.model.User;
 import com.cab302ai_teacher.util.PasswordHasher;
 import com.cab302ai_teacher.util.Validator;
-
+import com.cab302ai_teacher.model.UserFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +19,7 @@ public class UserDAO {
 
         String query = "SELECT * FROM users WHERE email = ? AND password = ?";
 
-        try (Connection conn = DatabaseManager.connect();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, email);
@@ -37,7 +37,7 @@ public class UserDAO {
     public static boolean registerUser(String firstName, String lastName, String email, String password, String role) {
         if (isInvalidCredentials(email, password)) return false;
 
-        try (Connection conn = DatabaseManager.connect()) {
+        try (Connection conn = DatabaseManager.getInstance().getConnection()) {
             if (emailExists(conn, email)) {
                 System.err.println("Registration failed: Email already exists.");
                 return false;
@@ -65,14 +65,14 @@ public class UserDAO {
     public static User getUserByEmail(String email) {
         String query = "SELECT * FROM users WHERE email = ?";
 
-        try (Connection conn = DatabaseManager.connect();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return new User(
+                return UserFactory.create(
                         rs.getString("firstName"),
                         rs.getString("lastName"),
                         email,
