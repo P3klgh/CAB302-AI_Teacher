@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.cab302ai_teacher"},{"l":"com.cab302ai_teacher.controller"},{"l":"com.cab302ai_teacher.db"},{"l":"com.cab302ai_teacher.model"},{"l":"com.cab302ai_teacher.util"}];updateSearchResults();
