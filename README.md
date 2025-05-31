@@ -2,73 +2,93 @@
 
 ## What is this?
 
-This is a JavaFX desktop app we built for CAB302.  
-It's made to help teachers run classrooms better — with some AI stuff like quiz generation and a chatbot to help students study.
+This is a JavaFX desktop application developed for the CAB302 course.  
+It assists teachers in managing classrooms and supports AI features such as quiz generation and a chatbot for students.
 
-We used Agile (2-week sprints), worked in a team, and wrote most of it in Java using MVC and good OO practices.
+We followed Agile methodology (two-week sprints), worked collaboratively in a team, and applied object-oriented principles using Java and MVC architecture.
 
 ---
 
-## Features (main stuff that works)
+## Features
 
-- 🧠 **AI Quiz Maker**  
-  You can either make quizzes yourself or let the app generate one for you using AI.
+- **Quiz Maker**  
+  Create quizzes manually or generate them.
 
-- 🤖 **AI Chatbot**  
-  If a student gets stuck, they can ask questions and get explanations or study resources.
+- **AI Chatbot**  
+  Students can ask questions and receive study support or explanations.
+
+- **User Management**  
+  Teachers and students can log in, edit personal details, and navigate with role-based functionality.
+
+- **Quiz Management**  
+  Teachers can create, edit, and delete quizzes, while students can take quizzes and receive scores.
 
 ---
 
 ## Tech Stack
 
 - Java 17+
-- JavaFX for GUI
-- SQLite for storing stuff
-- Maven for building
-- JUnit for testing
-- Git + GitHub for version control
+- JavaFX (UI)
+- SQLite (Database)
+- Maven (Build tool)
+- JUnit (Testing)
+- GitHub Actions (CI/CD)
 
 ---
 
 ## How to Run It
 
-1. Install Java 17 or higher
-2. Open the project in IntelliJ (or another Java IDE)
-3. Make sure JavaFX is set up properly
-4. Go to this file: src/main/java/com/cab302ai_teacher/Main.java
-
-
-5. Run it (should open the login screen)
+1. Install Java 17 or newer
+2. Open the project in an IDE (e.g., IntelliJ)
+3. Set up JavaFX properly
+4. Run `src/main/java/com/cab302ai_teacher/Main.java`
+5. The application will start with the login screen
 
 ---
 
 ## How to Test It
 
-- We wrote some basic unit tests to check login and registration logic.
-- You can find them in `src/test/`.
-- You can run them individually. (e.g. DatabaseManagerTest, UserDAOTest and ValidatorTest)
-- Some tests are meant to **fail on purpose**, like when trying to register a duplicate email — because our DB doesn't allow two users with the same email (`UNIQUE constraint`).
+- Navigate to `src/test/` to find unit tests for:
+  - DatabaseManager
+  - UserDAO
+  - Validator
+- Run tests using your IDE or Maven
+- Some test cases are meant to fail (e.g., duplicate email registration)
+
+---
+
+## Security
+
+- Passwords are hashed using SHA-256 before storage
+- The app enforces email format and strong password requirements
+
+---
+
+## Continuous Integration
+
+GitHub Actions runs automated workflows on every push and pull request:
+
+- Maven build
+- Unit tests
+- Javadoc generation
+- Test report publication
+
+
+---
+
+## Team and Responsibilities
+
+| Name                      | Role                       | Contributions                                                                |
+| ------------------------- | -------------------------- | ---------------------------------------------------------------------------- |
+| Zach (N12038431)          | Designer / Backend Support | Low/Medium fidelity designs, implemented manual quiz, meeting minutes        |
+| Kynan Stoakes (N11477504) | Frontend Developer         | UI styling, user edit details, troubleshooting, stage navigation             |
+| Kenneth Lee (N11532386)   | Fullstack Developer        | REST API implementation, password hashing, DB management, test case creation |
+| Sanghun Han (N11680628)   | Refactorer / CI Integrator | Refactoring using Singleton/Factory patterns, GitHub Actions, Trello setup   |
 
 ---
 
 ## Notes
 
-- Passwords are securely hashed using SHA-256 when stored.
-- Make sure to delete `ai_teacher.db` if you want to start fresh — it'll regenerate with the correct schema.
-- We also used **Trello** for sprint planning and GitHub for version control throughout the project.
-
-
-## Continuous Integration (CI)
-
-This project uses **GitHub Actions** for Continuous Integration.
-
-Whenever someone pushes to the `main` branch or opens a pull request against it, GitHub Actions automatically runs the following steps:
-
-- Builds the project using Maven (`mvn package`)
-- Runs all JUnit tests (`mvn test`)
-- Generates Javadoc
-- Publishes test reports using `dorny/test-reporter`
-
-You can view recent builds in the [Actions tab](../../actions).
-
-This ensures the code stays reliable as new changes are added.
+- The SQLite database (`ai_teacher.db`) is regenerated if deleted
+- Project includes modular Javadoc for all classes and controllers
+- Javadoc is auto-deployed to GitHub Pages via CI/CD
