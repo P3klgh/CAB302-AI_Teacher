@@ -23,6 +23,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.*;
 
+/**
+ * Controller class for handling quiz interactions for student users.
+ */
 public class QuizzesController {
 
     private List<Question> questions;
@@ -39,33 +42,19 @@ public class QuizzesController {
     private List<Quiz> quizzes;
     private Quiz currentQuiz;
 
-    @FXML
-    private Label noQuizLabel;
+    @FXML private Label noQuizLabel;
+    @FXML private VBox quizDisplayBox;
+    @FXML private Button nextButton;
+    @FXML private Button restartButton;
+    @FXML private Button backButton;
+    @FXML private Label userInfoLabel;
+    @FXML private User currentUser;
+    @FXML private Label hintLabel;
+    @FXML private Label selectQuizLabel;
 
-    @FXML
-    private VBox quizDisplayBox;
-
-    @FXML
-    private Button nextButton;
-
-    @FXML
-    private Button restartButton;
-
-    @FXML
-    private Button backButton;
-
-    @FXML
-    private Label userInfoLabel;
-
-    @FXML
-    private User currentUser;
-
-    @FXML
-    private Label hintLabel;
-
-    @FXML
-    private Label selectQuizLabel;
-
+    /**
+     * Initializes the controller and sets up quiz list view.
+     */
     public void initialize() {
         quizzes = QuizDAO.getAllQuizzes();
         radioButtons = List.of(button1, button2, button3, button4);
@@ -86,12 +75,13 @@ public class QuizzesController {
         }
     }
 
-
-
+    /**
+     * Displays the current question with answer options.
+     */
     private void showQuestion() {
         if (currentIndex < questions.size()) {
             Question q = questions.get(currentIndex);
-            quiz.setText(currentQuiz.getName().toString());
+            quiz.setText(currentQuiz.getName());
             questionIndex.setText("Question " + (currentIndex + 1));
             question.setText(q.getQuestion());
 
@@ -107,7 +97,6 @@ public class QuizzesController {
                     rb.setText(options.get(i));
                     rb.setVisible(true);
                     rb.setSelected(false);
-
                     rb.setToggleGroup(null);
                     if (!isMultipleAnswer) {
                         rb.setToggleGroup(singleChoiceGroup);
@@ -122,12 +111,12 @@ public class QuizzesController {
         }
     }
 
+    /**
+     * Triggered when the next button is clicked. Validates answer and progresses quiz.
+     */
     @FXML
     protected void onNextButtonClick() throws IOException {
-        // Check if at least one answer is selected
-        boolean answerSelected = radioButtons.stream()
-                .anyMatch(RadioButton::isSelected);
-
+        boolean answerSelected = radioButtons.stream().anyMatch(RadioButton::isSelected);
         if (!answerSelected) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Answer Required");
@@ -139,7 +128,7 @@ public class QuizzesController {
         checkAnswer();
         if (currentIndex < questions.size() - 1) {
             currentIndex++;
-            showQuestion();  // Show the next question
+            showQuestion();
             nextButton.setDisable(false);
         } else {
             showScore();
@@ -150,19 +139,19 @@ public class QuizzesController {
         }
     }
 
+    /**
+     * Triggered when a quiz is selected from the list.
+     */
     @FXML
     private void onQuizSelected(MouseEvent event) {
         int index = quizListView.getSelectionModel().getSelectedIndex();
-
         if (index >= 0 && index < quizzes.size()) {
             currentQuiz = quizzes.get(index);
             this.questions = currentQuiz.getQuestions();
             this.score = 0;
             this.currentIndex = 0;
-
             restartButton.setVisible(false);
             restartButton.setManaged(false);
-
             if (questions != null && !questions.isEmpty()) {
                 quizDisplayBox.setVisible(true);
                 quizDisplayBox.setManaged(true);
@@ -180,7 +169,9 @@ public class QuizzesController {
         }
     }
 
-
+    /**
+     * Shows the final score in an alert.
+     */
     private void showScore() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Quiz Complete");
@@ -189,6 +180,9 @@ public class QuizzesController {
         alert.showAndWait();
     }
 
+    /**
+     * Checks if the selected answer(s) are correct.
+     */
     private void checkAnswer() {
         Question q = questions.get(currentIndex);
         List<Integer> correct = q.getCorrectIndexes();
@@ -199,8 +193,6 @@ public class QuizzesController {
         if (button3.isSelected()) selected.add(2);
         if (button4.isSelected()) selected.add(3);
 
-
-        // Sort lists
         Collections.sort(selected);
         List<Integer> sortedCorrect = new ArrayList<>(correct);
         Collections.sort(sortedCorrect);
@@ -210,89 +202,59 @@ public class QuizzesController {
         }
     }
 
+    /**
+     * Navigates back to the dashboard screen.
+     */
     @FXML
     private void onDashboardClick(ActionEvent event) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
-
-            // Pass user to other controllers
             MainController mainController = loader.getController();
             mainController.setUser(currentUser);
-
-            // Add CSS stylesheet to Scene
             String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
-
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
-            // Log the error
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to load main view", e);
-
-            // Show user-friendly error message
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Navigation Error");
             alert.setHeaderText("Could not open Dashboard page");
             alert.setContentText("There was a problem loading the requested page. Please try again later.");
             alert.showAndWait();
-
-            // Rethrow to respect the method's throws declaration
             throw e;
-        } catch (Exception e) {
-            // Handle other unexpected exceptions
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Unexpected error", e);
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Application Error");
-            alert.setHeaderText("An unexpected error occurred");
-            alert.setContentText("Sorry for the inconvenience. The application encountered an unexpected error.");
-            alert.showAndWait();
         }
-
     }
 
+    /**
+     * Navigates to the AI interaction screen.
+     */
     @FXML
     private void onAIClick(ActionEvent event) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/AI.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
-
-            // Pass user to other controllers
             AIController aiController = loader.getController();
             aiController.setUser(currentUser);
-
-            // Add CSS stylesheet to Scene
             String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
-
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
-            // Log the error
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to load AI view", e);
-
-            // Show user-friendly error message
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Navigation Error");
             alert.setHeaderText("Could not open AI page");
             alert.setContentText("There was a problem loading the requested page. Please try again later.");
             alert.showAndWait();
-
-            // Rethrow if needed (or handle it here completely)
             throw e;
-        } catch (Exception e) {
-            // Handle other unexpected exceptions
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Unexpected error", e);
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Application Error");
-            alert.setHeaderText("An unexpected error occurred");
-            alert.setContentText("Sorry for the inconvenience. The application encountered an unexpected error.");
-            alert.showAndWait();
         }
     }
 
+    /**
+     * Sets the current logged-in user and updates UI.
+     */
     @FXML
     public void setUser(User user) {
         this.currentUser = user;
@@ -301,6 +263,9 @@ public class QuizzesController {
         }
     }
 
+    /**
+     * Resets the quiz for a new attempt.
+     */
     public void onRestartQuizClick(ActionEvent actionEvent) {
         currentIndex = 0;
         score = 0;

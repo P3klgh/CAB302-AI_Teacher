@@ -11,18 +11,31 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Utility class responsible for handling API interactions with OpenAI.
+ * Loads API key from configuration file and sends messages asynchronously to OpenAI's Chat API.
+ */
 public class APIHandler {
 
+    /** OpenAI API key loaded from config.properties */
     private static final String OPENAI_API_KEY = loadAPIKey();  // Load API Key from properties file
+
+    /** Asynchronous OpenAI API client */
     private static final OpenAIClientAsync client;
 
+    // Static initializer to build OpenAI client with API key
     static {
-        // Manually set the API key using the correct configuration or environment variable
         client = new OpenAIOkHttpClientAsync.Builder()
                 .apiKey(OPENAI_API_KEY)
                 .build();
     }
-    // Load API Key from properties file
+
+    /**
+     * Loads the OpenAI API key from the config.properties file.
+     *
+     * @return The API key as a string
+     * @throws RuntimeException if the file is missing or the key is not found
+     */
     private static String loadAPIKey() {
         Properties properties = new Properties();
         try (FileInputStream inputStream = new FileInputStream("src/main/resources/com/cab302ai_teacher/config.properties")) {
@@ -38,7 +51,12 @@ public class APIHandler {
         }
     }
 
-    // Makes the API call to OpenAI and returns the response as a String asynchronously
+    /**
+     * Sends a user message to the OpenAI Chat API and retrieves a response asynchronously.
+     *
+     * @param userMessage The message input from the user
+     * @return A CompletableFuture containing either the chatbot's response or an error message
+     */
     public static CompletableFuture<Object> getBotResponse(String userMessage) {
         // Build the chat completion parameters
         ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
@@ -51,7 +69,6 @@ public class APIHandler {
 
         // Process the response and return the result
         return chatCompletion.thenApply(chatResult -> {
-            // Check for valid response and return the bot's reply
             if (chatResult.choices() != null && !chatResult.choices().isEmpty()) {
                 return chatResult.choices().get(0).message().content();
             } else {

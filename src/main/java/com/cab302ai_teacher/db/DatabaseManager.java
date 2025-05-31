@@ -5,17 +5,29 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Singleton class responsible for managing database connections and initialization.
+ */
 public class DatabaseManager {
 
+    /**
+     * JDBC URL for SQLite database.
+     */
     private static final String DB_URL = "jdbc:sqlite:ai_teacher.db";
 
-    // Singleton instance
+    /**
+     * Singleton instance of the DatabaseManager.
+     */
     private static DatabaseManager instance;
 
-    // Connection object (can be shared if needed)
+    /**
+     * Connection object used for initialization.
+     */
     private Connection connection;
 
-    // Private constructor: prevents instantiation from outside
+    /**
+     * Private constructor to enforce singleton pattern. Establishes initial DB connection.
+     */
     private DatabaseManager() {
         try {
             this.connection = DriverManager.getConnection(DB_URL);
@@ -24,7 +36,10 @@ public class DatabaseManager {
         }
     }
 
-    // Static method to return the singleton instance
+    /**
+     * Provides access to the singleton instance of DatabaseManager.
+     * @return the singleton DatabaseManager instance
+     */
     public static synchronized DatabaseManager getInstance() {
         if (instance == null) {
             instance = new DatabaseManager();
@@ -32,7 +47,10 @@ public class DatabaseManager {
         return instance;
     }
 
-    // Provides a new connection from the instance
+    /**
+     * Returns a new connection to the SQLite database.
+     * @return a new Connection object or null if connection fails
+     */
     public Connection getConnection() {
         try {
             return DriverManager.getConnection(DB_URL);
@@ -41,6 +59,10 @@ public class DatabaseManager {
             return null;
         }
     }
+
+    /**
+     * Initializes the database schema by creating required tables if they do not exist.
+     */
     public void initializeDatabase() {
         String[] tableStatements = {
                 """

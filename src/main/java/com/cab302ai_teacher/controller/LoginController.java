@@ -14,19 +14,27 @@ import javafx.stage.Stage;
 import java.util.Objects;
 import java.util.logging.*;
 
+/**
+ * Controller class responsible for handling the login screen.
+ * It manages user authentication and navigation to other scenes.
+ */
 public class LoginController {
 
-    // Reference to the email input field in the login form
+    /**
+     * Reference to the email input field in the login form.
+     */
     @FXML
     private TextField emailField;
 
-    // Reference to the password input field in the login form
+    /**
+     * Reference to the password input field in the login form.
+     */
     @FXML
     private PasswordField passwordField;
 
     /**
      * Called when the login button is clicked.
-     * Checks the inputs and transitions to the main scene.
+     * Validates user input and, if successful, transitions to the main screen.
      */
     @FXML
     public void onLoginClick() {
@@ -45,18 +53,17 @@ public class LoginController {
             return;
         }
 
-
         if (!UserDAO.isValidUser(email, password)) {
             showAlert("Invalid email or password.");
             return;
         }
 
-        // ✅ Successful login → go to main.fxml
+        // Successful login: load main view
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
 
-            // Pass login info to main
+            // Pass user data to MainController
             MainController mainController = loader.getController();
             User loggedInUser = UserDAO.getUserByEmail(email);
             mainController.setUser(loggedInUser);
@@ -67,16 +74,14 @@ public class LoginController {
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            // Log the error with proper context
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Failed to load main view", e);
             showAlert("Failed to load main view.");
-
         }
     }
 
     /**
      * Called when the register button is clicked.
-     * Navigates to the registration screen.
+     * Navigates the user to the registration screen.
      */
     @FXML
     public void onRegisterClick() {
@@ -86,15 +91,15 @@ public class LoginController {
             Stage stage = (Stage) emailField.getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            // Log the error with proper context
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, "Failed to load registration view", e);
             showAlert("Failed to load registration screen. Please try again.");
         }
-
     }
 
     /**
-     * Shows a warning alert with the provided message.
+     * Shows a warning alert dialog with the given message.
+     *
+     * @param message the text to display in the alert dialog
      */
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);

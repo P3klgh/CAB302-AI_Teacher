@@ -28,41 +28,69 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.*;
 
+/**
+ * Controller responsible for managing quizzes and questions.
+ * Teachers can view, edit, delete, and add quizzes and their questions.
+ * This class also handles navigation and user interface updates.
+ */
 public class QuestionController {
 
+    /**
+     * The currently logged-in user.
+     */
     @FXML
     private User currentUser;
 
+    /**
+     * Label showing logged-in user info.
+     */
     @FXML
     private Label userInfoLabel;
 
+    /**
+     * The VBox container where questions are displayed.
+     */
     @FXML
     private VBox questionCtnr;
 
+    /**
+     * ListView that shows all quizzes.
+     */
     @FXML
     private ListView<Quiz> quizListView;
+
+    /**
+     * Observable list of quizzes for UI.
+     */
     private ObservableList<Quiz> quizObservableList = FXCollections.observableArrayList();
+
     private List<Question> questions;
     private Quiz currentQuiz;
     private List<Quiz> quizzes;
     private TextField quizNameField;
+
+    /**
+     * List of questions marked for deletion.
+     */
     private final List<Question> deletedQuestions = new ArrayList<>();
 
+    /**
+     * Initializes the controller and loads all quizzes from the database.
+     */
     public void initialize() {
         quizzes = QuizDAO.getAllQuizzes();
         quizObservableList.setAll(quizzes);
         quizListView.setItems(quizObservableList);
 
         quizListView.setCellFactory(listView -> new ListCell<Quiz>() {
-            private final HBox cellContainer = new HBox(10); // spacing between elements
+            private final HBox cellContainer = new HBox(10);
             private final Label nameLabel = new Label();
-            private final Region spacer = new Region(); // this pushes the delete button to the right
+            private final Region spacer = new Region();
             private final Button deleteButton = new Button("Delete Quiz");
 
             {
-                HBox.setHgrow(spacer, Priority.ALWAYS); // this allows the spacer to take up all available space
-
-                deleteButton.getStyleClass().add("btn-primary"); // optional: CSS styling
+                HBox.setHgrow(spacer, Priority.ALWAYS);
+                deleteButton.getStyleClass().add("btn-primary");
 
                 deleteButton.setOnAction(e -> {
                     Quiz quiz = getItem();
@@ -107,25 +135,32 @@ public class QuestionController {
             }
         });
 
-
         if (!quizzes.isEmpty()) {
             quizListView.getSelectionModel().selectFirst();
             onQuizSelected(null);
         }
     }
 
-
-
+    /**
+     * Handles selection of a quiz from the ListView.
+     *
+     * @param mouseEvent the selection event
+     */
     public void onQuizSelected(MouseEvent mouseEvent) {
         Quiz selectedQuiz = quizListView.getSelectionModel().getSelectedItem();
         if (selectedQuiz != null) {
             currentQuiz = selectedQuiz;
             loadQuiz(selectedQuiz);
-        }else {
+        } else {
             System.out.println("⚠️ No quiz selected.");
         }
     }
 
+    /**
+     * Loads selected quiz and displays its questions in the UI.
+     *
+     * @param currentQuiz the selected quiz
+     */
     public void loadQuiz(Quiz currentQuiz) {
         questionCtnr.getChildren().clear();
 
@@ -138,7 +173,6 @@ public class QuestionController {
 
         for (int i = 0; i < questions.size(); i++) {
             Question question = questions.get(i);
-
             VBox questionBox = new VBox(5);
             Label questionLabel = new Label("Question " + (i + 1));
             TextField questionField = new TextField(question.getQuestion());
@@ -147,12 +181,9 @@ public class QuestionController {
             List<String> options = question.getOptions();
             List<Integer> correctIndexes = question.getCorrectIndexes();
 
-
             for (int j = 0; j < options.size(); j++) {
                 HBox optionBox = new HBox(10);
-
                 RadioButton radioButton = new RadioButton();
-
                 TextField optionField = new TextField(options.get(j));
                 optionField.setPromptText("Option " + (j + 1));
 
@@ -165,86 +196,68 @@ public class QuestionController {
             }
 
             Button deleteBtn = new Button("Delete Question");
-            deleteBtn.getStyleClass().add("btn-primary"); // optional: CSS styling
-
+            deleteBtn.getStyleClass().add("btn-primary");
             deleteBtn.setOnAction(event -> handleDeleteQuestion(question, questionBox));
-
             questionBox.getChildren().add(deleteBtn);
             questionCtnr.getChildren().add(questionBox);
         }
     }
 
+    /**
+     * Navigates to the dashboard screen.
+     */
     @FXML
     private void onDashboardClick(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
 
-            // Pass user to other controllers
             MainController mainController = loader.getController();
             mainController.setUser(currentUser);
 
-            // Add CSS stylesheet to Scene
             String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            // Log the error
             Logger.getLogger(AIController.class.getName()).log(Level.SEVERE, "Failed to load dashboard view", e);
-
-            // Inform the user
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Navigation Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Unable to navigate to dashboard screen. Please try again.");
-            alert.showAndWait();
+            showAlert("Navigation Error", "Unable to navigate to dashboard screen. Please try again.");
         }
-
     }
 
+    /**
+     * Navigates to the AI screen.
+     */
     @FXML
     private void onAIClick(ActionEvent event) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/AI.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
 
-            // Pass user to other controllers
             AIController aiController = loader.getController();
             aiController.setUser(currentUser);
 
-            // Add CSS stylesheet to Scene
             String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (IOException e) {
-            // Log the error
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Failed to load AI view", e);
-
-            // Show user-friendly error message
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Navigation Error");
-            alert.setHeaderText("Could not open AI page");
-            alert.setContentText("There was a problem loading the requested page. Please try again later.");
-            alert.showAndWait();
-
-            // Rethrow if needed (or handle it here completely)
+            showAlert("Navigation Error", "Could not open AI page.");
             throw e;
         } catch (Exception e) {
-            // Handle other unexpected exceptions
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Unexpected error", e);
-
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Application Error");
-            alert.setHeaderText("An unexpected error occurred");
-            alert.setContentText("Sorry for the inconvenience. The application encountered an unexpected error.");
-            alert.showAndWait();
+            showAlert("Application Error", "An unexpected error occurred.");
         }
     }
 
+    /**
+     * Sets the current user and updates UI.
+     *
+     * @param user the logged-in user
+     */
     @FXML
     public void setUser(User user) {
         this.currentUser = user;
@@ -253,18 +266,23 @@ public class QuestionController {
         }
     }
 
+    /**
+     * Cancels edits and reloads the current quiz.
+     */
     public void onCancel(ActionEvent actionEvent) {
         if (currentQuiz != null) {
             loadQuiz(currentQuiz);
         }
     }
 
+    /**
+     * Confirms and saves changes to the quiz and its questions.
+     */
     @FXML
     public void onEditConfirm(ActionEvent actionEvent) throws SQLException {
         int index = quizListView.getSelectionModel().getSelectedIndex();
 
         if (index >= 0 && index < quizzes.size()) {
-
             if (questionCtnr.getChildren().isEmpty()) {
                 showAlert("No Quiz Loaded", "Please select a quiz before confirming edits.");
                 return;
@@ -288,11 +306,9 @@ public class QuestionController {
 
                 VBox questionBox = (VBox) node;
                 if (i - 1 >= quizQuestions.size()) {
-                    Question newQ = new Question("", new ArrayList<>(), new ArrayList<>(), -1);
-                    quizQuestions.add(newQ);
+                    quizQuestions.add(new Question("", new ArrayList<>(), new ArrayList<>(), -1));
                 }
                 Question question = quizQuestions.get(i - 1);
-
                 TextField questionField = (TextField) questionBox.getChildren().get(1);
                 question.setQuestion(questionField.getText());
 
@@ -330,29 +346,28 @@ public class QuestionController {
             quizListView.getSelectionModel().select(currentQuiz);
 
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("No Selection");
-            alert.setHeaderText("Quiz Selection Error");
-            alert.setContentText("Please select a quiz to confirm edits.");
-            alert.showAndWait();
+            showAlert("Quiz Selection Error", "Please select a quiz to confirm edits.");
         }
     }
 
-
+    /**
+     * Removes a question from the quiz and UI.
+     */
     private void handleDeleteQuestion(Question question, VBox questionBox) {
         currentQuiz.removeQuestion(question);
         if (question.getId() != -1) {
             deletedQuestions.add(question);
         }
-
         questionCtnr.getChildren().remove(questionBox);
     }
 
+    /**
+     * Adds a new quiz and loads it for editing.
+     */
     @FXML
     public void onAddQuiz(ActionEvent actionEvent) {
         Quiz newQuiz = new Quiz("New Quiz", new ArrayList<>());
         try {
-            // Save quiz to DB and get generated ID
             int newId = QuizDAO.insertQuiz(newQuiz);
             newQuiz.setId(newId);
         } catch (SQLException e) {
@@ -368,6 +383,9 @@ public class QuestionController {
         loadQuiz(currentQuiz);
     }
 
+    /**
+     * Adds a new question to the current quiz in the UI.
+     */
     @FXML
     public void onAddQuestion(ActionEvent event) {
         if (currentQuiz == null) {
@@ -379,33 +397,29 @@ public class QuestionController {
         questionBox.setSpacing(10);
 
         Label label = new Label("New Question");
-
         TextField questionField = new TextField();
         questionField.setPromptText("Enter question text");
         questionBox.getChildren().addAll(label, questionField);
 
         for (int i = 0; i < 4; i++) {
             HBox optionBox = new HBox(10);
-
             RadioButton rb = new RadioButton();
             TextField optField = new TextField();
             optField.setPromptText("Option " + (i + 1));
-
             optionBox.getChildren().addAll(rb, optField);
             questionBox.getChildren().add(optionBox);
         }
 
         Button deleteBtn = new Button("Delete Question");
         deleteBtn.setOnAction(e -> handleDeleteQuestion(new Question("", Arrays.asList("", "", "", ""), new ArrayList<>(), -1), questionBox));
-
         questionBox.getChildren().add(deleteBtn);
-
         questionCtnr.getChildren().add(questionBox);
-
-        Question newQuestion = new Question("", Arrays.asList("", "", "", ""), new ArrayList<>(), -1);  // id = -1 for new question
-        currentQuiz.addQuestion(newQuestion);
+        currentQuiz.addQuestion(new Question("", Arrays.asList("", "", "", ""), new ArrayList<>(), -1));
     }
 
+    /**
+     * Shows an error alert dialog.
+     */
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -413,5 +427,4 @@ public class QuestionController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
 }

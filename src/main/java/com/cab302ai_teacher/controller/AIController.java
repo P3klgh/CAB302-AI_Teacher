@@ -17,27 +17,62 @@ import javafx.stage.Stage;
 import java.util.Objects;
 import java.util.logging.*;
 
+/**
+ * AIController handles the AI chat screen where users can interact with a chatbot.
+ * It also manages navigation and user data display.
+ */
 public class AIController {
+
+    /**
+     * API key for OpenAI (replace with your actual key).
+     */
     private static final String OPENAI_API_KEY = "YOUR_OPENAI_API_KEY";  // Replace with your OpenAI API Key
+
+    /**
+     * The endpoint URL for OpenAI API requests.
+     */
     private static final String OPENAI_API_URL = "https://api.openai.com/v1/completions";
 
+    /**
+     * Text area displaying the conversation between user and chatbot.
+     */
     @FXML
     private TextArea chatArea;
 
+    /**
+     * Label showing the logged-in user's info.
+     */
     @FXML
     private Label userInfoLabel;
+
+    /**
+     * Field where the user types their message.
+     */
     @FXML
     private TextField userInput;
 
+    /**
+     * Button to send the message.
+     */
     @FXML
     private Button sendButton;
 
-    // Handles the click event of the send button
+    /**
+     * Loading spinner shown while waiting for a bot response.
+     */
     @FXML
-    private ProgressIndicator progressIndicator;  // Add this in your FXML file
+    private ProgressIndicator progressIndicator;
 
+    /**
+     * The currently logged-in user.
+     */
     @FXML
     private User currentUser;
+
+    /**
+     * Called when the Send button is clicked.
+     * Sends the user's message to the chatbot and displays the response.
+     */
     public void onSendMessageClick() {
         String userMessage = userInput.getText().trim();
 
@@ -46,30 +81,34 @@ public class AIController {
             return;
         }
 
-        // Disable the input field and button during the API call
+        // Disable input while loading
         userInput.setDisable(true);
         sendButton.setDisable(true);
-        progressIndicator.setVisible(true);  // Show loading indicator
-        progressIndicator.setManaged(true);  // Show loading indicator
+        progressIndicator.setVisible(true);
+        progressIndicator.setManaged(true);
 
-        // Display the user's message in the chat area
+        // Display user's message
         chatArea.appendText("You: " + userMessage + "\n");
 
-        // Make the API call asynchronously
+        // Call OpenAI API asynchronously
         APIHandler.getBotResponse(userMessage).thenAccept(botResponse -> {
             Platform.runLater(() -> {
                 chatArea.appendText("Bot: " + botResponse + "\n");
-                chatArea.setScrollTop(Double.MAX_VALUE);  // Scroll to the bottom
-                userInput.clear();  // Clear the input field
-                progressIndicator.setVisible(false);  // Hide loading indicator
-                progressIndicator.setManaged(false);  // Hide loading indicator
+                chatArea.setScrollTop(Double.MAX_VALUE);
+                userInput.clear();
+                progressIndicator.setVisible(false);
+                progressIndicator.setManaged(false);
                 userInput.setDisable(false);
                 sendButton.setDisable(false);
             });
         });
     }
 
-    // Show alert messages
+    /**
+     * Shows an alert message in the UI.
+     *
+     * @param message the message to show in the alert dialog
+     */
     private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText(null);
@@ -77,27 +116,28 @@ public class AIController {
         alert.showAndWait();
     }
 
+    /**
+     * Navigates back to the dashboard (main) screen.
+     *
+     * @param event the action event triggered by the dashboard button
+     */
     @FXML
-    private void onDashboardClick(ActionEvent event){
+    private void onDashboardClick(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/cab302ai_teacher/main.fxml"));
             Scene scene = new Scene(loader.load(), 640, 480);
 
-            // Pass user to other controllers
             MainController mainController = loader.getController();
             mainController.setUser(currentUser);
 
-            // Add CSS stylesheet to Scene
             String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
 
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
         } catch (Exception e) {
-            // Log the error
             Logger.getLogger(AIController.class.getName()).log(Level.SEVERE, "Failed to load dashboard view", e);
 
-            // Inform the user
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Navigation Error");
             alert.setHeaderText(null);
@@ -106,6 +146,11 @@ public class AIController {
         }
     }
 
+    /**
+     * Navigates to the quizzes screen depending on the user's role.
+     *
+     * @param event the action event triggered by the quizzes button
+     */
     @FXML
     private void onQuizzesClick(ActionEvent event) {
         try {
@@ -126,7 +171,6 @@ public class AIController {
                 controller.setUser(currentUser);
             }
 
-            // Add CSS stylesheet to Scene
             String stylesheet = Objects.requireNonNull(Main.class.getResource("style.css")).toExternalForm();
             scene.getStylesheets().add(stylesheet);
 
@@ -143,6 +187,11 @@ public class AIController {
         }
     }
 
+    /**
+     * Sets the current user and updates the user information label.
+     *
+     * @param user the currently logged-in user
+     */
     @FXML
     public void setUser(User user) {
         this.currentUser = user;

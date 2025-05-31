@@ -13,29 +13,55 @@ import java.util.logging.Logger;
 
 import static com.cab302ai_teacher.db.ErrorHandler.showAlert;
 
+/**
+ * Controller for the registration screen.
+ * Handles user input validation and user registration process.
+ */
 public class RegisterController {
 
+    /**
+     * TextField for user's first name.
+     */
     @FXML
     private TextField firstNameField;
 
+    /**
+     * TextField for user's last name.
+     */
     @FXML
     private TextField lastNameField;
 
+    /**
+     * TextField for user's email.
+     */
     @FXML
     private TextField emailField;
 
+    /**
+     * PasswordField for user's password.
+     */
     @FXML
     private PasswordField passwordField;
 
+    /**
+     * ComboBox for selecting the user role (Teacher/Student).
+     */
     @FXML
     private ComboBox<String> roleComboBox; // Add this in FXML!
 
+    /**
+     * Initializes the registration form.
+     * Populates the role combo box with role options.
+     */
     @FXML
     public void initialize() {
-        // Populate roles in ComboBox
         roleComboBox.getItems().addAll("Teacher", "Student");
     }
 
+    /**
+     * Called when the register button is clicked.
+     * Validates the input and attempts to register the user.
+     */
     @FXML
     public void onRegisterClick() {
         String firstName = firstNameField.getText();
@@ -44,25 +70,21 @@ public class RegisterController {
         String password = passwordField.getText();
         String role = roleComboBox.getValue();
 
-        // Ensure all fields are filled in
         if (email.isBlank() || password.isBlank() || firstName.isBlank() || lastName.isBlank() || role == null || role.isBlank()) {
             showAlert(Alert.AlertType.WARNING, "Please fill in all fields.");
             return;
         }
 
-        // Validate email format using a regex pattern
         if (!Validator.isValidEmail(email)) {
             showAlert(Alert.AlertType.WARNING, "Invalid email format.");
             return;
         }
 
-        // Validate password strength
         if (!Validator.isValidPassword(password)) {
             showAlert(Alert.AlertType.WARNING, "Password must be at least 6 characters long, contain a mix of letters, digits, and special characters.");
             return;
         }
 
-        // Proceed with user registration
         if (UserDAO.registerUser(firstName, lastName, email, password, role)) {
             showAlert(Alert.AlertType.INFORMATION, "Registration successful!");
             try {
@@ -78,6 +100,10 @@ public class RegisterController {
         }
     }
 
+    /**
+     * Called when the back button is clicked.
+     * Navigates the user back to the login screen.
+     */
     @FXML
     private void onBackToLoginClick() {
         try {
@@ -87,10 +113,7 @@ public class RegisterController {
             stage.setScene(scene);
         } catch (Exception e) {
             showAlert(Alert.AlertType.ERROR, "An error occurred while switching screens: " + e.getMessage());
-            // Optional: Log the full stack trace to a file
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Navigation error", e);
         }
     }
-
-
 }
